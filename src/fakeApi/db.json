@@ -1,0 +1,148 @@
+{
+  "karyawan": [
+    {
+      "nik": 321012390841,
+      "username": "admin",
+      "email": "admin@admin.com",
+      "password": "admin",
+      "nama": "admin",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "s2",
+      "jabatan": "admin",
+      "pekerjaan": "admin",
+      "id": 1
+    },
+    {
+      "nik": 32190812476,
+      "username": "said",
+      "email": "said@said.com",
+      "password": "11223344",
+      "nama": "Muhammad Said Arrafi",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "SMA",
+      "jabatan": "Manager Aplikasi",
+      "pekerjaan": "Manager",
+      "id": 2
+    },
+    {
+      "nik": 32190812476,
+      "username": "one",
+      "email": "one@one.com",
+      "password": "11223344",
+      "nama": "one",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "SMA",
+      "jabatan": "Karyawan Aplikasi",
+      "pekerjaan": "Front End",
+      "id": 3
+    },
+    {
+      "nik": 32190812476,
+      "username": "two",
+      "email": "two@two.com",
+      "password": "11223344",
+      "nama": "two",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "SMA",
+      "jabatan": "Karyawan Aplikasi",
+      "pekerjaan": "Front End",
+      "id": 4
+    },
+    {
+      "nik": 32190812476,
+      "username": "three",
+      "email": "three@three.com",
+      "password": "11223344",
+      "nama": "three",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "SMA",
+      "jabatan": "Karyawan Aplikasi",
+      "pekerjaan": "Front End",
+      "id": 5
+    }
+  ],
+  "gaji": [
+    {
+      "id_User": 1,
+      "nik": 321012390841,
+      "nama": "admin",
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 10000000,
+      "tunjanganKeluarga": 230000,
+      "tunjanganTransportasi": 4200000,
+      "tunjanganHariRaya": 230000,
+      "bonus": 100000,
+      "id": 1
+    },
+    {
+      "id_User": 3,
+      "nama": "one",
+      "nik": 32190812476,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 4000000,
+      "tunjanganKeluarga": 100000,
+      "tunjanganTransportasi": 20000,
+      "tunjanganHariRaya": 3000000,
+      "bonus": 1000000,
+      "id": 2
+    },
+    {
+      "id_User": 4,
+      "nama": "two",
+      "nik": 32190812476,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 4000000,
+      "tunjanganKeluarga": 20000,
+      "tunjanganTransportasi": 100000,
+      "tunjanganHariRaya": 20000000,
+      "bonus": 10000000,
+      "id": 3
+    },
+    {
+      "id_User": 5,
+      "nama": "three",
+      "nik": 32190812476,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 3000000,
+      "tunjanganKeluarga": 200000,
+      "tunjanganTransportasi": 20000,
+      "tunjanganHariRaya": 2000000,
+      "bonus": 10000000,
+      "id": 4
+    },
+    {
+      "id_User": 2,
+      "nama": "Muhammad Said Arrafi",
+      "nik": 32190812476,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 2000000000,
+      "tunjanganKeluarga": 30000000,
+      "tunjanganTransportasi": 10000000,
+      "tunjanganHariRaya": 2000000,
+      "bonus": 1000000,
+      "id": 5
+    },
+    {
+      "id_User": 5,
+      "nama": "three",
+      "nik": 32190812476,
+      "bulan": "Februari",
+      "tahun": "2019",
+      "gaji": 1000,
+      "tunjanganKeluarga": 1000,
+      "tunjanganTransportasi": 1000,
+      "bonus": 1000,
+      "id": 6
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+import React, { Component } from 'react'
+import {BrowserRouter, Route} from 'react-router-dom'
+import { connect } from 'react-redux'
+
+import Login from './Login'
+import Register from './Register'
+import Navbar from './Navbar'
+import './App.css'
+import Footer from './Footer'
+import GajiKaryawan from './GajiKaryawan'
+import DataTugas from './DataTugas'
+import History from './History'
+import DataKaryawan from './DataKaryawan'
+
+import {session} from '../actions/index'
+
+class App extends Component {
+
+  state = {
+    check : false
+  }
+
+
+  componentDidMount(){
+    // backup user dari localstorage ke redux
+    let userData = JSON.parse(localStorage.getItem('userData'))
+    if (userData){
+      // kirim ke redux
+      console.log(userData)
+      this.props.session(userData)
+
+    }
+
+    this.setState({check : true})
+}
+  render() {
+    if (this.state.check === true){
+
+    
+    return (
+        <BrowserRouter>
+        <div id="App">
+            <Navbar/>
+              <div id="page-wrap">
+                <Route path='/'  component={Login} exact/>
+                <Route path='/register' component={Register} />
+                <Route path='/gajikaryawan' component={GajiKaryawan} />
+                <Route path='/datatugas' component={DataTugas} />
+                <Route path='/history' component={History} />
+                <Route path='/datakaryawan' component={DataKaryawan} />
+               
+              </div>
+              <Footer></Footer>
+        </div>
+        </BrowserRouter>
+    )
+    }
+    return <h1>Loading</h1>
+  }
+}
+
+export default connect(null,{session})(App)
+// titik 2 pada path merupakan sebuah variable yang menyimopan data
+  // data pada variable dapat berubah

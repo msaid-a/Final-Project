@@ -2,67 +2,116 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class DataKaryawan extends Component {
 
     state={
         karyawan : [],
-        modal6: false,
-        modal7: false,
+        modal : false,
+        modal2: false,
         selectKaryawan : {id :'', nama: '', nik:''}
     }
 
 
-toggle = nr => (id,nama,nik) => {
+toggle  = (id,nama,nik) => {
     axios.get('http://localhost:2020/karyawan/' + id).then(res => {
-        let modalNumber = 'modal' + nr
-        this.setState({
-          [modalNumber]: !this.state[modalNumber],
-          selectKaryawan :{id, nama, nik}
-        });
+        this.setState(prevState => ({
+            modal: !prevState.modal,
+            selectKaryawan :{id, nama, nik}
+        }));
     })
   }
 
-  toggleCancel = nr => () => {
-        let modalNumber = 'modal' + nr
-        this.setState({
-          [modalNumber]: !this.state[modalNumber],
-        });
+  toggleTugas =  (id,nama,nik) => {
+    axios.get('http://localhost:2020/karyawan/' + id).then(res => {
+        this.setState(prevState => ({
+            modal2: !prevState.modal,
+            selectKaryawan :{id, nama, nik}
+        }));
+    })
   }
 
-saveGaji = (id, nama, nik) =>{
-    let bulan = this.bulan.value
-    let tahun = this.tahun.value
-    let gaji = parseInt(this.gaji.value)
-    let tunjanganKeluarga = parseInt(this.keluarga.value)
-    let tunjanganTransportasi=parseInt(this.transportasi.value)
-    let bonus= parseInt(this.bonus.value)
+  toggleTugasCancel = () =>{
+    this.setState(prevState => ({
+        modal2 : false,
+    }))
 
-    axios.post('http://localhost:2020/gaji',{
-        id_User : id,
-        nama,
-        nik,
-        bulan,
-        tahun,
-        gaji,
-        tunjanganKeluarga,
-        tunjanganTransportasi,
-        bonus
-
-    }).then(res=>{
-        alert('success')
-        this.toggleCancel(8)()
-    }).catch(err => {
-        alert(err.message)
-    })
 }
 
 
-getData = async () =>{
-    axios.get('http://localhost:2020/karyawan')
-    .then(res => {
-        this.setState({karyawan : res.data})
+  toggleCancel = () =>{
+    this.setState(prevState => ({
+        modal : !prevState.modal,
+    }))
+}
+
+saveGaji = (id, nama, nik) =>{
+    if(this.props.jabatan=="admin"){
+        let bulan = this.bulan.value
+        let tahun = this.tahun.value
+        let gaji = parseInt(this.gaji.value)
+        let tunjanganKeluarga = parseInt(this.keluarga.value)
+        let tunjanganTransportasi=parseInt(this.transportasi.value)
+        let bonus= parseInt(this.bonus.value)
+    
+        axios.post('http://localhost:2020/gaji',{
+            id_User : id,
+            nama,
+            nik,
+            bulan,
+            tahun,
+            gaji,
+            tunjanganKeluarga,
+            tunjanganTransportasi,
+            bonus
+    
+        }).then(res=>{
+            alert('success')
+            // this.toggleCancel()
+        }).catch(err => {
+            alert(err.message)
+        })
+    }
+}
+
+
+getData =  () =>{
+    if(this.props.jabatan =="admin"){
+     return   axios.get('http://localhost:2020/karyawan')
+                .then(res => {
+                     this.setState({karyawan : res.data})
+                     })
+    }
+    if(this.props.jabatan.includes('Manager')){
+        let karyawan = this.props.jabatan.split(' ')[1]
+        console.log(karyawan)
+        return   axios.get('http://localhost:2020/karyawan',{
+            params:{
+                jabatan : 'Karyawan '+karyawan
+            }
+        })
+        .then(res => {
+             this.setState({karyawan : res.data})
+             })
+    }
+
+}
+
+postTugas = (id,nama,nik) =>{
+    let title = this.title.value
+    let description = this.description.value
+    let deadline = this.deadline.value
+    let from = this.props.userName
+    let idUser = id
+    let namaUser = nama
+    let hasil = ''
+    let status = 'belum di kumpulkan'
+
+    axios.post('http://localhost:2020/tugas',{
+        idUser,namaUser,title,description,deadline,from,hasil,status
+    }).then(res=>{
+        alert('success')
     })
 }
 
@@ -75,21 +124,39 @@ renderKaryawan = () =>{
     let no = 0
     return this.state.karyawan.map(data => {
         no++
-        return (<tr>
+        if(this.props.jabatan =="admin"){
+
+            return (<tr>
             <td>{no}</td>
             <td>{data.nik}</td>
             <td>{data.email}</td>
             <td>{data.nama}</td>
             <td>{data.gender}</td>
-            <td>{data.agama}</td>
-            <td>{data.pendidikan}</td>
             <td>{data.jabatan}</td>
             <td>{data.pekerjaan}</td>
-            <td><button className="btn btn-primary btn-sm">Edit</button> <button className="btn btn-danger btn-sm">Delete</button> <button className="btn btn-success btn-sm" onClick={()=>this.toggle(8)(data.id, data.nama, data.nik)}>Add Gaji</button></td>
-
+           <td><button className="btn btn-primary btn-sm">Edit</button> 
+           <button className="btn btn-danger btn-sm">Delete</button> 
+           <button className="btn btn-success btn-sm" onClick={()=>this.toggle(data.id, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
+        }
+
+        if(this.props.jabatan.includes('Manager')){
+            return (<tr>
+                <td>{no}</td>
+                <td>{data.nik}</td>
+                <td>{data.email}</td>
+                <td>{data.nama}</td>
+                <td>{data.gender}</td>
+                <td>{data.jabatan}</td>
+                <td>{data.pekerjaan}</td>
+                <td><button className="btn btn-primary btn-sm"onClick={()=>this.toggleTugas(data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
+            </tr>)
+            
+        }
     })
 }
+
+
 
     render() {
         if(!this.props.userName){
@@ -120,8 +187,6 @@ renderKaryawan = () =>{
                     <th>Email</th>
                     <th>Nama</th>
                     <th>Jenis Kelamin</th>
-                    <th>Agama</th>
-                    <th>Pendidikan</th>
                     <th>Jabatan</th>
                     <th>Pekerjaan</th>
                     <th>Action</th>
@@ -131,10 +196,9 @@ renderKaryawan = () =>{
                         {this.renderKaryawan()}
                     </tbody>
                 </table>
-                <MDBContainer>
-      <MDBModal isOpen={this.state.modal8} toggle={this.toggle(8)} fullHeight position="right">
-        <MDBModalHeader toggle={this.toggleCancel(8)}>{nama}</MDBModalHeader>
-        <MDBModalBody>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
+                <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
+        <ModalBody>
             <form onSubmit={e=> e.preventDefault()}>
             <select name="Bulan" className="mb-3 form-control" ref={input=> this.bulan = input} >
                 <option value="Januari">Januari</option>
@@ -156,13 +220,28 @@ renderKaryawan = () =>{
                 <input className="form-control mb-3" type="number" placeholder="Tunjangan Transfortasi" ref={input => this.transportasi =input}/>
                 <input className="form-control mb-3" type="number" placeholder="Bonus" ref={input => this.bonus = input}/>
             </form>
-        </MDBModalBody> 
-        <MDBModalFooter>
-          <MDBBtn color="secondary" onClick={this.toggleCancel(8)}>Close</MDBBtn>
-          <MDBBtn color="primary" onClick={()=> this.saveGaji(id,nama, nik)}>Submit</MDBBtn>
-        </MDBModalFooter>
-      </MDBModal>
-    </MDBContainer>
+        </ModalBody> 
+        <ModalFooter>
+          <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
+          <Button color="primary" onClick={()=> this.saveGaji(id,nama, nik)}>Submit</Button>
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={this.state.modal2} toggle={this.toggleTugas} fullHeight position="right" id='tugas'>
+        <ModalHeader toggle={this.toggleTugasCancel}>{nama}</ModalHeader>
+        <ModalBody>
+            <form onSubmit={e=> e.preventDefault()}>
+            <input type="text" name="" id="" placeholder="title" className="form-control" ref={input => {this.title = input}}/>
+            <textarea className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
+            
+            <label>Deadline :</label>
+            <input type="date" name="" id="" placeholder="title" className="form-control" ref={input => {this.deadline = input}}/>
+            </form>
+        </ModalBody> 
+        <ModalFooter>
+          <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
+          <Button color="primary" onClick={()=> this.postTugas(id,nama, nik)}>Submit</Button>
+        </ModalFooter>
+      </Modal>
             </div>
         )
     }

@@ -144,5 +144,18 @@
       "bonus": 1000,
       "id": 6
     }
+  ],
+  "tugas": [
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "halaman awal",
+      "description": "Kerjakan Dari Awal",
+      "deadline": "2019-11-09",
+      "from": "said",
+      "hasil": "https://docs.google.com/document/u/0/d/1Z9VeI_2uNg0eFnMLt7aIZ35E2CgW5xFVbqNH7QzUMPw/export?format=docx",
+      "status": "Selesai",
+      "id": 1
+    }
   ]
 }

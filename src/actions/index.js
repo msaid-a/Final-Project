@@ -40,6 +40,7 @@ export const sendData = (_username, _password) =>{
                }
            })
        }else{
+           console.log(_username)
         axios.get(
             'http://localhost:2020/karyawan/', 
             {

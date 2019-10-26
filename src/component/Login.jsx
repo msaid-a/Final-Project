@@ -26,7 +26,7 @@ export class Login extends Component {
       return <Redirect to ='/datakaryawan'></Redirect>
     }
     if(this.props.jabatan.split(' ')[0] === 'Karyawan'){
-      return <Redirect to ='/datatugas'></Redirect>
+      return <Redirect to ='/tugas'></Redirect>
     }
         return (
         <Container className=" border col-5 mb-1" style={{marginTop : 100}}>

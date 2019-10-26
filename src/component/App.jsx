@@ -13,6 +13,8 @@ import History from './History'
 import DataKaryawan from './DataKaryawan'
 
 import {session} from '../actions/index'
+import Tugas from './Tugas'
+import Gaji from './Gaji'
 
 class App extends Component {
 
@@ -47,8 +49,9 @@ class App extends Component {
                 <Route path='/gajikaryawan' component={GajiKaryawan} />
                 <Route path='/datatugas' component={DataTugas} />
                 <Route path='/history' component={History} />
-                <Route path='/datakaryawan' component={DataKaryawan} />
-               
+                <Route path='/datakaryawan' component={DataKaryawan} />               
+                <Route path='/tugas' component={Tugas} />               
+                <Route path='/gaji' component={Gaji} />               
               </div>
               <Footer></Footer>
         </div>

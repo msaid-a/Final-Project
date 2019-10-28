@@ -35,7 +35,7 @@ export class Detail extends Component {
         <div className="col-6 mt-4">
         <h1>Hello </h1>
 
-             <table className="table table-hover text-left">
+             <table className="table table-hover text-left mb-5">
                  <tr>
                      <td>NIK :</td>
                      <td>{nik}</td>

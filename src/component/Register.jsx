@@ -70,11 +70,11 @@ class Register extends Component {
     render() {
         return (
         
-           <div className="container col-8 text-left">
+           <div className="container col-8 text-left mb-5">
                <div className="card card-register mx-auto" style={{marginTop:100}}>
                    <div className="card-header">Register an Account</div>
                    <div className="card-body">
-                       <form onSubmit={e => e.preventDefault()}>
+                       <form onSubmit={e => e.preventDefault()} className="mb-5">
                            <div className="form-group">
                                <label htmlFor="inputEmail">NIK</label>
                                <div className="form-label-group">

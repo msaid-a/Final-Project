@@ -89,10 +89,10 @@ import axios from '../config/index'
         let {nik,username,email,nama,gender,agama,pendidikan,jabatan} = this.state.profile 
         return (
             <div className="container col-8 text-left">
-            <div className="card card-register mx-auto" style={{marginTop:100}}>
+            <div className="card card-register mx-auto mb-5" style={{marginTop:100}}>
                 <div className="card-header">Edit  Account</div>
                 <div className="card-body">
-                    <form onSubmit={e => e.preventDefault()}>
+                    <form onSubmit={e => e.preventDefault()} className="mb-5">
                         <p>*Catatan Jika Tidak mau di ubah biarkan saja</p>
                         <div className="form-group">
                             <label htmlFor="inputEmail">NIK</label>

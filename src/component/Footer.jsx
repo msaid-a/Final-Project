@@ -10,11 +10,11 @@ class Footer extends Component {
             //             </div>
             //         </div>
             // </div>
-            <div className="footer mt-auto">
-              <footer  style={{paddingTop:'25.5%'}} >
-                  <div className="container-fluid">
+            <div className=" fixed-bottom footer mt-auto" style={{height:40}}>
+              <footer className="">
+                  <div className=" container-fluid">
 
-                  <div className="footer-copyright text-center py-3 w-100 bg-dark text-white">© 2018 Copyright:
+                  <div className="footer-copyright text-center  py-2 w-100 bg-dark text-white">© 2018 Copyright:
                       Your
                       Website 2019
                   </div>

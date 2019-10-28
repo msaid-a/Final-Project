@@ -89,7 +89,7 @@ export class DataTugas extends Component {
         let {id,title} = this.state.selectTugas
         return (
             <div className="container">
-                <table className="table table-striped table-responsive-md btn-table " style={{marginTop:91}}>
+                <table className="table table-striped table-responsive-md btn-table mb-5" style={{marginTop:91}}>
                     <thead>
                     <th>NO</th>
                     <th>Karyawan</th>

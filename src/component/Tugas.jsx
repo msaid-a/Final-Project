@@ -112,7 +112,7 @@ class Tugas extends Component {
                         <button type="submit" class="btn btn-primary ml-1">Seach</button>
                              </div>
                 </form>
-                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table ">
+                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5  ">
                     <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
                     <tr>
                     <th>NO</th>

@@ -120,6 +120,14 @@ componentDidMount= () =>{
     this.getData()
 }
 
+deleteKaryawan = (id) =>{
+    axios.delete('http://localhost:2020/karyawan/'+id,{
+    }).then(res=>{
+        alert('success')
+        this.getData()
+    })
+}
+
 renderKaryawan = () =>{
     let no = 0
     return this.state.karyawan.map(data => {
@@ -134,7 +142,7 @@ renderKaryawan = () =>{
             <td>{data.gender}</td>
             <td>{data.pekerjaan}</td>
            <td><Link to={'/detailkaryawan/'+data.id}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
-           <button className="btn btn-danger btn-sm m-1">Delete</button> 
+           <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.id)}>Delete</button> 
            <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
         }
@@ -163,7 +171,7 @@ renderKaryawan = () =>{
         let {id, nama, nik} = this.state.selectKaryawan
         return (
             <div className="container">
-                <form style={{marginTop:80}} className="ml-auto">
+                <form style={{marginTop:80}} className="ml-auto ">
                     <div className="form-group d-flex justify-content-end">
                     <label className="h5 mt-2">seach by :</label>
                     <select className="mr-1">
@@ -177,7 +185,7 @@ renderKaryawan = () =>{
                         <button type="submit" class="btn btn-primary ml-1">Seach</button>
                              </div>
                 </form>
-                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table ">
+                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
                     <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
                     <tr>
                     <th>NO</th>
@@ -189,7 +197,7 @@ renderKaryawan = () =>{
                     <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody style={{fontSize: 15}}>
+                    <tbody className='text-left'style={{fontSize: 13}}>
                         {this.renderKaryawan()}
                     </tbody>
                 </table>

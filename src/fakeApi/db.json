@@ -53,19 +53,6 @@
       "id": 4
     },
     {
-      "nik": 32190812476,
-      "username": "three",
-      "email": "three@three.com",
-      "password": "11223344",
-      "nama": "three",
-      "gender": "Laki-Laki",
-      "agama": "islam",
-      "pendidikan": "SMA",
-      "jabatan": "Karyawan Aplikasi",
-      "pekerjaan": "Front End",
-      "id": 5
-    },
-    {
       "nik": 1238192374,
       "username": "asep",
       "email": "asep@asep.com",
@@ -90,19 +77,6 @@
       "jabatan": "Karyawan Marketing",
       "pekerjaan": "Digital Marketing",
       "id": 7
-    },
-    {
-      "nik": 213813861,
-      "username": "udin",
-      "email": "udin@udin.com",
-      "password": "11223344",
-      "nama": "udin",
-      "gender": "Laki-Laki",
-      "agama": "islam",
-      "pendidikan": "s2",
-      "jabatan": "Karyawan Marketing",
-      "pekerjaan": "Sales",
-      "id": 8
     }
   ],
   "gaji": [

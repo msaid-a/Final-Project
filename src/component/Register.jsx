@@ -3,6 +3,10 @@ import axios from 'axios'
 
 class Register extends Component {
     
+    state={
+        jabatan : ''
+    }
+
     onRegiter = () =>{
         let nik = parseInt(this.nik.value)
         let username = this.username.value
@@ -23,6 +27,45 @@ class Register extends Component {
         
     }
     
+    onPekerjaan = () =>{
+        if(!this.state.jabatan){
+            return (
+            <select> <option value='' Hidden>Pekerjaan</option> </select>
+            )}
+        if(this.state.jabatan == "Karyawan Aplikasi"){
+            return(
+                <select ref ={input => this.pekerjaan = input}>
+                    <option hidden>Pekerjaan</option>
+                    <option value="Full Stack Developer">Full Stack Developer</option>
+                    <option value="Front End Developer">Front End Developer</option>
+                    <option value="Back End Developer">Back End Developer</option>
+                </select>
+                
+            )
+        }
+        if(this.state.jabatan == "Karyawan Marketing"){
+            return (
+            <select ref ={input => this.pekerjaan = input}>
+                    <option hidden>Pekerjaan</option>
+                    <option value="Digital Marketing">Digital Marketing</option>
+                    <option value="Sales">Sales</option>
+                </select>
+            )
+        }
+
+        if(this.state.jabatan.includes('Manager')){
+            return (
+            <select ref ={input => this.pekerjaan = input}>
+                    <option value="Digital Marketing">Manager</option>
+                </select>
+            )
+        }
+        
+    }
+
+
+
+
     
     render() {
         return (
@@ -77,8 +120,13 @@ class Register extends Component {
                            <div className="form">
                                <label htmlFor="inputPassword">Agama</label>
                                <div className="form-label-group">
-                                   <input type="text" className="form-control" placeholder="Agama"
-                                       required="required" ref={input => this.agama = input}/>
+                               <select name="" id="" ref={input => this.agama = input}>
+                                   <option value="Islam">Islam</option>
+                                   <option value="Kristen">Kristen</option>
+                                   <option value="Hindu">Hindu</option>
+                                   <option value="Budha">budha</option>
+                                   <option value="Konghuchu">Konghuchu</option>
+                               </select>
                                </div>
                            </div>
                            <div className="form">
@@ -91,7 +139,8 @@ class Register extends Component {
                            <div className="form">
                                <label htmlFor="inputPassword">Jabatan</label>
                                <div className="form-label-group">
-                                    <select name="" id="" ref={input => this.jabatan = input}>
+                                    <select className="mb-3" ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
+                                        <option value="" Hiden>Jabatan</option>
                                         <option value="Manager Aplikasi">Manager Aplikasi</option>
                                         <option value="Manager Marketing">Manager Marketing</option>
                                         <option value="Karyawan Aplikasi">Karyawan Aplikasi</option>
@@ -100,13 +149,14 @@ class Register extends Component {
                                </div>
                            </div>
                            <div className="form">
-                               <label htmlFor="inputPassword">Pekerjaan</label>
+                               {this.onPekerjaan()}
+                               {/* <label htmlFor="inputPassword">Pekerjaan</label>
                                <div className="form-label-group">
                                    <input type="text" className="form-control" placeholder="Pkerjaan"
                                        required="required" ref ={input => this.pekerjaan = input}/>
-                               </div>
+                               </div> */}
                            </div>
-                           <button className="btn btn-primary btn-block" onClick={this.onRegiter}>Register</button>
+                           <button className="btn btn-primary btn-block mt-3" onClick={this.onRegiter}>Register</button>
                        </form>
                    </div>
                </div>

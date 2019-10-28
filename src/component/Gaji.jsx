@@ -50,6 +50,7 @@ renderGaji = () =>{
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto">
+                    <h1>Data Gaji Bulanan</h1>
                     <div className="form-group d-flex justify-content-end">
 
                         <label className="sr-only">Password</label>

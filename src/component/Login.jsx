@@ -31,7 +31,7 @@ export class Login extends Component {
         return (
         <Container className=" border col-5 mb-1" style={{marginTop : 100}}>
         <h2 className="mt-5">Sign In</h2>
-        <Form className="form" onSubmit={e => e.preventDefault()}>
+        <form className="form" onSubmit={e => e.preventDefault()}>
           <Col>
             <FormGroup className="text-left ">
               <Label>Username / Email</Label>
@@ -56,9 +56,9 @@ export class Login extends Component {
                 ref={input => this.password = input}
               />
             </FormGroup>
+          <button className="btn btn-secondary mt-5 mb-5" onClick={this.onLogin}>Login</button>
           </Col>
-          <Button className="mt-5 mb-5" onClick={this.onLogin}>Submit</Button>
-        </Form>
+        </form>
       </Container>
 
         )

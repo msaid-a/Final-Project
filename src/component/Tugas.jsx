@@ -9,7 +9,7 @@ class Tugas extends Component {
     state={
         tugas:[],
         modal : false,
-        selectTugas : {id: '', title :'', description: ''}
+        selectTugas : {id: '', title :'', description: '', status:''}
 
     }
 
@@ -26,10 +26,10 @@ class Tugas extends Component {
         }))
       }
     
-      toggleTugas =  (id,title,description) => {
+      toggleTugas =  (id,title,description,status) => {
             this.setState(prevState => ({
                 modal2: !prevState.modal,
-                selectTugas : {id, title, description}
+                selectTugas : {id, title, description,status}
 
             }));
 
@@ -44,12 +44,17 @@ class Tugas extends Component {
 
 
 
-    postTugas = (id) =>{
+    postTugas = (id,_status) =>{
         let hasil = this.hasil.value
-        console.log(id)
+        let status = 'Terupload'
+        if(_status == 'REVISI'){
+            status = 'Revisi Terupload'
+        }else if(_status =="TERLAMBAT"){
+            status = 'Terupload(Terlambat)'
+        }
         axios.patch('http://localhost:2020/tugas/'+id,{
             hasil : hasil,
-            status : 'Terupload'
+            status : status
         }).then(res =>{
             alert('success')
             this.getTugas()
@@ -75,26 +80,33 @@ class Tugas extends Component {
         this.getTugas()
     }
 
-    rendertugas = () =>{
+    rendertugas =  () =>{
         let no = 0
-        return this.state.tugas.reverse().map(data =>{
-            no++
-            return (<tr>
-                <td>{no}</td>
-                <td><button className="btn btn-primary" onClick={()=>this.toggle(data.id,data.title,data.description)}>Lihat Tugas</button></td>
-                <td>{data.from}</td>
-                <td>{data.deadline}</td>
-                <td><button className="btn btn-success" onClick={()=>this.toggleTugas(data.id,data.title,data.description)}>Upload Tugas</button></td>
-                <td>{data.status}</td>
-            </tr>)
-        })
+        let now = new Date()
+            return this.state.tugas.map(data =>{
+                no++
+                let deadline = new Date(data.deadline.replace(/-/g,','))
+                if (now > deadline && (data.status == 'belum di kumpulkan' || data.status == 'REVISI')) {
+                    data.status = 'TERLAMBAT'
+                }
+                return (<tr>
+                    <td>{no}</td>
+                    <td><button className="btn btn-primary" onClick={()=>this.toggle(data.id,data.title,data.description)}>Lihat Tugas</button></td>
+                    <td>{data.from}</td>
+                    <td>{data.deadline}</td>
+                    <td><button className="btn btn-success" onClick={()=>this.toggleTugas(data.id,data.title,data.description,data.status)}>Upload Tugas</button></td>
+                    <td>{data.status}</td>
+                </tr>)
+            })
+        
     }
 
     render() {
-        let {id,title, description} = this.state.selectTugas
+        let {id,title, description,status} = this.state.selectTugas
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto">
+                <h1>Daftar Tugas</h1>
                     <div className="form-group d-flex justify-content-end">
                             <input type="text" className=""  placeholder="Search"></input>
                         <button type="submit" class="btn btn-primary ml-1">Seach</button>
@@ -138,7 +150,7 @@ class Tugas extends Component {
         </ModalBody> 
         <ModalFooter>
           <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
-          <Button color="primary" onClick={() => this.postTugas(id)}>Submit</Button>
+          <Button color="primary" onClick={() => this.postTugas(id,status)}>Submit</Button>
         </ModalFooter>
       </Modal>
             </div>

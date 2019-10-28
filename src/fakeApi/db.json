@@ -1,7 +1,7 @@
 {
   "karyawan": [
     {
-      "nik": 321012390841,
+      "nik": 321012390842,
       "username": "admin",
       "email": "admin@admin.com",
       "password": "admin",
@@ -16,8 +16,8 @@
     {
       "nik": 32190812476,
       "username": "said",
-      "email": "said@said.com",
-      "password": "11223344",
+      "email": "muhammadsaidarrafi@gmail.com",
+      "password": "Indonesiaku!",
       "nama": "Muhammad Said Arrafi",
       "gender": "Laki-Laki",
       "agama": "islam",
@@ -64,6 +64,45 @@
       "jabatan": "Karyawan Aplikasi",
       "pekerjaan": "Front End",
       "id": 5
+    },
+    {
+      "nik": 1238192374,
+      "username": "asep",
+      "email": "asep@asep.com",
+      "password": "11223344",
+      "nama": "asep",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "S3",
+      "jabatan": "Manager Marketing",
+      "pekerjaan": "Manager",
+      "id": 6
+    },
+    {
+      "nik": 213813861,
+      "username": "ujang",
+      "email": "ujang@ujang.com",
+      "password": "11223344",
+      "nama": "ujang",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "s2",
+      "jabatan": "Karyawan Marketing",
+      "pekerjaan": "Digital Marketing",
+      "id": 7
+    },
+    {
+      "nik": 213813861,
+      "username": "udin",
+      "email": "udin@udin.com",
+      "password": "11223344",
+      "nama": "udin",
+      "gender": "Laki-Laki",
+      "agama": "islam",
+      "pendidikan": "s2",
+      "jabatan": "Karyawan Marketing",
+      "pekerjaan": "Sales",
+      "id": 8
     }
   ],
   "gaji": [
@@ -143,19 +182,99 @@
       "tunjanganTransportasi": 1000,
       "bonus": 1000,
       "id": 6
+    },
+    {
+      "id_User": 7,
+      "nama": "ujang",
+      "nik": 213813861,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 1000000,
+      "tunjanganKeluarga": 12000,
+      "tunjanganTransportasi": 200000,
+      "bonus": 100000,
+      "id": 7
+    },
+    {
+      "id_User": 6,
+      "nama": "asep",
+      "nik": 1238192374,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 2000000,
+      "tunjanganKeluarga": 1000000,
+      "tunjanganTransportasi": 3000000,
+      "bonus": 2000000,
+      "id": 8
+    },
+    {
+      "id_User": 8,
+      "nama": "udin",
+      "nik": 213813861,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 100000,
+      "tunjanganKeluarga": 200000,
+      "tunjanganTransportasi": 300000,
+      "bonus": 100000,
+      "id": 9
     }
   ],
   "tugas": [
     {
       "idUser": 3,
       "namaUser": "one",
-      "title": "halaman awal",
-      "description": "Kerjakan Dari Awal",
-      "deadline": "2019-11-09",
+      "title": "123",
+      "description": "eqwewq",
+      "deadline": "2019-10-27",
       "from": "said",
-      "hasil": "https://docs.google.com/document/u/0/d/1Z9VeI_2uNg0eFnMLt7aIZ35E2CgW5xFVbqNH7QzUMPw/export?format=docx",
-      "status": "Selesai",
+      "hasil": "",
+      "status": "belum di kumpulkan",
       "id": 1
+    },
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "wqdsadsa",
+      "description": "dsasda",
+      "deadline": "2019-10-29",
+      "from": "said",
+      "hasil": "",
+      "status": "belum di kumpulkan",
+      "id": 2
+    },
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "halaman awal",
+      "description": "kdjsalkjads",
+      "deadline": "2019-10-30",
+      "from": "said",
+      "hasil": "e2eqdadsada",
+      "status": "Terupload",
+      "id": 3
+    },
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "tes",
+      "description": "asdadsa",
+      "deadline": "2019-10-27",
+      "from": "said",
+      "hasil": "zxcjhas",
+      "status": "Selesai",
+      "id": 4
+    },
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "asdndsa",
+      "description": "sad",
+      "deadline": "2019-11-02",
+      "from": "said",
+      "hasil": "sadads",
+      "status": "REVISI",
+      "id": 5
     }
   ]
 }

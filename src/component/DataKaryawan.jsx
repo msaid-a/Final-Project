@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import axios from 'axios'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -132,11 +132,10 @@ renderKaryawan = () =>{
             <td>{data.email}</td>
             <td>{data.nama}</td>
             <td>{data.gender}</td>
-            <td>{data.jabatan}</td>
             <td>{data.pekerjaan}</td>
-           <td><button className="btn btn-primary btn-sm">Edit</button> 
-           <button className="btn btn-danger btn-sm">Delete</button> 
-           <button className="btn btn-success btn-sm" onClick={()=>this.toggle(data.id, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
+           <td><Link to={'/detailkaryawan/'+data.id}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
+           <button className="btn btn-danger btn-sm m-1">Delete</button> 
+           <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
         }
 
@@ -147,9 +146,8 @@ renderKaryawan = () =>{
                 <td>{data.email}</td>
                 <td>{data.nama}</td>
                 <td>{data.gender}</td>
-                <td>{data.jabatan}</td>
                 <td>{data.pekerjaan}</td>
-                <td><button className="btn btn-primary btn-sm"onClick={()=>this.toggleTugas(data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
+                <td><button className="btn btn-primary btn-sm m-1"onClick={()=>this.toggleTugas(data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
             </tr>)
             
         }
@@ -164,7 +162,7 @@ renderKaryawan = () =>{
         }
         let {id, nama, nik} = this.state.selectKaryawan
         return (
-            <div>
+            <div className="container">
                 <form style={{marginTop:80}} className="ml-auto">
                     <div className="form-group d-flex justify-content-end">
                     <label className="h5 mt-2">seach by :</label>
@@ -187,7 +185,6 @@ renderKaryawan = () =>{
                     <th>Email</th>
                     <th>Nama</th>
                     <th>Jenis Kelamin</th>
-                    <th>Jabatan</th>
                     <th>Pekerjaan</th>
                     <th>Action</th>
                     </tr>

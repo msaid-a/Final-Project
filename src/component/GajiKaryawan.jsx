@@ -35,11 +35,11 @@ renderGaji = () =>{
             <td>{data.nik}</td>
             <td>{data.nama}</td>
             <td>{`${data.bulan}/${data.tahun}`}</td>
-            <td>{data.tunjanganKeluarga}</td>
-            <td>{data.tunjanganTransportasi}</td>
-            <td>{data.gaji}</td>
-            <td>{data.bonus}</td>
-            <td>{total}</td>
+            <td>Rp. {Intl.NumberFormat().format(data.tunjanganKeluarga).replace(/,/g, '.')}</td>
+            <td>Rp. {Intl.NumberFormat().format(data.tunjanganTransportasi).replace(/,/g, '.')}</td>
+            <td>Rp. {Intl.NumberFormat().format(data.gaji).replace(/,/g, '.')}</td>
+            <td>Rp. {Intl.NumberFormat().format(data.bonus).replace(/,/g, '.')}</td>
+            <td>Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
         </tr>)
     })
 }
@@ -51,6 +51,8 @@ renderGaji = () =>{
         return (
             <div>
                 <form style={{marginTop:80}} className="ml-auto">
+                <h1>Data Gaji Karyawan</h1>
+
                     <div className="form-group d-flex justify-content-end">
 
                         <label className="sr-only">Password</label>

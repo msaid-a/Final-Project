@@ -13,6 +13,9 @@ class Header extends Component {
                 <Link to="/datakaryawan" className="menu-item" >
                     <i className="fas fa-user-circle" />
                     <span>Data Karyawan</span></Link>
+                <Link to="/register" className="menu-item" >
+                    <i className="fas fa-user-circle" />
+                    <span>Tambah Karyawan</span></Link>
                 <Link to="/gajikaryawan" className="menu-item" >
                     <i className="fas fa-money-bill-wave-alt" />
                     <span>Gaji Karyawan</span>

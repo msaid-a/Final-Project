@@ -65,8 +65,13 @@ export class DataTugas extends Component {
 
     renderTugas = () =>{
         let no = 0
+        let now = new Date()
         return this.state.karyawan.map(data => {
             no++
+            let deadline = new Date(data.deadline.replace(/-/g,','))
+            if(now > deadline && (data.status =='belum di kumpulkan' || data.status =='REVISI')){
+                data.status = 'TERLAMBAT'
+           }
             return (<tr>
                 <td>{no}</td>
                 <td>{data.namaUser}</td>

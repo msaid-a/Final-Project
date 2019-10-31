@@ -22,7 +22,13 @@ class Register extends Component {
         axios.post('http://localhost:2020/karyawan/',{
             nik,username,email,password,nama,gender,agama,pendidikan,jabatan,pekerjaan
         }).then(res=> {
-            alert('Success')
+            axios.post('http://localhost:2020/history',{
+                user: "admin",
+                desc: "telah menambahkan karyawan baru dengan username " + username,
+                date: new Date() 
+            }).then(res=>{
+                alert('Success')
+            })
         })
         
     }

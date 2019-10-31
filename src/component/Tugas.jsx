@@ -44,7 +44,7 @@ class Tugas extends Component {
 
 
 
-    postTugas = (id,_status) =>{
+    postTugas = (id,_status,title) =>{
         let hasil = this.hasil.value
         let status = 'Terupload'
         if(_status == 'REVISI'){
@@ -56,8 +56,16 @@ class Tugas extends Component {
             hasil : hasil,
             status : status
         }).then(res =>{
-            alert('success')
-            this.getTugas()
+            axios.post('http://localhost:2020/history',{
+                user: this.props.userName,
+                desc :'Telah menguload tugas dengan judul ' + title,
+                divisi:this.props.jabatan.split(' ')[1],
+                date: new Date() 
+
+            }).then(res=>{
+                alert('success')
+                this.getTugas()
+            })
         })
     }
 
@@ -150,7 +158,7 @@ class Tugas extends Component {
         </ModalBody> 
         <ModalFooter>
           <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
-          <Button color="primary" onClick={() => this.postTugas(id,status)}>Submit</Button>
+          <Button color="primary" onClick={() => this.postTugas(id,status,title)}>Submit</Button>
         </ModalFooter>
       </Modal>
             </div>

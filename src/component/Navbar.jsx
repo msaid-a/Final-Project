@@ -20,6 +20,9 @@ class Header extends Component {
                     <i className="fas fa-money-bill-wave-alt" />
                     <span>Gaji Karyawan</span>
                 </Link>
+                <Link to="/history" className="menu-item" >
+                    <span>History</span>
+                </Link>
                 <Link onClick={this.props.logoutData}>
                       <button className="menu-item btn btn-danger">Logout</button>
                 </Link>
@@ -38,6 +41,9 @@ class Header extends Component {
                     <i className="fas fa-money-bill-wave-alt" />
                     <span>Data Tugas</span>
                 </Link>
+                <Link to="/history" className="menu-item" >
+                    <span>History</span>
+                </Link>
                 <Link onClick={this.props.logoutData}>
                       <button className="menu-item btn btn-danger">Logout</button>
                 </Link>
@@ -52,6 +58,9 @@ class Header extends Component {
                 <Link to="/tugas" className="menu-item" >
                     <i className="fas fa-money-bill-wave-alt" />
                     <span>Daftar Tugas</span>
+                </Link>
+                <Link to="/history" className="menu-item" >
+                    <span>History</span>
                 </Link>
                 <Link onClick={this.props.logoutData}>
                       <button className="menu-item btn btn-danger">Logout</button>

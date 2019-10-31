@@ -32,15 +32,23 @@ export class DataTugas extends Component {
             }
         }).then(res => {
             this.setState({karyawan: res.data})
+            console.log(this.state.karyawan)
         })
     }
 
-    doneTugas = (id) =>{
+    doneTugas = (id,title) =>{
         axios.patch('http://localhost:2020/tugas/'+id,{
             status : 'Selesai'
         }).then(res=>{
-            alert('Sucess')
-            this.getTugas()
+            axios.post('http://localhost:2020/history',{
+                user:this.props.userName,
+                desc:'menyatakan tugas selesai pada judul ' + title,
+                divisi: this.props.jabatan.split(' ')[1],
+                date: new Date() 
+            }).then(res=>{
+                alert('success')            
+                this.getTugas()
+            })
         })
     }
 
@@ -53,9 +61,17 @@ export class DataTugas extends Component {
             deadline,
             status:"REVISI"
         }).then(res => {
-            alert('success')
-            this.getTugas()
-            this.toggleCancel()
+            axios.post('http://localhost:2020/history',{
+                user:this.props.userName,
+                desc:'merevisi pada judul ' + this.state.selectTugas.title,
+                divisi: this.props.jabatan.split(' ')[1], 
+                date: new Date() 
+
+            }).then(res=>{
+                alert('success')            
+                this.getTugas()
+                this.toggleCancel()
+            })
         })
     }
 
@@ -78,7 +94,7 @@ export class DataTugas extends Component {
                 <td>{data.title}</td>
                 <td>{data.deadline}</td>
                 <td><a href={data.hasil} className="btn btn-warning"> Download Hasil </a></td>
-                <td><button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id)}>Done</button>
+                <td><button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
                     <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button></td>
                 <td>{data.status}</td>
             </tr>)

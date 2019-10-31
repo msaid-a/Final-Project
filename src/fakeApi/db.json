@@ -66,16 +66,16 @@
       "id": 6
     },
     {
-      "nik": 213813861,
+      "nik": 12344121,
       "username": "ujang",
       "email": "ujang@ujang.com",
       "password": "11223344",
       "nama": "ujang",
       "gender": "Laki-Laki",
-      "agama": "islam",
-      "pendidikan": "s2",
+      "agama": "Islam",
+      "pendidikan": "S2",
       "jabatan": "Karyawan Marketing",
-      "pekerjaan": "Digital Marketing",
+      "pekerjaan": "Sales",
       "id": 7
     }
   ],
@@ -199,11 +199,11 @@
       "idUser": 3,
       "namaUser": "one",
       "title": "123",
-      "description": "eqwewq",
-      "deadline": "2019-10-27",
+      "description": "asddsaad",
+      "deadline": "2019-11-08",
       "from": "said",
       "hasil": "",
-      "status": "belum di kumpulkan",
+      "status": "REVISI",
       "id": 1
     },
     {
@@ -243,12 +243,85 @@
       "idUser": 3,
       "namaUser": "one",
       "title": "asdndsa",
-      "description": "sad",
-      "deadline": "2019-11-02",
+      "description": "asdassd",
+      "deadline": "2019-11-09",
       "from": "said",
       "hasil": "sadads",
       "status": "REVISI",
       "id": 5
+    },
+    {
+      "idUser": 4,
+      "namaUser": "two",
+      "title": "Halaman Awal",
+      "description": "",
+      "deadline": "2019-11-09",
+      "from": "said",
+      "hasil": "asddsa",
+      "status": "Selesai",
+      "id": 6
+    },
+    {
+      "idUser": 4,
+      "namaUser": "two",
+      "title": "Back end ",
+      "description": "dsads",
+      "deadline": "2019-11-09",
+      "from": "said",
+      "hasil": "asdsad",
+      "status": "Terupload",
+      "id": 7
+    },
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "asdsad",
+      "description": "",
+      "deadline": "2019-11-09",
+      "from": "said",
+      "hasil": "",
+      "status": "belum di kumpulkan",
+      "id": 8
+    },
+    {
+      "idUser": 3,
+      "namaUser": "one",
+      "title": "Jajan",
+      "description": "adsa",
+      "deadline": "2019-11-09",
+      "from": "said",
+      "hasil": "asddsa",
+      "status": "REVISI",
+      "id": 9
+    }
+  ],
+  "history": [
+    {
+      "user": "said",
+      "desc": "Telah memberi Tugas kepadaone",
+      "divisi": "Aplikasi",
+      "date": "2019-10-31T07:14:15.555Z",
+      "id": 1
+    },
+    {
+      "user": "one",
+      "desc": "Telah menguload tugas dengan judul Jajan",
+      "divisi": "Aplikasi",
+      "date": "2019-10-31T07:14:55.040Z",
+      "id": 2
+    },
+    {
+      "user": "said",
+      "desc": "merevisi pada judul Jajan",
+      "date": "2019-10-31T07:16:05.937Z",
+      "id": 3
+    },
+    {
+      "user": "said",
+      "desc": "merevisi pada judul Jajan",
+      "divisi": "Aplikasi",
+      "date": "2019-10-31T07:17:09.340Z",
+      "id": 4
     }
   ]
 }

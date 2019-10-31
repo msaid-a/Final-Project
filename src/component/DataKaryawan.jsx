@@ -67,7 +67,13 @@ saveGaji = (id, nama, nik) =>{
             bonus
     
         }).then(res=>{
-            alert('success')
+            axios.post('http://localhost:2020/history',{
+                user:this.props.userName,
+                desc:'Telah memberi gaji kepada' + nama,
+                date: new Date() 
+            }).then(res=>{
+                alert('success')            
+            })
             // this.toggleCancel()
         }).catch(err => {
             alert(err.message)
@@ -111,7 +117,14 @@ postTugas = (id,nama,nik) =>{
     axios.post('http://localhost:2020/tugas',{
         idUser,namaUser,title,description,deadline,from,hasil,status
     }).then(res=>{
-        alert('success')
+        axios.post('http://localhost:2020/history',{
+                user:this.props.userName,
+                desc:'Telah memberi Tugas kepada' + nama,
+                divisi:this.props.jabatan.split(' ')[1],
+                date: new Date() 
+            }).then(res=>{
+                alert('success')            
+            })
     })
 }
 
@@ -123,8 +136,14 @@ componentDidMount= () =>{
 deleteKaryawan = (id) =>{
     axios.delete('http://localhost:2020/karyawan/'+id,{
     }).then(res=>{
-        alert('success')
-        this.getData()
+        axios.post('http://localhost:2020/history',{
+                user:this.props.userName,
+                desc:'Telah Menghapus Karyawan dengan id' + id,
+                date: new Date() 
+            }).then(res=>{
+                alert('success')            
+                this.getData()
+            })
     })
 }
 

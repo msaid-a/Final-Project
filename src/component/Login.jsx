@@ -36,10 +36,8 @@ export class Login extends Component {
             <FormGroup className="text-left ">
               <Label>Username / Email</Label>
               <input
-                type="email"
-                name="email"
-                id="exampleEmail"
-                placeholder="myemail@email.com"
+                type="text"
+                placeholder="Username/myemail@email.com"
                 className="form-control"
                 ref = {input => this.username = input}
               />

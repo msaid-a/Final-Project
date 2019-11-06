@@ -8,6 +8,7 @@ class DataKaryawan extends Component {
 
     state={
         karyawan : [],
+        search :[],
         modal : false,
         modal2: false,
         selectKaryawan : {id :'', nama: '', nik:''}
@@ -21,7 +22,7 @@ toggle  = (id,nama,nik) => {
             selectKaryawan :{id, nama, nik}
         }));
     })
-  }
+ }
 
   toggleTugas =  (id,nama,nik) => {
     axios.get('http://localhost:2020/karyawan/' + id).then(res => {
@@ -86,7 +87,8 @@ getData =  () =>{
     if(this.props.jabatan =="admin"){
      return   axios.get('http://localhost:2020/karyawan')
                 .then(res => {
-                     this.setState({karyawan : res.data})
+                     this.setState({karyawan : res.data,
+                    search: res.data})
                      })
     }
     if(this.props.jabatan.includes('Manager')){
@@ -98,7 +100,7 @@ getData =  () =>{
             }
         })
         .then(res => {
-             this.setState({karyawan : res.data})
+             this.setState({karyawan : res.data, search: res.data})
              })
     }
 
@@ -149,7 +151,7 @@ deleteKaryawan = (id) =>{
 
 renderKaryawan = () =>{
     let no = 0
-    return this.state.karyawan.map(data => {
+    return this.state.search.map(data => {
         no++
         if(this.props.jabatan =="admin"){
 

@@ -45,7 +45,7 @@ renderGaji = () =>{
 }
 
     render() {
-        if(this.props.userName !='admin'){
+        if(this.props.userName !=='admin'){
             return <Redirect to ='/'></Redirect>
         }
         return (
@@ -61,7 +61,7 @@ renderGaji = () =>{
                              </div>
                 </form>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
-                    <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
+                    <thead style={{fontSize: 15, height:40}}  className='thead-dark' >
                     <tr>
                     <th>NO</th>
                     <th>NIK</th>

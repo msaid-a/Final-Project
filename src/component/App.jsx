@@ -17,6 +17,7 @@ import Tugas from './Tugas'
 import Gaji from './Gaji'
 import Detail from './Detail'
 import EditProfile from './EditProfile'
+import Divisi from './Divisi'
 
 class App extends Component {
 
@@ -54,6 +55,7 @@ class App extends Component {
                 <Route path='/datakaryawan' component={DataKaryawan} />               
                 <Route path='/tugas' component={Tugas} />               
                 <Route path='/gaji' component={Gaji} />               
+                <Route path='/divisi' component={Divisi} />               
                 <Route path='/editprofile/:idkaryawan' component={EditProfile} />               
                 <Route path='/detailkaryawan/:idkaryawan' component={Detail} />               
               </div>

@@ -12,316 +12,51 @@
       "jabatan": "admin",
       "pekerjaan": "admin",
       "id": 1
-    },
-    {
-      "nik": 32190812476,
-      "username": "said",
-      "email": "muhammadsaidarrafi@gmail.com",
-      "password": "Indonesiaku!",
-      "nama": "Muhammad Said Arrafi",
-      "gender": "Laki-Laki",
-      "agama": "islam",
-      "pendidikan": "SMA",
-      "jabatan": "Manager Aplikasi",
-      "pekerjaan": "Manager",
-      "id": 2
-    },
-    {
-      "nik": 32190812476,
-      "username": "one",
-      "email": "one@one.com",
-      "password": "11223344",
-      "nama": "one",
-      "gender": "Laki-Laki",
-      "agama": "islam",
-      "pendidikan": "SMA",
-      "jabatan": "Karyawan Aplikasi",
-      "pekerjaan": "Front End",
-      "id": 3
-    },
-    {
-      "nik": 32190812476,
-      "username": "two",
-      "email": "two@two.com",
-      "password": "11223344",
-      "nama": "two",
-      "gender": "Laki-Laki",
-      "agama": "islam",
-      "pendidikan": "SMA",
-      "jabatan": "Karyawan Aplikasi",
-      "pekerjaan": "Front End",
-      "id": 4
-    },
-    {
-      "nik": 1238192374,
-      "username": "asep",
-      "email": "asep@asep.com",
-      "password": "11223344",
-      "nama": "asep",
-      "gender": "Laki-Laki",
-      "agama": "Islam",
-      "pendidikan": "S3",
-      "jabatan": "Manager Marketing",
-      "pekerjaan": "Manager",
-      "id": 6
-    },
-    {
-      "nik": 12344121,
-      "username": "ujang",
-      "email": "ujang@ujang.com",
-      "password": "11223344",
-      "nama": "ujang",
-      "gender": "Laki-Laki",
-      "agama": "Islam",
-      "pendidikan": "S2",
-      "jabatan": "Karyawan Marketing",
-      "pekerjaan": "Sales",
-      "id": 7
     }
   ],
-  "gaji": [
+  "gaji": [],
+  "tugas": [],
+  "history": [],
+  "Divisi": [
     {
-      "id_User": 1,
-      "nik": 321012390841,
-      "nama": "admin",
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 10000000,
-      "tunjanganKeluarga": 230000,
-      "tunjanganTransportasi": 4200000,
-      "tunjanganHariRaya": 230000,
-      "bonus": 100000,
+      "divisi": "Aplikasi",
       "id": 1
     },
     {
-      "id_User": 3,
-      "nama": "one",
-      "nik": 32190812476,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 4000000,
-      "tunjanganKeluarga": 100000,
-      "tunjanganTransportasi": 20000,
-      "tunjanganHariRaya": 3000000,
-      "bonus": 1000000,
+      "divisi": "Marketing",
+      "id": 2
+    }
+  ],
+  "Subdivisi": [
+    {
+      "subDivisi": "Front End Developer",
+      "divisi": "Aplikasi",
+      "id": 1
+    },
+    {
+      "subDivisi": "Back End Developer",
+      "divisi": "Aplikasi",
       "id": 2
     },
     {
-      "id_User": 4,
-      "nama": "two",
-      "nik": 32190812476,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 4000000,
-      "tunjanganKeluarga": 20000,
-      "tunjanganTransportasi": 100000,
-      "tunjanganHariRaya": 20000000,
-      "bonus": 10000000,
+      "subDivisi": "Sales",
+      "divisi": "Marketing",
       "id": 3
     },
     {
-      "id_User": 5,
-      "nama": "three",
-      "nik": 32190812476,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 3000000,
-      "tunjanganKeluarga": 200000,
-      "tunjanganTransportasi": 20000,
-      "tunjanganHariRaya": 2000000,
-      "bonus": 10000000,
+      "subDivisi": "Digital Marketing",
+      "divisi": "Marketing",
       "id": 4
     },
     {
-      "id_User": 2,
-      "nama": "Muhammad Said Arrafi",
-      "nik": 32190812476,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 2000000000,
-      "tunjanganKeluarga": 30000000,
-      "tunjanganTransportasi": 10000000,
-      "tunjanganHariRaya": 2000000,
-      "bonus": 1000000,
+      "subDivisi": "UI/UX",
+      "divisi": "Aplikasi",
       "id": 5
     },
     {
-      "id_User": 5,
-      "nama": "three",
-      "nik": 32190812476,
-      "bulan": "Februari",
-      "tahun": "2019",
-      "gaji": 1000,
-      "tunjanganKeluarga": 1000,
-      "tunjanganTransportasi": 1000,
-      "bonus": 1000,
+      "subDivisi": "Database Engineer",
+      "divisi": "Aplikasi",
       "id": 6
-    },
-    {
-      "id_User": 7,
-      "nama": "ujang",
-      "nik": 213813861,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 1000000,
-      "tunjanganKeluarga": 12000,
-      "tunjanganTransportasi": 200000,
-      "bonus": 100000,
-      "id": 7
-    },
-    {
-      "id_User": 6,
-      "nama": "asep",
-      "nik": 1238192374,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 2000000,
-      "tunjanganKeluarga": 1000000,
-      "tunjanganTransportasi": 3000000,
-      "bonus": 2000000,
-      "id": 8
-    },
-    {
-      "id_User": 8,
-      "nama": "udin",
-      "nik": 213813861,
-      "bulan": "Januari",
-      "tahun": "2019",
-      "gaji": 100000,
-      "tunjanganKeluarga": 200000,
-      "tunjanganTransportasi": 300000,
-      "bonus": 100000,
-      "id": 9
-    }
-  ],
-  "tugas": [
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "123",
-      "description": "asddsaad",
-      "deadline": "2019-11-08",
-      "from": "said",
-      "hasil": "",
-      "status": "REVISI",
-      "id": 1
-    },
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "wqdsadsa",
-      "description": "dsasda",
-      "deadline": "2019-10-29",
-      "from": "said",
-      "hasil": "",
-      "status": "belum di kumpulkan",
-      "id": 2
-    },
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "halaman awal",
-      "description": "kdjsalkjads",
-      "deadline": "2019-10-30",
-      "from": "said",
-      "hasil": "e2eqdadsada",
-      "status": "Terupload",
-      "id": 3
-    },
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "tes",
-      "description": "asdadsa",
-      "deadline": "2019-10-27",
-      "from": "said",
-      "hasil": "zxcjhas",
-      "status": "Selesai",
-      "id": 4
-    },
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "asdndsa",
-      "description": "asdassd",
-      "deadline": "2019-11-09",
-      "from": "said",
-      "hasil": "sadads",
-      "status": "REVISI",
-      "id": 5
-    },
-    {
-      "idUser": 4,
-      "namaUser": "two",
-      "title": "Halaman Awal",
-      "description": "",
-      "deadline": "2019-11-09",
-      "from": "said",
-      "hasil": "asddsa",
-      "status": "Selesai",
-      "id": 6
-    },
-    {
-      "idUser": 4,
-      "namaUser": "two",
-      "title": "Back end ",
-      "description": "dsads",
-      "deadline": "2019-11-09",
-      "from": "said",
-      "hasil": "asdsad",
-      "status": "Terupload",
-      "id": 7
-    },
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "asdsad",
-      "description": "",
-      "deadline": "2019-11-09",
-      "from": "said",
-      "hasil": "",
-      "status": "belum di kumpulkan",
-      "id": 8
-    },
-    {
-      "idUser": 3,
-      "namaUser": "one",
-      "title": "Jajan",
-      "description": "adsa",
-      "deadline": "2019-11-09",
-      "from": "said",
-      "hasil": "asddsa",
-      "status": "REVISI",
-      "id": 9
-    }
-  ],
-  "history": [
-    {
-      "user": "said",
-      "desc": "Telah memberi Tugas kepadaone",
-      "divisi": "Aplikasi",
-      "date": "2019-10-31T07:14:15.555Z",
-      "id": 1
-    },
-    {
-      "user": "one",
-      "desc": "Telah menguload tugas dengan judul Jajan",
-      "divisi": "Aplikasi",
-      "date": "2019-10-31T07:14:55.040Z",
-      "id": 2
-    },
-    {
-      "user": "said",
-      "desc": "merevisi pada judul Jajan",
-      "date": "2019-10-31T07:16:05.937Z",
-      "id": 3
-    },
-    {
-      "user": "said",
-      "desc": "merevisi pada judul Jajan",
-      "divisi": "Aplikasi",
-      "date": "2019-10-31T07:17:09.340Z",
-      "id": 4
     }
   ]
 }

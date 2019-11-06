@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 class Register extends Component {
     
@@ -74,6 +76,9 @@ class Register extends Component {
 
     
     render() {
+        if(this.props.jabatan != 'admin'){
+            return <Redirect to ="/" ></Redirect>
+        }
         return (
         
            <div className="container col-8 text-left mb-5">
@@ -171,5 +176,11 @@ class Register extends Component {
         )
     }
 }
-
-export default Register
+const mapStateToProps = (state) =>{
+    return {
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan
+    }
+  }
+export default connect(mapStateToProps,{})(Register)

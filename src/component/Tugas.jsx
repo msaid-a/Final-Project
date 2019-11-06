@@ -110,6 +110,9 @@ class Tugas extends Component {
     }
 
     render() {
+        if(!this.props.jabatan.includes('Karyawan')){
+            return <Redirect to='/'></Redirect>
+        }
         let {id,title, description,status} = this.state.selectTugas
         return (
             <div className="container">

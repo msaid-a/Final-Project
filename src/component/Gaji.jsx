@@ -48,6 +48,9 @@ renderGaji = () =>{
 }
 
     render() {
+        if(!this.props.iD){
+            return <Redirect to="/"></Redirect>
+        }
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto">

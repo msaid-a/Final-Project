@@ -20,6 +20,10 @@ class Header extends Component {
                     <i className="fas fa-money-bill-wave-alt" />
                     <span>Gaji Karyawan</span>
                 </Link>
+                <Link to="/divisi" className="menu-item" >
+                    <i className="fas fa-money-bill-wave-alt" />
+                    <span>Divisi</span>
+                </Link>
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
                 </Link>

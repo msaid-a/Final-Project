@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {Redirect} from 'react-router-dom'
 
 
 export class DataTugas extends Component {
@@ -102,6 +103,9 @@ export class DataTugas extends Component {
     }
 
     render() {
+        if(!this.props.jabatan.includes('Manager')){
+            return <Redirect to="/"></Redirect>
+        }
         let {id,title} = this.state.selectTugas
         return (
             <div className="container">

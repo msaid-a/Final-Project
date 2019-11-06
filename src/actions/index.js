@@ -23,16 +23,18 @@ export const sendData = (_username, _password) =>{
                        timer:900
                    })
                }else{
-                   let {id, username, jabatan} = res.data[0]
+                   let {id, username, jabatan, divisi} = res.data[0]
+
                    // kirim id dan username ke reducers
-                       localStorage.setItem('userData',JSON.stringify({id, username, jabatan}))
+                       localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi}))
                        // Action
                        dispatch( {
                            type : "LOGIN_SUCCESS",
                            payload : {
                                id, 
                                username,
-                               jabatan 
+                               jabatan,
+                               divisi 
                            }
                        }
                        )
@@ -59,16 +61,18 @@ export const sendData = (_username, _password) =>{
                     timer:900
                 })
             }else{
-                let {id, username, jabatan} = res.data[0]
+                let {id, username, jabatan, divisi} = res.data[0]
+                console.log(divisi)
                 // kirim id dan username ke reducers
-                    localStorage.setItem('userData',JSON.stringify({id, username, jabatan}))
+                    localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi}))
                     // Action
                     dispatch( {
                         type : "LOGIN_SUCCESS",
                         payload : {
                             id, 
                             username,
-                            jabatan 
+                            jabatan,
+                            divisi 
                         }
                     }
                     )
@@ -98,7 +102,8 @@ export const session = (userData) =>{
         payload:{
             id : userData.id,
             username: userData.username,
-            jabatan : userData.jabatan
+            jabatan : userData.jabatan,
+            divisi : userData.divisi
         }
     }
 }

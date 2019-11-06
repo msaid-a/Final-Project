@@ -96,7 +96,8 @@ getData =  () =>{
         console.log(karyawan)
         return   axios.get('http://localhost:2020/karyawan',{
             params:{
-                jabatan : 'Karyawan '+karyawan
+                divisi : this.props.divisi
+                // tambah jabatan karyawan nanti
             }
         })
         .then(res => {
@@ -277,7 +278,8 @@ const mapStateToProps = (state) =>{
     return {
       userName : state.auth.username,
       iD : state.auth.id,
-      jabatan : state.auth.jabatan
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi
     }
   }
 

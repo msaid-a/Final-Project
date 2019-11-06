@@ -5,7 +5,10 @@ import axios from '../config/index'
 
 
     state={
-        jabatan : '',
+        selectDivisi : '',
+        jabatan: '',
+        divisi : [],
+        subdivisi:[],
         profile : ''
     }
     getKaryawan = () =>{
@@ -18,9 +21,6 @@ import axios from '../config/index'
                      })
      
     }
-    componentDidMount=()=>{
-        this.getKaryawan()
-    }
     onRegiter = () =>{
         let nik = parseInt(this.nik.value)
         let username = this.username.value
@@ -30,6 +30,7 @@ import axios from '../config/index'
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
+        let divisi = this.divisi.value
         let jabatan = this.jabatan.value
         let pekerjaan = ''
         if( jabatan == 'admin'){
@@ -43,50 +44,91 @@ import axios from '../config/index'
         }
         
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
-            nik,username,email,password,nama,gender,agama,pendidikan,jabatan,pekerjaan
+            nik,username,email,password,nama,gender,agama,pendidikan,divisi,jabatan,pekerjaan
         }).then(res=> {
             alert('Success')
         })
         
     }
     
-    onPekerjaan = () =>{
-        let {pekerjaan} = this.state.profile
-        if(!this.state.jabatan){
-            return (
-            <select ref ={input => this.pekerjaan = input}> <option value={pekerjaan}>{pekerjaan}</option> </select>
-            )}
-        if(this.state.jabatan == "Karyawan Aplikasi"){
-            return(
-                <select ref ={input => this.pekerjaan = input} defaultValue={pekerjaan}>
-                    <option value="Full Stack Developer">Full Stack Developer</option>
-                    <option value="Front End Developer">Front End Developer</option>
-                    <option value="Back End Developer">Back End Developer</option>
-                </select>
-                
-            )
-        }
-        if(this.state.jabatan == "Karyawan Marketing"){
-            return (
-            <select ref ={input => this.pekerjaan = input} defaultValue={pekerjaan}>
-                    <option value="Digital Marketing">Digital Marketing</option>
-                    <option value="Sales">Sales</option>
-                </select>
-            )
-        }
-
-        if(this.state.jabatan.includes('Manager')){
-            return (
-            <select defaultValue={pekerjaan} ref ={input => this.pekerjaan = input} >
-                    <option value="Digital Marketing">Manager</option>
-                </select>
-            )
-        }
-        
+    getDivisi = () =>{
+        axios.get('http://localhost:2020/divisi')
+            .then(res=>{
+                this.setState({divisi: res.data})
+            })
+        axios.get('http://localhost:2020/subdivisi')
+            .then(res=>{
+                this.setState({subdivisi:res.data})
+            })
     }
 
+    componentDidMount = () =>{
+        this.getDivisi()
+        this.getKaryawan()
+    }
+    
+    renderDivisi = () =>{
+        return this.state.divisi.map(data => {
+            return(<option value={data.divisi}>{data.divisi}</option>)
+        })
+    }
+
+    renderSubDivisi = () =>{
+        console.log(this.state.jabatan)
+        console.log(this.state.selectDivisi)
+        if(this.state.jabatan =="Manager"){
+            return <option value={'Manager'+this.selectDivisi}>Manager</option>
+        }else{
+            let subdivisi = this.state.subdivisi.filter(data=>{
+                return data.divisi.includes(this.state.selectDivisi)
+            })
+            console.log(subdivisi)
+            return subdivisi.map (data => {
+                return <option value={data.subDivisi}>{data.subDivisi}</option>
+            })
+        }
+
+    }
+
+
+    // onPekerjaan = () =>{
+    //     let {pekerjaan} = this.state.profile
+    //     if(!this.state.jabatan){
+    //         return (
+    //         <select ref ={input => this.pekerjaan = input}> <option value={pekerjaan}>{pekerjaan}</option> </select>
+    //         )}
+    //     if(this.state.jabatan == "Karyawan Aplikasi"){
+    //         return(
+    //             <select ref ={input => this.pekerjaan = input} defaultValue={pekerjaan}>
+    //                 <option value="Full Stack Developer">Full Stack Developer</option>
+    //                 <option value="Front End Developer">Front End Developer</option>
+    //                 <option value="Back End Developer">Back End Developer</option>
+    //             </select>
+                
+    //         )
+    //     }
+    //     if(this.state.jabatan == "Karyawan Marketing"){
+    //         return (
+    //         <select ref ={input => this.pekerjaan = input} defaultValue={pekerjaan}>
+    //                 <option value="Digital Marketing">Digital Marketing</option>
+    //                 <option value="Sales">Sales</option>
+    //             </select>
+    //         )
+    //     }
+
+    //     if(this.state.jabatan.includes('Manager')){
+    //         return (
+    //         <select defaultValue={pekerjaan} ref ={input => this.pekerjaan = input} >
+    //                 <option value="Digital Marketing">Manager</option>
+    //             </select>
+    //         )
+    //     }
+        
+    // }
+
+
     render() {
-        let {nik,username,email,nama,gender,agama,pendidikan,jabatan} = this.state.profile 
+        let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,pekerjaan} = this.state.profile 
         return (
             <div className="container col-8 text-left">
             <div className="card card-register mx-auto mb-5" style={{marginTop:100}}>
@@ -131,8 +173,7 @@ import axios from '../config/index'
                         </div>
                         <div className="form mt-3">
                             <label htmlFor="inputPassword">Jenis Kelamin</label>
-                            <select name="" id="" ref={input => this.gender = input}>
-                                <option hidden defaultValue={gender}>{gender}</option>
+                            <select defaultValue={gender} name="" id="" ref={input => this.gender = input}>
                                 <option value="Laki-Laki">Laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
@@ -140,8 +181,7 @@ import axios from '../config/index'
                         <div className="form">
                             <label htmlFor="inputPassword">Agama</label>
                             <div className="form-label-group">
-                            <select name="" id="" ref={input => this.agama = input}>
-                                <option hidden defaultValue={agama}>{agama}</option>
+                            <select defaultValue={agama} name="" id="" ref={input => this.agama = input}>
                                 <option value="Islam">Islam</option>
                                 <option value="Kristen">Kristen</option>
                                 <option value="Hindu">Hindu</option>
@@ -153,11 +193,44 @@ import axios from '../config/index'
                         <div className="form">
                             <label htmlFor="inputPassword">Pendidikan Terakhir</label>
                             <div className="form-label-group">
-                                <input type="text" className="form-control" defaultValue={pendidikan}
-                                    placeholder="Pendidikan" required="required" ref={input => this.pendidikan = input}/>
+                            <select defaultValue={pendidikan} type="text" className="form-control"
+                                     required="required" ref={input => this.pendidikan = input}>
+                                         <option value="SMA/SMK">SMA/SMK</option>
+                                         <option value="S1">S1</option>
+                                         <option value="S2">S2</option>
+                                         <option value="S3">S3</option>
+                                     </select>
                             </div>
                         </div>
+
                         <div className="form">
+                               <label htmlFor="inputPassword">Jabatan</label>
+                               <div className="form-label-group">
+                                    <select className="mb-3" defaultValue={jabatan} ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
+                                        <option value="" hidden>Jabatan</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Karyawan">Karyawan</option>
+                                    </select>
+                               </div>
+</div>
+                           <div className="form">
+                               <label htmlFor="inputPassword">Divisi</label>
+                               <div className="form-label-group">
+                                    <select className="mb-3" defaultValue={divisi} ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
+                               
+                                        {this.renderDivisi()}
+                                    </select>
+                               </div>
+                           </div>   <div className="form">
+                               <label htmlFor="inputPassword">Pekerjaan</label>
+                               <div className="form-label-group">
+                                    <select className="mb-3" defaultValue={pekerjaan} ref={input => this.pekerjaan = input} >
+                                        {this.renderSubDivisi()}
+                                    </select>
+                               </div>
+                           </div>
+                         
+                        {/* <div className="form">
                             <label htmlFor="inputPassword">Jabatan</label>
                             <div className="form-label-group">
                                  <select className="mb-3" defaultValue={jabatan} ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value} )}>
@@ -168,9 +241,9 @@ import axios from '../config/index'
                                      <option value="Karyawan Marketing">Karyawan Marketing</option>
                                  </select>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="form">
-                            {this.onPekerjaan()}
+                            {/* {this.onPekerjaan()} */}
                             {/* <label htmlFor="inputPassword">Pekerjaan</label>
                             <div className="form-label-group">
                                 <input type="text" className="form-control" placeholder="Pkerjaan"

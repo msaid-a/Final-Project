@@ -12,11 +12,44 @@
       "jabatan": "admin",
       "pekerjaan": "admin",
       "id": 1
+    },
+    {
+      "nik": 12312,
+      "username": "said",
+      "email": "said@said.com",
+      "password": "11223344",
+      "nama": "said",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "SMA/SMK",
+      "divisi": "Aplikasi",
+      "jabatan": "Manager",
+      "pekerjaan": "Manager",
+      "id": 2
     }
   ],
   "gaji": [],
   "tugas": [],
-  "history": [],
+  "history": [
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username said",
+      "date": "2019-11-06T08:42:40.217Z",
+      "id": 1
+    },
+    {
+      "user": "admin",
+      "desc": "Telah Menghapus Karyawan dengan id2",
+      "date": "2019-11-06T09:06:27.557Z",
+      "id": 2
+    },
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username said",
+      "date": "2019-11-06T09:06:49.961Z",
+      "id": 3
+    }
+  ],
   "Divisi": [
     {
       "divisi": "Aplikasi",

@@ -26,7 +26,7 @@ export class Detail extends Component {
     }
 
     tampilProfile = () =>{
-    let {nik,username,email,password,nama,gender,agama,pendidikan,jabatan,pekerjaan,id} = this.state.profile 
+    let {nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,pekerjaan,id} = this.state.profile 
        console.log(this.state.profile)
        return( <div className="row mt-5 ">
             <div className="col-4 mt-4">
@@ -67,6 +67,10 @@ export class Detail extends Component {
                  <tr>
                      <td>Jabatan :</td>
                      <td>{jabatan}</td>
+                 </tr>
+                 <tr>
+                     <td>Divisi :</td>
+                     <td>{divisi}</td>
                  </tr>
                  <tr>
                      <td>Pekerjaan :</td>

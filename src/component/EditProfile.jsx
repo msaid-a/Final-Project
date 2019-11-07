@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 
  class EditProfile extends Component {
@@ -231,5 +232,11 @@ import {Redirect} from 'react-router-dom'
         )
     }
 }
-
-export default EditProfile
+const mapStateToProps = (state) =>{
+    return {
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan
+    }
+  }
+export default connect(mapStateToProps)(EditProfile)

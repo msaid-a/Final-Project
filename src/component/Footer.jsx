@@ -3,14 +3,8 @@ import React, { Component } from 'react'
 class Footer extends Component {
     render() {
         return (
-            // <div>
-            //         <div className="sticky-footer my-5 ">
-            //             <div className="copyright text-center my-auto">
-            //                 <span>Copyright © Your Website 2019</span>
-            //             </div>
-            //         </div>
-            // </div>
-            <div className=" footer" style={{marginTop:'25%'}}>
+       
+            <div className=" footer" style={{marginTop:'24%'}}>
               <footer className="">
                   <div className=" container-fluid">
 

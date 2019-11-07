@@ -255,7 +255,7 @@
     },
     {
       "user": "admin",
-      "desc": "Telah memberi gaji kepadaadmin",   
+      "desc": "Telah memberi gaji kepadaadmin",
       "divisi": "admin",
       "date": "2019-11-06T09:21:48.207Z",
       "id": 7
@@ -353,6 +353,10 @@
     {
       "divisi": "Marketing",
       "id": 2
+    },
+    {
+      "divisi": "Office Boy",
+      "id": 3
     }
   ],
   "Subdivisi": [
@@ -385,6 +389,21 @@
       "subDivisi": "Database Engineer",
       "divisi": "Aplikasi",
       "id": 6
+    },
+    {
+      "subDivisi": "Dapur",
+      "divisi": "Office Boy",
+      "id": 7
+    },
+    {
+      "subDivisi": "Ruang Loby",
+      "divisi": "Office Boy",
+      "id": 8
+    },
+    {
+      "subDivisi": "Ruang Direktur",
+      "divisi": "Office Boy",
+      "id": 9
     }
   ]
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import axios from 'axios'
 
 class DataKaryawan extends Component {
@@ -42,11 +42,8 @@ renderGaji = () =>{
             <td>{no}</td>
             <td>{data.nama}</td>
             <td>{`${data.bulan}/${data.tahun}`}</td>
-            <td>Rp. {Intl.NumberFormat().format(data.tunjanganKeluarga).replace(/,/g, '.')}</td>
-            <td>Rp. {Intl.NumberFormat().format(data.tunjanganTransportasi).replace(/,/g, '.')}</td>
-            <td>Rp. {Intl.NumberFormat().format(data.gaji).replace(/,/g, '.')}</td>
-            <td>Rp. {Intl.NumberFormat().format(data.bonus).replace(/,/g, '.')}</td>
             <td>Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
+            <td><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
         </tr>)
     })
 }
@@ -63,7 +60,7 @@ onSearch = () =>{
             return <Redirect to ='/'></Redirect>
         }
         return (
-            <div className="container-fluid">
+            <div className="container">
             <div className="row">
                 
              </div>
@@ -93,11 +90,8 @@ onSearch = () =>{
                     <th>NO</th>
                     <th>Nama</th>
                     <th>Bulan/Tahun</th>
-                    <th>Gaji Pokok</th>
-                    <th>Tunjangan Keluarga</th>
-                    <th>Tunjangan Transportasi</th>
-                    <th>Bonus</th>
                     <th>Total</th>
+                    <th>Action</th>
                     </tr>
                     </thead>
                     <tbody style={{fontSize: 15}}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 
 
@@ -97,4 +98,11 @@ export class Detail extends Component {
     }
 }
 
-export default Detail
+const mapStateToProps = (state) =>{
+    return {
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan
+    }
+  }
+export default connect(mapStateToProps)(Detail)

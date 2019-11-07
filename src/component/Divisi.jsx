@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from '../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 
 export class Divisi extends Component {
@@ -141,5 +142,11 @@ export class Divisi extends Component {
         )
     }
 }
-
-export default Divisi
+const mapStateToProps = (state) =>{
+    return {
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan
+    }
+  }
+export default connect(mapStateToProps)(Divisi)

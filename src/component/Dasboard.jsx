@@ -15,18 +15,18 @@ export class Dasboard extends Component {
         this.getData()
     }
     getData = () =>{
-        if(this.props.jabatan =='admin'){
-            axios.get('/karyawan')
-                .then(res=>{
-                    this.setState({data:res.data})
-                    let karyawan = this.state.data.filter(data => {
-                        return data.jabatan.includes('Karyawan')
-                    })
-                    let manager = this.state.data.filter(data => {
-                        return data.jabatan.includes('Manager')
-                    })
-                    this.setState({karyawan,manager})
-                })
+        if(this.props.divisi =='admin'){
+          return  axios.get('/karyawan')
+                    .then(res=>{
+                        this.setState({data:res.data})
+                        let karyawan = this.state.data.filter(data => {
+                            return data.jabatan.includes('Karyawan')
+                        })
+                        let manager = this.state.data.filter(data => {
+                            return data.jabatan.includes('Manager')
+                        })
+                        this.setState({karyawan,manager}) 
+                       })
         }
         axios.get('/karyawan',{
             params :{
@@ -41,7 +41,8 @@ export class Dasboard extends Component {
                     let manager = this.state.data.filter(data => {
                         return data.jabatan.includes('Manager')
                     })
-                    this.setState({karyawan,manager})                })
+                    this.setState({karyawan,manager}) 
+                   })
 
     }
 

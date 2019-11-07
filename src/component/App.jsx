@@ -19,6 +19,7 @@ import Detail from './Detail'
 import EditProfile from './EditProfile'
 import Divisi from './Divisi'
 import Dasboard from './Dasboard'
+import DetailGaji from './DetailGaji'
 
 class App extends Component {
 
@@ -58,6 +59,7 @@ class App extends Component {
                 <Route path='/gaji' component={Gaji} />               
                 <Route path='/divisi' component={Divisi} />               
                 <Route path='/dasboard' component={Dasboard} />               
+                <Route path='/detailgaji/:idgaji' component={DetailGaji} />               
                 <Route path='/editprofile/:idkaryawan' component={EditProfile} />               
                 <Route path='/detailkaryawan/:idkaryawan' component={Detail} />               
               </div>

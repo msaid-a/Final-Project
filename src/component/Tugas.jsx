@@ -9,7 +9,9 @@ class Tugas extends Component {
     state={
         tugas:[],
         modal : false,
-        selectTugas : {id: '', title :'', description: '', status:''}
+        selectTugas : {id: '', title :'', description: '', status:''},
+        search:[],
+        show : 0
 
     }
 
@@ -80,7 +82,7 @@ class Tugas extends Component {
             }
         }).then(res => {
             console.log(res.data)
-            this.setState({tugas: res.data})
+            this.setState({tugas: res.data.reverse(), search: res.data.reverse()})
         })
     }
  
@@ -91,7 +93,9 @@ class Tugas extends Component {
     rendertugas =  () =>{
         let no = 0
         let now = new Date()
-            return this.state.tugas.map(data =>{
+        let show = this.state.show
+        if(!show) show = 5
+            return this.state.search.slice(0,show).map(data =>{
                 no++
                 let deadline = new Date(data.deadline.replace(/-/g,','))
                 if (now > deadline && (data.status == 'belum di kumpulkan' || data.status == 'REVISI')) {
@@ -109,6 +113,13 @@ class Tugas extends Component {
         
     }
 
+    onSearch = () =>{
+        let result = this.state.tugas.filter(data => {
+                   return data.from.toLowerCase().includes(this.search.value.toLowerCase())
+       })
+       this.setState({search:result})
+   }
+
     render() {
         if(!this.props.jabatan.includes('Karyawan')){
             return <Redirect to='/'></Redirect>
@@ -116,11 +127,22 @@ class Tugas extends Component {
         let {id,title, description,status} = this.state.selectTugas
         return (
             <div className="container">
-                <form style={{marginTop:80}} className="ml-auto">
-                <h1>Daftar Tugas</h1>
+                <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
-                            <input type="text" className=""  placeholder="Search"></input>
-                        <button type="submit" class="btn btn-primary ml-1">Seach</button>
+                    <label className="h5 mt-2">Show tables:</label>
+                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
+                        <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all">All</option>
+                        </select>
+                    <label className="h5 mt-2">search :</label>
+                            <input type="text" className=""  placeholder="Pengirim" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5  ">

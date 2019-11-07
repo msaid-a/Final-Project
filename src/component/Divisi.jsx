@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {Redirect} from 'react-router-dom'
 
 
 export class Divisi extends Component {
@@ -99,6 +100,10 @@ export class Divisi extends Component {
     }
 
     render() {
+        if(!this.props.iD){
+            return <Redirect to="/" ></Redirect>
+    
+          }
         let {id, divisi} = this.state.selectDivisi
         return (
             <div className="container">

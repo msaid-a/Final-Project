@@ -9,6 +9,7 @@
       "gender": "Laki-Laki",
       "agama": "islam",
       "pendidikan": "s2",
+      "divisi": "admin",
       "jabatan": "admin",
       "pekerjaan": "admin",
       "id": 1
@@ -26,28 +27,322 @@
       "jabatan": "Manager",
       "pekerjaan": "Manager",
       "id": 2
+    },
+    {
+      "nik": 2131,
+      "username": "ujang",
+      "email": "ujang@ujang.com",
+      "password": "11223344",
+      "nama": "ujang",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "SMA/SMK",
+      "divisi": "Aplikasi",
+      "jabatan": "Karyawan",
+      "pekerjaan": "Front End Developer",
+      "id": 3
+    },
+    {
+      "nik": 231321,
+      "username": "asep",
+      "email": "asep@asep.com",
+      "password": "11223344",
+      "nama": "asep",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "SMA/SMK",
+      "divisi": "Aplikasi",
+      "jabatan": "Karyawan",
+      "pekerjaan": "Front End Developer",
+      "id": 4
+    },
+    {
+      "nik": 32134871283,
+      "username": "mamat",
+      "email": "mamat@gmail.com",
+      "password": "11223344",
+      "nama": "mamat",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "SMA/SMK",
+      "divisi": "Aplikasi",
+      "jabatan": "Karyawan",
+      "pekerjaan": "UI/UX",
+      "id": 5
+    },
+    {
+      "nik": 3213487128323,
+      "username": "Febry",
+      "email": "Febry@gmail.com",
+      "password": "11223344",
+      "nama": "Febry",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "SMA/SMK",
+      "divisi": "Marketing",
+      "jabatan": "Manager",
+      "pekerjaan": "Managerundefined",
+      "id": 6
+    },
+    {
+      "nik": 3213487128323,
+      "username": "Hendry",
+      "email": "Hendry@gmail.com",
+      "password": "11223344",
+      "nama": "Hendry",
+      "gender": "Laki-Laki",
+      "agama": "Islam",
+      "pendidikan": "SMA/SMK",
+      "divisi": "Marketing",
+      "jabatan": "Karyawan",
+      "pekerjaan": "Digital Marketing",
+      "id": 7
     }
   ],
-  "gaji": [],
-  "tugas": [],
+  "gaji": [
+    {
+      "id_User": 2,
+      "nama": "said",
+      "nik": 12312,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 2000000,
+      "tunjanganKeluarga": 200000,
+      "tunjanganTransportasi": 200000,
+      "bonus": 1000000,
+      "id": 1
+    },
+    {
+      "id_User": 3,
+      "nama": "ujang",
+      "nik": 2131,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 2000000,
+      "tunjanganKeluarga": 20000,
+      "tunjanganTransportasi": 20000,
+      "bonus": 200000,
+      "id": 2
+    },
+    {
+      "id_User": 1,
+      "nama": "admin",
+      "nik": 321012390842,
+      "bulan": "Januari",
+      "tahun": "2019",
+      "gaji": 2000,
+      "tunjanganKeluarga": 2000,
+      "tunjanganTransportasi": 2000,
+      "bonus": 2000,
+      "id": 3
+    },
+    {
+      "id_User": 4,
+      "nama": "asep",
+      "nik": 231321,
+      "bulan": "Februari",
+      "tahun": "",
+      "gaji": 2000,
+      "tunjanganKeluarga": 2000,
+      "tunjanganTransportasi": 2000,
+      "bonus": 2000,
+      "id": 4
+    },
+    {
+      "id_User": 4,
+      "nama": "asep",
+      "nik": 231321,
+      "bulan": "Maret",
+      "tahun": "2019",
+      "gaji": 2000,
+      "tunjanganKeluarga": 2000,
+      "tunjanganTransportasi": 2000,
+      "bonus": 2000,
+      "id": 5
+    },
+    {
+      "id_User": 4,
+      "nama": "asep",
+      "nik": 231321,
+      "bulan": "April",
+      "tahun": "2019",
+      "gaji": 2000,
+      "tunjanganKeluarga": 2000,
+      "tunjanganTransportasi": 2000,
+      "bonus": 2000,
+      "id": 6
+    },
+    {
+      "id_User": 1,
+      "nama": "admin",
+      "nik": 321012390842,
+      "bulan": "Januari",
+      "tahun": "",
+      "gaji": null,
+      "tunjanganKeluarga": null,
+      "tunjanganTransportasi": null,
+      "bonus": null,
+      "id": 7
+    },
+    {
+      "id_User": 3,
+      "nama": "ujang",
+      "nik": 2131,
+      "bulan": "Januari",
+      "tahun": "2112",
+      "gaji": 2222222,
+      "tunjanganKeluarga": null,
+      "tunjanganTransportasi": null,
+      "bonus": null,
+      "id": 8
+    }
+  ],
+  "tugas": [
+    {
+      "idUser": 3,
+      "namaUser": "ujang",
+      "title": "asdads",
+      "description": "asdsa",
+      "deadline": "2019-11-22",
+      "from": "said",
+      "hasil": "123132",
+      "status": "Selesai",
+      "id": 1
+    }
+  ],
   "history": [
     {
       "user": "admin",
       "desc": "telah menambahkan karyawan baru dengan username said",
+      "divisi": "admin",
       "date": "2019-11-06T08:42:40.217Z",
       "id": 1
     },
     {
       "user": "admin",
       "desc": "Telah Menghapus Karyawan dengan id2",
+      "divisi": "admin",
       "date": "2019-11-06T09:06:27.557Z",
       "id": 2
     },
     {
       "user": "admin",
       "desc": "telah menambahkan karyawan baru dengan username said",
+      "divisi": "admin",
       "date": "2019-11-06T09:06:49.961Z",
       "id": 3
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadasaid",
+      "divisi": "admin",
+      "date": "2019-11-06T09:18:36.337Z",
+      "id": 4
+    },
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username ujang",
+      "divisi": "admin",
+      "date": "2019-11-06T09:19:19.092Z",
+      "id": 5
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadaujang",
+      "divisi": "admin",
+      "date": "2019-11-06T09:19:39.967Z",
+      "id": 6
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadaadmin",   
+      "divisi": "admin",
+      "date": "2019-11-06T09:21:48.207Z",
+      "id": 7
+    },
+    {
+      "user": "said",
+      "desc": "Telah memberi Tugas kepadaujang",
+      "divisi": "Aplikasi",
+      "date": "2019-11-06T09:23:24.128Z",
+      "id": 8
+    },
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username asep",
+      "divisi": "admin",
+      "date": "2019-11-06T09:23:57.508Z",
+      "id": 9
+    },
+    {
+      "user": "ujang",
+      "desc": "Telah menguload tugas dengan judul asdads",
+      "divisi": "Aplikasi",
+      "date": "2019-11-06T09:24:20.795Z",
+      "id": 10
+    },
+    {
+      "user": "said",
+      "desc": "merevisi pada judul asdads",
+      "divisi": "Aplikasi",
+      "date": "2019-11-06T09:24:38.681Z",
+      "id": 11
+    },
+    {
+      "user": "said",
+      "desc": "menyatakan tugas selesai pada judul asdads",
+      "divisi": "Aplikasi",
+      "date": "2019-11-06T09:24:40.619Z",
+      "id": 12
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadaasep",
+      "divisi": "admin",
+      "date": "2019-11-07T07:22:52.559Z",
+      "id": 13
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadaasep",
+      "divisi": "admin",
+      "date": "2019-11-07T07:23:01.825Z",
+      "id": 14
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadaasep",
+      "divisi": "admin",
+      "date": "2019-11-07T07:23:05.539Z",
+      "id": 15
+    },
+    {
+      "user": "admin",
+      "desc": "Telah memberi gaji kepadaadmin",
+      "divisi": "admin",
+      "date": "2019-11-07T07:23:16.050Z",
+      "id": 16
+    },
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username mamat",
+      "divisi": "admin",
+      "date": "2019-11-07T08:11:59.138Z",
+      "id": 17
+    },
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username Febry",
+      "divisi": "admin",
+      "date": "2019-11-07T08:12:16.282Z",
+      "id": 18
+    },
+    {
+      "user": "admin",
+      "desc": "telah menambahkan karyawan baru dengan username Hendry",
+      "divisi": "admin",
+      "date": "2019-11-07T08:12:36.501Z",
+      "id": 19
     }
   ],
   "Divisi": [

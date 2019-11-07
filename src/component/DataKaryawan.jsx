@@ -11,7 +11,8 @@ class DataKaryawan extends Component {
         search :[],
         modal : false,
         modal2: false,
-        selectKaryawan : {id :'', nama: '', nik:''}
+        selectKaryawan : {id :'', nama: '', nik:''},
+        show : 0
     }
 
 
@@ -71,6 +72,7 @@ saveGaji = (id, nama, nik) =>{
             axios.post('http://localhost:2020/history',{
                 user:this.props.userName,
                 desc:'Telah memberi gaji kepada' + nama,
+                divisi : this.props.divisi,
                 date: new Date() 
             }).then(res=>{
                 alert('success')            
@@ -123,7 +125,7 @@ postTugas = (id,nama,nik) =>{
         axios.post('http://localhost:2020/history',{
                 user:this.props.userName,
                 desc:'Telah memberi Tugas kepada' + nama,
-                divisi:this.props.jabatan.split(' ')[1],
+                divisi:this.props.divisi,
                 date: new Date() 
             }).then(res=>{
                 alert('success')            
@@ -142,6 +144,7 @@ deleteKaryawan = (id) =>{
         axios.post('http://localhost:2020/history',{
                 user:this.props.userName,
                 desc:'Telah Menghapus Karyawan dengan id' + id,
+                divisi : this.props.divisi,
                 date: new Date() 
             }).then(res=>{
                 alert('success')            
@@ -152,7 +155,10 @@ deleteKaryawan = (id) =>{
 
 renderKaryawan = () =>{
     let no = 0
-    return this.state.search.map(data => {
+    let show = this.state.show
+    if (!show) show = 5
+    if(show == 'all') show = this.state.karyawan.length
+    return this.state.search.slice(0,show).map(data => {
         no++
         if(this.props.jabatan =="admin"){
 
@@ -185,6 +191,14 @@ renderKaryawan = () =>{
 }
 
 
+onSearch = () =>{
+     let result = this.state.karyawan.filter(data => {
+                return data.nama.toLoweCase().includes(this.search.value.toLowerCase())
+    })
+    this.setState({search:result})
+}
+
+
 
     render() {
         if(!this.props.userName){
@@ -193,18 +207,22 @@ renderKaryawan = () =>{
         let {id, nama, nik} = this.state.selectKaryawan
         return (
             <div className="container">
-                <form style={{marginTop:80}} className="ml-auto ">
+                <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
-                    <label className="h5 mt-2">seach by :</label>
-                    <select className="mr-1">
-                        <option value="Manager Aplikasi">Manager Aplikasi</option>
-                        <option value="Manager Marketing">Manager Marketing</option>
-                        <option value="Karyawan Aplikasi">Karyawan Aplikasi</option>
-                        <option value="Karyawan Marketing">Karyawan Marketing</option>
-                    </select>
-                        <label className="sr-only">Password</label>
-                            <input type="text" className=""  placeholder="Search"></input>
-                        <button type="submit" class="btn btn-primary ml-1">Seach</button>
+                    <label className="h5 mt-2">Show tables:</label>
+                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
+                        <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all">All</option>
+                                    </select>
+                    <label className="h5 mt-2">search :</label>
+                            <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">

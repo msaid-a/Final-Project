@@ -10,7 +10,9 @@ export class DataTugas extends Component {
     state={
         karyawan:[],
         modal : false,
-        selectTugas :{id:'', title:''}
+        selectTugas :{id:'', title:''},
+        search:[],
+        show : 0
     }
 
 
@@ -32,7 +34,7 @@ export class DataTugas extends Component {
                 from : this.props.userName
             }
         }).then(res => {
-            this.setState({karyawan: res.data})
+            this.setState({karyawan: res.data.reverse(), search: res.data.reverse()})
             console.log(this.state.karyawan)
         })
     }
@@ -44,7 +46,7 @@ export class DataTugas extends Component {
             axios.post('http://localhost:2020/history',{
                 user:this.props.userName,
                 desc:'menyatakan tugas selesai pada judul ' + title,
-                divisi: this.props.jabatan.split(' ')[1],
+                divisi: this.props.divisi,
                 date: new Date() 
             }).then(res=>{
                 alert('success')            
@@ -65,7 +67,7 @@ export class DataTugas extends Component {
             axios.post('http://localhost:2020/history',{
                 user:this.props.userName,
                 desc:'merevisi pada judul ' + this.state.selectTugas.title,
-                divisi: this.props.jabatan.split(' ')[1], 
+                divisi: this.props.divisi, 
                 date: new Date() 
 
             }).then(res=>{
@@ -83,7 +85,10 @@ export class DataTugas extends Component {
     renderTugas = () =>{
         let no = 0
         let now = new Date()
-        return this.state.karyawan.map(data => {
+        let show = this.state.show
+        if(!show) show = 5
+        if(show == 'all') show = this.state.karyawan.length
+        return this.state.search.map(data => {
             no++
             let deadline = new Date(data.deadline.replace(/-/g,','))
             if(now > deadline && (data.status =='belum di kumpulkan' || data.status =='REVISI')){
@@ -102,14 +107,43 @@ export class DataTugas extends Component {
         })
     }
 
+    onSearch = () =>{
+        let result = this.state.karyawan.filter(data => {
+                   return data.namaUser.toLowerCase().includes(this.search.value.toLowerCase())
+       })
+       this.setState({search:result})
+    }
+
     render() {
         if(!this.props.jabatan.includes('Manager')){
             return <Redirect to="/"></Redirect>
         }
+        if(!this.props.iD){
+            return <Redirect to="/" ></Redirect>
+    
+          }
         let {id,title} = this.state.selectTugas
         return (
             <div className="container">
-                <table className="table table-striped table-responsive-md btn-table mb-5" style={{marginTop:91}}>
+                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
+                    <div className="form-group d-flex justify-content-end">
+                 <label className="h5 mt-2">Show tables:</label>
+                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
+                        <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all">All</option>
+                                    </select>
+                    <label className="h5 mt-2">search :</label>
+                            <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
+                             </div>
+                </form>
+                <table className="table table-striped table-responsive-md btn-table mt-3" >
                     <thead>
                     <th>NO</th>
                     <th>Karyawan</th>

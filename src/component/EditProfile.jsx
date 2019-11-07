@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../config/index'
+import {Redirect} from 'react-router-dom'
+
 
  class EditProfile extends Component {
 
@@ -91,43 +93,14 @@ import axios from '../config/index'
     }
 
 
-    // onPekerjaan = () =>{
-    //     let {pekerjaan} = this.state.profile
-    //     if(!this.state.jabatan){
-    //         return (
-    //         <select ref ={input => this.pekerjaan = input}> <option value={pekerjaan}>{pekerjaan}</option> </select>
-    //         )}
-    //     if(this.state.jabatan == "Karyawan Aplikasi"){
-    //         return(
-    //             <select ref ={input => this.pekerjaan = input} defaultValue={pekerjaan}>
-    //                 <option value="Full Stack Developer">Full Stack Developer</option>
-    //                 <option value="Front End Developer">Front End Developer</option>
-    //                 <option value="Back End Developer">Back End Developer</option>
-    //             </select>
-                
-    //         )
-    //     }
-    //     if(this.state.jabatan == "Karyawan Marketing"){
-    //         return (
-    //         <select ref ={input => this.pekerjaan = input} defaultValue={pekerjaan}>
-    //                 <option value="Digital Marketing">Digital Marketing</option>
-    //                 <option value="Sales">Sales</option>
-    //             </select>
-    //         )
-    //     }
-
-    //     if(this.state.jabatan.includes('Manager')){
-    //         return (
-    //         <select defaultValue={pekerjaan} ref ={input => this.pekerjaan = input} >
-    //                 <option value="Digital Marketing">Manager</option>
-    //             </select>
-    //         )
-    //     }
-        
-    // }
+    
 
 
     render() {
+        if(!this.props.iD){
+            return <Redirect to="/" ></Redirect>
+    
+          }
         let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,pekerjaan} = this.state.profile 
         return (
             <div className="container col-8 text-left">

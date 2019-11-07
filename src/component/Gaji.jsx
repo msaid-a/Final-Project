@@ -7,7 +7,8 @@ import axios from 'axios'
 class Gaji extends Component {
 
     state={
-        gaji : []
+        gaji : [],
+        show : 0
     }
 
 getData =  () =>{
@@ -28,8 +29,11 @@ componentDidMount= () =>{
 
 renderGaji = () =>{
     let no = 0
-    let total= 0
-    return this.state.gaji.reverse().map(data => {
+    let show = this.state.show
+    if(!show) show = 5
+    if(show =='all') show = this.state.gaji.length
+    return this.state.gaji.slice(0,show).map(data => {
+        let total= 0
         total += data.gaji
         total +=data.tunjanganKeluarga
         total +=data.tunjanganTransportasi
@@ -56,7 +60,16 @@ renderGaji = () =>{
                 <form style={{marginTop:80}} className="ml-auto">
                     <h1>Data Gaji Bulanan</h1>
                     <div className="form-group d-flex justify-content-end">
-
+                    <label className="h5 mt-2">Show tables:</label>
+                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
+                        <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all">All</option>
+                                    </select>
                         <label className="sr-only">Password</label>
                             <input type="text" className=""  placeholder="Search"></input>
                         <button type="submit" class="btn btn-primary ml-1">Seach</button>

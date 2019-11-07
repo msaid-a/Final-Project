@@ -19,12 +19,10 @@ export class Login extends Component {
   }
 
     render() {
-    if(this.props.jabatan === 'admin'){
-      return <Redirect to ='/datakaryawan'></Redirect>
+    if(this.props.jabatan === 'admin' || this.props.jabatan === "Manager"){
+      return <Redirect to ='/dasboard'></Redirect>
     }
-    if(this.props.jabatan.split(' ')[0] === 'Manager'){
-      return <Redirect to ='/datakaryawan'></Redirect>
-    }
+    
     if(this.props.jabatan.split(' ')[0] === 'Karyawan'){
       return <Redirect to ='/tugas'></Redirect>
     }

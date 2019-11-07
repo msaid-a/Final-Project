@@ -10,19 +10,20 @@ class Header extends Component {
         if (this.props.jabatan == 'admin'){
             return ( <Menu>
              
+                <Link to="/dasboard" className="menu-item" >
+                    <span>Dasboard</span></Link>
                 <Link to="/datakaryawan" className="menu-item" >
-                    <i className="fas fa-user-circle" />
                     <span>Data Karyawan</span></Link>
                 <Link to="/register" className="menu-item" >
-                    <i className="fas fa-user-circle" />
                     <span>Tambah Karyawan</span></Link>
                 <Link to="/gajikaryawan" className="menu-item" >
-                    <i className="fas fa-money-bill-wave-alt" />
                     <span>Gaji Karyawan</span>
                 </Link>
                 <Link to="/divisi" className="menu-item" >
-                    <i className="fas fa-money-bill-wave-alt" />
                     <span>Divisi</span>
+                </Link>
+                <Link to={"/detailkaryawan/"+this.props.iD} className="menu-item" >
+                    <span>Profile</span>
                 </Link>
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
@@ -34,16 +35,17 @@ class Header extends Component {
         }
         if(this.props.jabatan.includes('Manager')){
             return ( <Menu>
-             
+                <Link to="/dasboard" className="menu-item" >
+                    <span>Dasboard</span></Link>
                 <Link to="/datakaryawan" className="menu-item" >
-                    <i className="fas fa-user-circle" />
                     <span>Data Karyawan</span></Link>
                     <Link to="/gaji" className="menu-item" >
-                    <i className="fas fa-user-circle" />
                     <span>Lihat Gaji</span></Link>
                 <Link to="/datatugas" className="menu-item" >
-                    <i className="fas fa-money-bill-wave-alt" />
                     <span>Data Tugas</span>
+                </Link>
+                <Link to={"/detailkaryawan/"+this.props.iD} className="menu-item" >
+                    <span>Profile</span>
                 </Link>
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
@@ -57,11 +59,12 @@ class Header extends Component {
             return ( <Menu>
              
                 <Link to="/gaji" className="menu-item" >
-                    <i className="fas fa-user-circle" />
                     <span>Lihat Gaji</span></Link>
                 <Link to="/tugas" className="menu-item" >
-                    <i className="fas fa-money-bill-wave-alt" />
                     <span>Daftar Tugas</span>
+                </Link>
+                <Link to={"/detailkaryawan/"+this.props.iD} className="menu-item" >
+                    <span>Profile</span>
                 </Link>
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
@@ -82,19 +85,7 @@ class Header extends Component {
                     {this.renderNav()}
                       {/* Navbar */}
                       <ul className="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                              <a className="navbar-brand ml-auto mt-1" href="index.html">Start Bootstrap</a>
-                          {/* <li className="nav-item dropdown no-arrow">
-                              <a className="nav-link dropdown-toggle mt-1" href="#" id="userDropdown" role="button"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i className="fas fa-user-circle fa-fw " />
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                  <a className="dropdown-item" href="#">Settings</a>
-                                  <a className="dropdown-item" href="#">Activity Log</a>
-                                  <div className="dropdown-divider" />
-                                  <button className="dropdown-item text" onClick={this.props.logoutData}>Logout</button>
-                              </div>
-                          </li> */}
+                        
                       </ul>
                       
                   </nav>

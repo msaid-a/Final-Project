@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
+
 
 
 export class Detail extends Component {
@@ -83,6 +85,10 @@ export class Detail extends Component {
     }
 
     render() {
+        if(!this.props.iD){
+            return <Redirect to="/" ></Redirect>
+    
+          }
         return (
             <div className="container">
                 {this.tampilProfile()}

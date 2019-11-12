@@ -1,7 +1,7 @@
 const conn = require('../connection/index')
 const router = require('express').Router()
 const validator = require('validator')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const token = require('rand-token')
 const multer = require('multer')
 const path = require('path')
@@ -113,15 +113,16 @@ router.get('/karyawan/profile/:userid',(req,res)=>{
 
 // login
 router.post('/karyawan/login',(req,res)=>{
-    let {email,username,passwod} =req.body
+    let {email,username,password} =req.body
     let sql = `SELECT * FROM karyawan WHERE email ='${email}'`
     if(!email) sql = `SELECT * FROM karyawan WHERE username='${username}'`
 
-    conn.query(sql, (err,result)=>{
+    conn.query(sql, async (err,result)=>{
         if(err) return res.send({error:err.message})
         if(result.length === 0 ) return res.send({error:'User Not Found'})
 
-        let hash =  bcrypt.compare(passwod, result[0].password)
+        let user = result[0]
+        let hash =  await bcrypt.compare(password, user.password)
         if(!hash) return res.send({error:'Wrong password'})
         res.send(result[0])
     })

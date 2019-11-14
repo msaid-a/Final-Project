@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
-import axios from 'axios'
+import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
@@ -14,7 +14,7 @@ export class Detail extends Component {
 
     getKaryawan = () =>{
    
-        axios.get('http://localhost:2020/karyawan/'+this.props.match.params.idkaryawan)
+        axios.get('/karyawan/profile/'+this.props.match.params.idkaryawan)
                 .then(res => {
                      this.setState({profile : res.data})
                      }).catch(err => {
@@ -29,7 +29,7 @@ export class Detail extends Component {
     }
 
     tampilProfile = () =>{
-    let {nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,pekerjaan,id} = this.state.profile 
+    let {nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,subDivisi,tanggal_lahir,phone,id} = this.state.profile 
        console.log(this.state.profile)
        return( <div className="row mt-5 ">
             <div className="col-4 mt-4">
@@ -60,6 +60,10 @@ export class Detail extends Component {
                      <td>{gender}</td>
                  </tr>
                  <tr>
+                     <td>Tanggal Lahir :</td>
+                     <td>{tanggal_lahir}</td>
+                 </tr>
+                 <tr>
                      <td>Agama :</td>
                      <td>{agama}</td>
                  </tr>
@@ -77,7 +81,11 @@ export class Detail extends Component {
                  </tr>
                  <tr>
                      <td>Pekerjaan :</td>
-                     <td>{pekerjaan}</td>
+                     <td>{subDivisi}</td>
+                 </tr>
+                 <tr>
+                     <td>Nomor HP :</td>
+                     <td>{phone}</td>
                  </tr>
              </table>
              <Link className="btn btn-danger" to={"/editprofile/"+id}>Edit Profile</Link>

@@ -40,10 +40,10 @@ export class Divisi extends Component {
 
     }
 
-    addSubDivisi = (divisi) =>{
+    addSubDivisi = (divisi_id) =>{
         let subDivisi = this.subDivisi.value
         axios.post('/subdivisi',{
-            subDivisi,divisi
+            subDivisi,divisi_id
         }).then(res=>{
             alert('success')
             this.getDivisi()
@@ -120,7 +120,7 @@ export class Divisi extends Component {
                     <th>NO</th>
                     <th>Divisi</th>
                     <th>Sub Divisi</th>
-                    <th>Avtion</th>
+                    <th>Action</th>
                     </thead>
                     <tbody>
                         {this.renderDivisi()}
@@ -135,7 +135,7 @@ export class Divisi extends Component {
         </ModalBody> 
         <ModalFooter>
           <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
-          <Button color="primary" onClick={()=> this.addSubDivisi(divisi)}>Submit</Button>
+          <Button color="primary" onClick={()=> this.addSubDivisi(id)}>Submit</Button>
         </ModalFooter>
       </Modal>
             </div>

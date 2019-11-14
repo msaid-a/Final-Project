@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
@@ -21,14 +21,18 @@ class Register extends Component {
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
-        let divisi = this.divisi.value
+        let divisi_id = this.divisi.value
         let jabatan = this.jabatan.value
-        let pekerjaan = this.pekerjaan.value
-        
-        axios.post('http://localhost:2020/karyawan/',{
-            nik,username,email,password,nama,gender,agama,pendidikan,divisi,jabatan,pekerjaan
+        let subdivisi_id = this.subDivisi.value
+        let phone = this.phone.value
+        let tanggal_lahir = this.tanggal_lahir.value
+
+        console.log(typeof(tanggal_lahir))
+      
+        axios.post('/karyawan/',{
+            nik,username,email,password,nama,gender,agama,tanggal_lahir,pendidikan,divisi_id,jabatan,subdivisi_id,phone
         }).then(res=> {
-            axios.post('http://localhost:2020/history',{
+            axios.post('/history',{
                 user: "admin",
                 desc: "telah menambahkan karyawan baru dengan username " + username,
                 date: new Date() 
@@ -39,11 +43,12 @@ class Register extends Component {
         
     }
     getDivisi = () =>{
-        axios.get('http://localhost:2020/divisi')
+        axios.get('/divisi')
             .then(res=>{
                 this.setState({divisi: res.data})
+                console.log(this.state.divisi)
             })
-        axios.get('http://localhost:2020/subdivisi')
+        axios.get('/subdivisi')
             .then(res=>{
                 this.setState({subdivisi:res.data})
             })
@@ -51,66 +56,36 @@ class Register extends Component {
 
     componentDidMount = () =>{
         this.getDivisi()
+      
     }
     
     renderDivisi = () =>{
         return this.state.divisi.map(data => {
-            return(<option value={data.divisi}>{data.divisi}</option>)
+            return(<option value={data.id}>{data.divisi}</option>)
         })
     }
 
     renderSubDivisi = () =>{
-        console.log(this.state.jabatan)
-        console.log(this.state.selectDivisi)
+       
         if(this.state.jabatan =="Manager"){
-            return <option value={'Manager'+this.selectDivisi}>Manager</option>
+            let subdivisi = this.state.subdivisi.filter(data=>{
+                return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
+            })
+            return subdivisi.map (data => {
+                return <option value={data.id}>{data.subDivisi}</option>
+            })
         }else{
             let subdivisi = this.state.subdivisi.filter(data=>{
-                return data.divisi.includes(this.state.selectDivisi)
+                return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
             })
-            console.log(subdivisi)
             return subdivisi.map (data => {
-                return <option value={data.subDivisi}>{data.subDivisi}</option>
+                return <option value={data.id}>{data.subDivisi}</option>
             })
         }
 
     }
 
-    // onPekerjaan = () =>{
-    //     if(!this.state.jabatan){
-    //         return (
-    //         <select> <option value='' Hidden>Pekerjaan</option> </select>
-    //         )}
-    //     if(this.state.jabatan == "Karyawan Aplikasi"){
-    //         return(
-    //             <select ref ={input => this.pekerjaan = input}>
-    //                 <option hidden>Pekerjaan</option>
-    //                 <option value="Full Stack Developer">Full Stack Developer</option>
-    //                 <option value="Front End Developer">Front End Developer</option>
-    //                 <option value="Back End Developer">Back End Developer</option>
-    //             </select>
-                
-    //         )
-    //     }
-    //     if(this.state.jabatan == "Karyawan Marketing"){
-    //         return (
-    //         <select ref ={input => this.pekerjaan = input}>
-    //                 <option hidden>Pekerjaan</option>
-    //                 <option value="Digital Marketing">Digital Marketing</option>
-    //                 <option value="Sales">Sales</option>
-    //             </select>
-    //         )
-    //     }
-
-    //     if(this.state.jabatan.includes('Manager')){
-    //         return (
-    //         <select ref ={input => this.pekerjaan = input}>
-    //                 <option value="Digital Marketing">Manager</option>
-    //             </select>
-    //         )
-    //     }
-        
-    // }
+    
 
 
 
@@ -165,9 +140,13 @@ class Register extends Component {
                            <div className="form mt-3">
                                <label htmlFor="inputPassword">Jenis Kelamin</label>
                                <select name="" id="" ref={input => this.gender = input}>
-                                   <option value="Laki-Laki">Laki</option>
-                                   <option value="Perempuan">Perempuan</option>
+                                   <option value="Pria">Pria</option>
+                                   <option value="Wanita">Wanita</option>
                                </select>
+                           </div>
+                           <div className="form mt-3">
+                               <label htmlFor="inputPassword">Tanggal Lahir</label>
+                               <input type="date" ref={input => this.tanggal_lahir = input}/>
                            </div>
                            <div className="form">
                                <label htmlFor="inputPassword">Agama</label>
@@ -194,6 +173,16 @@ class Register extends Component {
                                </div>
                            </div>
                            <div className="form">
+                               <label htmlFor="inputPassword">Divisi</label>
+                               <div className="form-label-group">
+                                    <select className="mb-3" ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
+                                    <option value='' hidden>Divisi</option>
+                                        {this.renderDivisi()}
+                                    </select>
+                               </div>
+                           </div>  
+
+                           <div className="form">
                                <label htmlFor="inputPassword">Jabatan</label>
                                <div className="form-label-group">
                                     <select className="mb-3" ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
@@ -203,23 +192,20 @@ class Register extends Component {
                                     </select>
                                </div>
 </div>
-                           <div className="form">
-                               <label htmlFor="inputPassword">Divisi</label>
-                               <div className="form-label-group">
-                                    <select className="mb-3" ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
-                               
-                                        {this.renderDivisi()}
-                                    </select>
-                               </div>
-                           </div>   <div className="form">
+                          
+                            <div className="form">
                                <label htmlFor="inputPassword">Pekerjaan</label>
                                <div className="form-label-group">
-                                    <select className="mb-3" ref={input => this.pekerjaan = input} >
+                                    <select className="mb-3" ref={input => this.subDivisi = input} >
+                                        <option value='' hidden>Pekerjaan</option>
                                         {this.renderSubDivisi()}
                                     </select>
                                </div>
                            </div>
-                           
+                           <div className="form mt-3">
+                               <label htmlFor="inputPassword">No HP</label>
+                               <input type="number" ref={input => this.phone = input}/>
+                           </div>
                          
                            <button className="btn btn-primary btn-block mt-3" onClick={this.onRegiter}>Register</button>
                        </form>

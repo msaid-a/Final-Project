@@ -1,17 +1,15 @@
 // ACTION CREATORS 
-import axios from 'axios'
+import axios from '../config/index'
 import Swal from 'sweetalert2'
 
 export const sendData = (_username, _password) =>{
    return (dispatch) => {
        if(_username.includes('@')){
-           axios.get(
-               'http://localhost:2020/karyawan/', 
+           axios.post(
+               '/login', 
                {
-                   params:{
-                       email : _username,
-                       password : _password
-                   }
+                   email : _username,
+                   password : _password 
                }
            ).then((res) => {
                if(res.data.length === 0){
@@ -42,14 +40,11 @@ export const sendData = (_username, _password) =>{
                }
            })
        }else{
-           console.log(_username)
-        axios.get(
-            'http://localhost:2020/karyawan/', 
+        axios.post(
+            '/login', 
             {
-                params:{
-                    username : _username,
-                    password : _password
-                }
+                   username : _username,
+                   password : _password 
             }
         ).then((res) => {
             if(res.data.length === 0){
@@ -61,8 +56,7 @@ export const sendData = (_username, _password) =>{
                     timer:900
                 })
             }else{
-                let {id, username, jabatan, divisi} = res.data[0]
-                console.log(divisi)
+                let {id, username, jabatan, divisi} = res.data
                 // kirim id dan username ke reducers
                     localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi}))
                     // Action
@@ -78,6 +72,8 @@ export const sendData = (_username, _password) =>{
                     )
                 
             }
+        }).catch(err =>{
+            console.log(err)
         })
        }
 

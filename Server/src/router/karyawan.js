@@ -71,7 +71,16 @@ router.get('/avatar/:filename',(req,res)=>{
 
 // Get all Karyawan
 router.get('/karyawan',(req,res)=>{
-    let sql = `SELECT * FROM karyawan`
+    let sql = `select k.id, k.nik, s.username, s.email, s.password , 
+	k.nama, k.gender, k.tanggal_lahir, k.agama, k.pendidikan, d.divisi, sd.subDivisi, k.jabatan,  k.phone
+  from karyawan k
+    join divisi d
+    on k.divisi_id = d.id
+    join users s 
+    on k.id_user = s.id
+    join subDivisi sd
+    on k.subdivisi_id = sd.id WHERE k.is_deleted = 0
+`
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error:err.message})
         res.send(result)
@@ -80,19 +89,40 @@ router.get('/karyawan',(req,res)=>{
 
 // Create 
 router.post ('/karyawan',(req,res)=>{
-    let sql = `INSERT INTO karyawan SET ?`
-    let data = req.body
-    data.avatar = 'default-avatar.png'
+    let id_users = token.generate(20)
+    let id_karyawan = token.generate(20)
+    let defaultAvatar = 'default_avatar.png'
+    req.body.password = bcrypt.hashSync(req.body.password, 8)
+    let sql = `INSERT INTO karyawan
+    (id, id_user, nik,nama, gender, tanggal_lahir, agama, pendidikan, divisi_id,subdivisi_id ,jabatan,  phone, avatar) VALUES 
+    ('${id_karyawan}',
+        '${id_users}',
+        '${req.body.nik}',
+        '${req.body.nama}',
+        '${req.body.gender}',
+        '${req.body.tanggal_lahir}', 
+        '${req.body.agama}', 
+        '${req.body.pendidikan}', 
+        '${req.body.divisi_id}',
+        '${req.body.subdivisi_id}', 
+        '${req.body.jabatan}', 
+        '${req.body.phone}', 
+        '${defaultAvatar}')`
     
-    if(!validator.isEmail(data.email)){
+    let sql2 = `INSERT INTO users (id, username, email, password) VALUES ('${id_users}', '${req.body.username}', '${req.body.email}', '${req.body.password}')`
+    
+    if(!validator.isEmail(req.body.email)){
         return res.send({error:'is not email'})
     }
-    data.id = token.generate(20)
-    data.password = bcrypt.hashSync(data.password, 8)
+    conn.query(sql2,  (err,result) =>{
+        if(err) throw res.send({error:err.message})
+        console.log('tambah data')
+        conn.query(sql,  (err,result) =>{
+            if(err) console.log(err)
+            res.send('Success Nambah')
+            console.log('tambah data')
 
-    conn.query(sql, data, (err,result) =>{
-        if(err) return res.send({error:err.message})
-        res.send('Success Nambah')
+        })
     })
 
 })
@@ -101,7 +131,15 @@ router.post ('/karyawan',(req,res)=>{
 
 // Get profile Karyawan
 router.get('/karyawan/profile/:userid',(req,res)=>{
-    let sql = `SELECT * FROM karyawan WHERE id='${req.params.userid}'`
+    let sql = `select *
+  from karyawan k
+    join divisi d
+    on k.divisi_id = d.id
+    join users s 
+    on k.id_user = s.id
+    join subDivisi sd
+    on k.subdivisi_id = sd.id
+    WHERE k.id='${req.params.userid}'`
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error:err.message})
         res.send({
@@ -112,10 +150,18 @@ router.get('/karyawan/profile/:userid',(req,res)=>{
 })
 
 // login
-router.post('/karyawan/login',(req,res)=>{
+router.post('/login',(req,res)=>{
     let {email,username,password} =req.body
-    let sql = `SELECT * FROM karyawan WHERE email ='${email}'`
-    if(!email) sql = `SELECT * FROM karyawan WHERE username='${username}'`
+    let sql = `SELECT users.id, users.username, users.password, karyawan.jabatan, divisi.divisi FROM users 
+                join karyawan 
+                on karyawan.id_user = users.id
+                join divisi
+                on karyawan.divisi_id = divisi.id WHERE email ='${email}'`
+    if(!email) sql = `SELECT users.id, users.username, users.password, karyawan.jabatan, divisi.divisi FROM users 
+                        join karyawan 
+                        on karyawan.id_user = users.id
+                        join divisi
+                        on karyawan.divisi_id = divisi.id  WHERE username='${username}'`
 
     conn.query(sql, async (err,result)=>{
         if(err) return res.send({error:err.message})
@@ -140,6 +186,19 @@ router.patch('/karyawan/:userid', (req,res)=>{
     conn.query(sql,data, (err,result)=>{
         if(err) return res.send({error:err.message})
         res.send(result)
+    })
+})
+
+// delete
+router.delete('/karyawan/delete/:nik',(req,res)=>{
+    let sql = `UPDATE karyawan SET is_deleted = 1 WHERE nik = '${req.params.nik}'`
+    conn.query(sql, (err, result)=>{
+        try {
+            if(err) throw err
+            res.send('Berhasil di delete')
+        } catch (error) {
+            res.send({error: error.message})
+        }
     })
 })
 

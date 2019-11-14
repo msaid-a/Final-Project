@@ -8,7 +8,7 @@ class DataKaryawan extends Component {
     state={
         gaji : [],
         search:[],
-        show : 0
+        show : ''
     }
 
 getData =  () =>{
@@ -26,10 +26,8 @@ componentDidMount= () =>{
 
 renderGaji = () =>{
     let no = 0
-    let show = parseInt(this.state.show)
-    if(!show){
-        show = 5
-    }
+    let show = this.state.show
+    if (!show) show = 5
     if(show == 'all') show = this.state.gaji.length
     return this.state.search.slice(0,show).map(data => {
         let total= 0
@@ -84,7 +82,7 @@ onSearch = () =>{
                              </div>
                 </form>
                
-                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
+                <table className="table  table-striped table-responsive-md btn-table mb-5">
                     <thead style={{fontSize: 15, height:40}}  className='thead-dark' >
                     <tr>
                     <th>NO</th>

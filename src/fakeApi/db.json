@@ -357,6 +357,10 @@
     {
       "divisi": "Office Boy",
       "id": 3
+    },
+    {
+      "divisi": "Finace",
+      "id": 4
     }
   ],
   "Subdivisi": [
@@ -404,6 +408,11 @@
       "subDivisi": "Ruang Direktur",
       "divisi": "Office Boy",
       "id": 9
+    },
+    {
+      "subDivisi": "Bendahara",
+      "divisi": "Finace",
+      "id": 10
     }
   ]
 }

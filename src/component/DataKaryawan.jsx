@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect, Link} from 'react-router-dom'
-import axios from 'axios'
+import axios from '../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class DataKaryawan extends Component {
@@ -17,7 +17,7 @@ class DataKaryawan extends Component {
 
 
 toggle  = (id,nama,nik) => {
-    axios.get('http://localhost:2020/karyawan/' + id).then(res => {
+    axios.get('/karyawan/' + id).then(res => {
         this.setState(prevState => ({
             modal: !prevState.modal,
             selectKaryawan :{id, nama, nik}
@@ -26,7 +26,7 @@ toggle  = (id,nama,nik) => {
  }
 
   toggleTugas =  (id,nama,nik) => {
-    axios.get('http://localhost:2020/karyawan/' + id).then(res => {
+    axios.get('/karyawan/' + id).then(res => {
         this.setState(prevState => ({
             modal2: !prevState.modal,
             selectKaryawan :{id, nama, nik}
@@ -57,7 +57,7 @@ saveGaji = (id, nama, nik) =>{
         let tunjanganTransportasi=parseInt(this.transportasi.value)
         let bonus= parseInt(this.bonus.value)
     
-        axios.post('http://localhost:2020/gaji',{
+        axios.post('/gaji',{
             id_User : id,
             nama,
             nik,
@@ -69,7 +69,7 @@ saveGaji = (id, nama, nik) =>{
             bonus
     
         }).then(res=>{
-            axios.post('http://localhost:2020/history',{
+            axios.post('/history',{
                 user:this.props.userName,
                 desc:'Telah memberi gaji kepada' + nama,
                 divisi : this.props.divisi,
@@ -87,7 +87,7 @@ saveGaji = (id, nama, nik) =>{
 
 getData =  () =>{
     if(this.props.jabatan =="admin"){
-     return   axios.get('http://localhost:2020/karyawan')
+     return   axios.get('/karyawan')
                 .then(res => {
                      this.setState({karyawan : res.data,
                     search: res.data})
@@ -96,7 +96,7 @@ getData =  () =>{
     if(this.props.jabatan.includes('Manager')){
         let karyawan = this.props.jabatan.split(' ')[1]
         console.log(karyawan)
-        return   axios.get('http://localhost:2020/karyawan',{
+        return   axios.get('/karyawan',{
             params:{
                 divisi : this.props.divisi
                 // tambah jabatan karyawan nanti
@@ -119,10 +119,10 @@ postTugas = (id,nama,nik) =>{
     let hasil = ''
     let status = 'belum di kumpulkan'
 
-    axios.post('http://localhost:2020/tugas',{
+    axios.post('/tugas',{
         idUser,namaUser,title,description,deadline,from,hasil,status
     }).then(res=>{
-        axios.post('http://localhost:2020/history',{
+        axios.post('/history',{
                 user:this.props.userName,
                 desc:'Telah memberi Tugas kepada' + nama,
                 divisi:this.props.divisi,
@@ -138,12 +138,12 @@ componentDidMount= () =>{
     this.getData()
 }
 
-deleteKaryawan = (id) =>{
-    axios.delete('http://localhost:2020/karyawan/'+id,{
+deleteKaryawan = (nik) =>{
+    axios.delete('/karyawan/delete/'+ nik,{
     }).then(res=>{
-        axios.post('http://localhost:2020/history',{
+        axios.post('/history',{
                 user:this.props.userName,
-                desc:'Telah Menghapus Karyawan dengan id' + id,
+                desc:'Telah Menghapus Karyawan dengan id' + nik,
                 divisi : this.props.divisi,
                 date: new Date() 
             }).then(res=>{
@@ -168,9 +168,9 @@ renderKaryawan = () =>{
             <td>{data.email}</td>
             <td>{data.nama}</td>
             <td>{data.gender}</td>
-            <td>{data.pekerjaan}</td>
+            <td>{data.subDivisi}</td>
            <td><Link to={'/detailkaryawan/'+data.id}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
-           <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.id)}>Delete</button> 
+           <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.nik)}>Delete</button> 
            <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
         }
@@ -182,7 +182,7 @@ renderKaryawan = () =>{
                 <td>{data.email}</td>
                 <td>{data.nama}</td>
                 <td>{data.gender}</td>
-                <td>{data.pekerjaan}</td>
+                <td>{data.subDivisi}</td>
                 <td><button className="btn btn-primary btn-sm m-1"onClick={()=>this.toggleTugas(data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
             </tr>)
             
@@ -225,9 +225,9 @@ onSearch = () =>{
                         <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
-                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
-                    <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
-                    <tr>
+                <table className=" table table-striped table-responsive-md btn-table mb-5">
+                    <thead   className='thead-dark' style={{height:50}}>
+                    <tr >
                     <th>NO</th>
                     <th>NIK</th>
                     <th>Email</th>
@@ -237,7 +237,7 @@ onSearch = () =>{
                     <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody className='text-left'style={{fontSize: 13}}>
+                    <tbody className='text-left'style={{fontSize: 15}}>
                         {this.renderKaryawan()}
                     </tbody>
                 </table>

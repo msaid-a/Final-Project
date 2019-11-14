@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from '../config/index'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import randtoken  from 'rand-token'
 
 export class Dasboard extends Component {
 
@@ -59,16 +60,16 @@ export class Dasboard extends Component {
             <div style={{marginTop:90}} className="container">
                 <div className="row d-flex justify-content-center">
 
-               <div className="card col-4 bg-primary "  >
-                   <img className="card-img-top w-100" src="img/karyawan.png" alt="Card image cap" />
+               <div className="card col-5 bg-primary rounded-circle h-75 "  >
                    <div className="card-body">
+                   <img className="card-img-top w-75" src="img/karyawan.png" alt="Card image cap" />
                        <h5 className="card-title text-white">Manager</h5>
                        <h5 className="card-title text-white">{this.state.manager.length}</h5>
                    </div>
                </div>
-               <div className="card col-4 bg-danger ml-5"  >
-                   <img className="card-img-top w-100" src="img/karyawan.png" alt="Card image cap" />
+               <div className="card col-5 bg-danger ml-5 rounded-circle h-75 "  >
                    <div className="card-body">
+                   <img className="card-img-top w-75" src="img/karyawan.png" alt="Card image cap" />
                        <h5 className="card-title text-white">Karyawan</h5>
                        <h5 className="card-title text-white">{this.state.karyawan.length}</h5>
                    </div>

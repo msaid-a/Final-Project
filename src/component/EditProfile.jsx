@@ -16,10 +16,9 @@ import {connect} from 'react-redux'
     }
     getKaryawan = () =>{
    
-        axios.get('http://localhost:2020/karyawan/profile/'+this.props.match.params.idkaryawan)
+        axios.get('/karyawan/profile/'+this.props.match.params.idkaryawan)
                 .then(res => {
                      this.setState({profile : res.data})
-                     console.log(res.data)
                      }).catch(err => {
                          console.log(err)
                      })
@@ -34,15 +33,11 @@ import {connect} from 'react-redux'
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
-        let divisi_id = this.divisi.value == '' ? this.state.profile.divisi_id : this.value.divisi
-        let jabatan = this.jabatan.value =='' ? this.state.profile.jabatan : this.value.jabatan 
+        let divisi_id = this.divisi.value == '' ? this.state.profile.divisi_id : this.divisi.value
+        let jabatan = this.jabatan.value =='' ? this.state.profile.jabatan : this.jabatan.value 
         let subdivisi_id = this.subDivisi.value == '' ? this.state.profile.subdivisi_id : this.subDivisi.value
         let tanggal_lahir = this.tanggal_lahir.value == '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
 
-        if(!password){
-            password = this.state.profile.password
-        }
-        
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,divisi_id,jabatan,subdivisi_id,tanggal_lahir
         }).then(res=> {
@@ -52,11 +47,11 @@ import {connect} from 'react-redux'
     }
     
     getDivisi = () =>{
-        axios.get('http://localhost:2020/divisi')
+        axios.get('/divisi')
             .then(res=>{
                 this.setState({divisi: res.data})
             })
-        axios.get('http://localhost:2020/subdivisi')
+        axios.get('/subdivisi')
             .then(res=>{
                 this.setState({subdivisi:res.data})
             })
@@ -201,7 +196,7 @@ import {connect} from 'react-redux'
                            </div>   <div className="form">
                                <label htmlFor="inputPassword">Pekerjaan</label>
                                <div className="form-label-group">
-                                    <select className="mb-3" defaultValue={subDivisi} ref={input => this.pekerjaan = input} >
+                                    <select className="mb-3" defaultValue={subDivisi} ref={input => this.subDivisi = input} >
                                     <option value="" hidden>Pekerjaan</option>
                                         {this.renderSubDivisi()}
                                     </select>

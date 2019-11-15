@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect, Link} from 'react-router-dom'
 import axios from '../config/index'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import moment from 'moment'
 
 class DataKaryawan extends Component {
 
@@ -11,25 +12,26 @@ class DataKaryawan extends Component {
         search :[],
         modal : false,
         modal2: false,
-        selectKaryawan : {id :'', nama: '', nik:''},
+        selectKaryawan : {id :'',id_karyawan:'', nama: '', nik:''},
         show : 0
     }
 
 
-toggle  = (id,nama,nik) => {
-    axios.get('/karyawan/' + id).then(res => {
+toggle  = (id,nama) => {
+    axios.get('/karyawan/profile/' + id).then(res => {
+        console.log(id)
         this.setState(prevState => ({
             modal: !prevState.modal,
-            selectKaryawan :{id, nama, nik}
+            selectKaryawan :{id, nama}
         }));
     })
  }
 
-  toggleTugas =  (id,nama,nik) => {
-    axios.get('/karyawan/' + id).then(res => {
+  toggleTugas =  (id, id_karyawan , nama, nik) => {
+    axios.get('/karyawan/profile/' + id).then(res => {
         this.setState(prevState => ({
             modal2: !prevState.modal,
-            selectKaryawan :{id, nama, nik}
+            selectKaryawan :{id,id_karyawan, nama, nik}
         }));
     })
   }
@@ -48,7 +50,7 @@ toggle  = (id,nama,nik) => {
     }))
 }
 
-saveGaji = (id, nama, nik) =>{
+saveGaji = (id, nama) =>{
     if(this.props.jabatan=="admin"){
         let bulan = this.bulan.value
         let tahun = this.tahun.value
@@ -58,9 +60,7 @@ saveGaji = (id, nama, nik) =>{
         let bonus= parseInt(this.bonus.value)
     
         axios.post('/gaji',{
-            id_User : id,
-            nama,
-            nik,
+            user_id : id,
             bulan,
             tahun,
             gaji,
@@ -70,7 +70,7 @@ saveGaji = (id, nama, nik) =>{
     
         }).then(res=>{
             axios.post('/history',{
-                user:this.props.userName,
+                user_id:this.props.id,
                 desc:'Telah memberi gaji kepada' + nama,
                 divisi : this.props.divisi,
                 date: new Date() 
@@ -94,15 +94,9 @@ getData =  () =>{
                      })
     }
     if(this.props.jabatan.includes('Manager')){
-        let karyawan = this.props.jabatan.split(' ')[1]
-        console.log(karyawan)
-        return   axios.get('/karyawan',{
-            params:{
-                divisi : this.props.divisi
-                // tambah jabatan karyawan nanti
-            }
-        })
+        return   axios.get(`/karyawan/divisi/${this.props.divisi}`,)
         .then(res => {
+            console.log(res.data)
              this.setState({karyawan : res.data, search: res.data})
              })
     }
@@ -112,15 +106,15 @@ getData =  () =>{
 postTugas = (id,nama,nik) =>{
     let title = this.title.value
     let description = this.description.value
-    let deadline = this.deadline.value
-    let from = this.props.userName
-    let idUser = id
-    let namaUser = nama
+    let deadline = new Date(this.deadline.value)
+        deadline = moment(deadline).format('YYYY-MM-DD HH-mm-ss')
+    let pengirim = this.props.userName
+    let user_id = id
     let hasil = ''
     let status = 'belum di kumpulkan'
 
-    axios.post('/tugas',{
-        idUser,namaUser,title,description,deadline,from,hasil,status
+    axios.post('/tugas/'+ user_id,{
+        user_id,title,description,deadline,pengirim,hasil,status
     }).then(res=>{
         axios.post('/history',{
                 user:this.props.userName,
@@ -138,12 +132,12 @@ componentDidMount= () =>{
     this.getData()
 }
 
-deleteKaryawan = (nik) =>{
-    axios.delete('/karyawan/delete/'+ nik,{
+deleteKaryawan = (id,username) =>{
+    axios.delete('/karyawan/delete/'+ id,{
     }).then(res=>{
         axios.post('/history',{
                 user:this.props.userName,
-                desc:'Telah Menghapus Karyawan dengan id' + nik,
+                desc:'Telah Menghapus Karyawan dengan id' + username,
                 divisi : this.props.divisi,
                 date: new Date() 
             }).then(res=>{
@@ -169,9 +163,9 @@ renderKaryawan = () =>{
             <td>{data.nama}</td>
             <td>{data.gender}</td>
             <td>{data.subDivisi}</td>
-           <td><Link to={'/detailkaryawan/'+data.id}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
-           <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.nik)}>Delete</button> 
-           <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
+           <td><Link to={'/detailkaryawan/'+data.id_user}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
+           <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}>Delete</button> 
+           <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id_user, data.nama)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
         }
 
@@ -183,7 +177,7 @@ renderKaryawan = () =>{
                 <td>{data.nama}</td>
                 <td>{data.gender}</td>
                 <td>{data.subDivisi}</td>
-                <td><button className="btn btn-primary btn-sm m-1"onClick={()=>this.toggleTugas(data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
+                <td><button className="btn btn-primary btn-sm m-1"onClick={()=>this.toggleTugas(data.id_user,data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
             </tr>)
             
         }
@@ -204,7 +198,7 @@ onSearch = () =>{
         if(!this.props.userName){
             return <Redirect to ='/'></Redirect>
         }
-        let {id, nama, nik} = this.state.selectKaryawan
+        let {id, id_karyawan, nama, nik} = this.state.selectKaryawan
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
@@ -284,7 +278,7 @@ onSearch = () =>{
         </ModalBody> 
         <ModalFooter>
           <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
-          <Button color="primary" onClick={()=> this.postTugas(id,nama, nik)}>Submit</Button>
+          <Button color="primary" onClick={()=> this.postTugas(id_karyawan, nama)}>Submit</Button>
         </ModalFooter>
       </Modal>
             </div>

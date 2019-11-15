@@ -30,9 +30,7 @@ export class DataTugas extends Component {
 
     getTugas = () =>{
         axios.get('http://localhost:2020/tugas',{
-            params : {
-                from : this.props.userName
-            }
+            
         }).then(res => {
             this.setState({karyawan: res.data.reverse(), search: res.data.reverse()})
             console.log(this.state.karyawan)

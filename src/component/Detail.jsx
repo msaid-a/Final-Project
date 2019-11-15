@@ -29,7 +29,7 @@ export class Detail extends Component {
     }
 
     tampilProfile = () =>{
-    let {nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,subDivisi,tanggal_lahir,phone,id} = this.state.profile 
+    let {nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,subDivisi,tanggal_lahir,phone,id_user} = this.state.profile 
        console.log(this.state.profile)
        return( <div className="row mt-5 ">
             <div className="col-4 mt-4">
@@ -88,7 +88,7 @@ export class Detail extends Component {
                      <td>{phone}</td>
                  </tr>
              </table>
-             <Link className="btn btn-danger" to={"/editprofile/"+id}>Edit Profile</Link>
+             <Link className="btn btn-danger" to={"/editprofile/"+id_user}>Edit Profile</Link>
         </div>
     </div>)
     }

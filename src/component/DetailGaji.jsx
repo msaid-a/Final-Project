@@ -17,6 +17,7 @@ export class DetailGaji extends Component {
         axios.get('http://localhost:2020/gaji/'+this.props.match.params.idgaji)
                 .then(res => {
                      this.setState({gaji : res.data})
+                    //  console.log(this.state.gaji[0])
                      }).catch(err => {
                          console.log(err)
                      })
@@ -31,7 +32,7 @@ export class DetailGaji extends Component {
 
 
     tampilGaji = () =>{
-        let {nama,nik,bulan,tahun,gaji,tunjanganKeluarga,tunjanganTransportasi, bonus} = this.state.gaji 
+        let {nama,nik,bulan,tahun,gaji,tunjanganKeluarga,tunjanganTransportasi, bonus} = this.state.gaji[0] 
         let total = 0
             total +=gaji
             total +=tunjanganKeluarga
@@ -84,6 +85,11 @@ export class DetailGaji extends Component {
         )
         }
     render() {
+        if(this.state.gaji.length === 0){
+            return <div>
+                <h1>Loading</h1>
+            </div>
+        }
         return (
             <div>
                 {this.tampilGaji()}

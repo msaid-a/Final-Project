@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect, Link} from 'react-router-dom'
-import axios from 'axios'
+import axios from '../config/index'
 
 class DataKaryawan extends Component {
 
@@ -12,8 +12,9 @@ class DataKaryawan extends Component {
     }
 
 getData =  () =>{
-    axios.get('http://localhost:2020/gaji')
+    axios.get('/gaji')
     .then(res => {
+        console.log(res.data)
         this.setState({gaji : res.data})
         this.setState({search : res.data})
     })
@@ -54,7 +55,7 @@ onSearch = () =>{
 }
 
     render() {
-        if(this.props.userName !=='admin'){
+        if(this.props.jabatan !=='admin'){
             return <Redirect to ='/'></Redirect>
         }
         return (

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+import moment from 'moment'
 
 class Register extends Component {
     
@@ -25,9 +26,9 @@ class Register extends Component {
         let jabatan = this.jabatan.value
         let subdivisi_id = this.subDivisi.value
         let phone = this.phone.value
-        let tanggal_lahir = this.tanggal_lahir.value
-
-        console.log(typeof(tanggal_lahir))
+        let tanggal_lahir = new Date(this.tanggal_lahir.value)
+            tanggal_lahir =moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss')
+        console.log(subdivisi_id)
       
         axios.post('/karyawan/',{
             nik,username,email,password,nama,gender,agama,tanggal_lahir,pendidikan,divisi_id,jabatan,subdivisi_id,phone
@@ -46,7 +47,6 @@ class Register extends Component {
         axios.get('/divisi')
             .then(res=>{
                 this.setState({divisi: res.data})
-                console.log(this.state.divisi)
             })
         axios.get('/subdivisi')
             .then(res=>{

@@ -12,8 +12,8 @@ export const sendData = (_username, _password) =>{
                    password : _password 
                }
            ).then((res) => {
-               if(res.data.length === 0){
-                   Swal.fire({
+               if(res.data.error){
+                 return  Swal.fire({
                        type: 'error',
                        title: 'Sorry',
                        text: 'Username atau Password Salah!',
@@ -47,7 +47,7 @@ export const sendData = (_username, _password) =>{
                    password : _password 
             }
         ).then((res) => {
-            if(res.data.length === 0){
+            if(res.data.error){
                 Swal.fire({
                     type: 'error',
                     title: 'Sorry',

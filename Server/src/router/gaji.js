@@ -4,7 +4,7 @@ const token = require('rand-token')
 
 // get all
 router.get('/gaji',(req,res)=>{
-    let sql =`SELECT g.id, k.nama, k.nik g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
+    let sql =`SELECT g.id, k.nama, k.nik, g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
                 join karyawan k
                 on k.id = g.user_id`
     conn.query(sql,(err,result)=>{
@@ -14,11 +14,23 @@ router.get('/gaji',(req,res)=>{
 })
 
 // get own gaji
-router.get('/gaji/:userid',(req,res)=>{
-    let sql =`SELECT g.id, k.nama, k.nik g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
+router.get('/gaji/profile/:userid',(req,res)=>{
+    let sql =`SELECT g.id, k.nama, k.nik,g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
                 join karyawan k
                 on k.id = g.user_id
                 WHERE user_id ='${req.params.userid}'`
+    conn.query(sql,(err,result)=>{
+        if(err) return res.send({error:err.message})
+        res.send(result)
+    })
+})
+
+// get one gaji
+router.get('/gaji/:userid',(req,res)=>{
+    let sql =`SELECT g.id, k.nama, k.nik,g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
+                join karyawan k
+                on k.id = g.user_id
+                WHERE g.id ='${req.params.userid}'`
     conn.query(sql,(err,result)=>{
         if(err) return res.send({error:err.message})
         res.send(result)

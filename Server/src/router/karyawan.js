@@ -71,8 +71,8 @@ router.get('/avatar/:filename',(req,res)=>{
 
 // Get all Karyawan
 router.get('/karyawan',(req,res)=>{
-    let sql = `select k.id, k.nik, s.username, s.email, s.password , 
-	k.nama, k.gender, k.tanggal_lahir, k.agama, k.pendidikan, d.divisi, sd.subDivisi, k.jabatan,  k.phone
+    let sql = `select k.id, k.id_user,k.nik, s.username, s.email, s.password , 
+	k.nama, k.gender, k.tanggal_lahir, k.agama, k.pendidikan, d.divisi, sd.subDivisi, k.jabatan,  k.phone, k.avatar
   from karyawan k
     join divisi d
     on k.divisi_id = d.id
@@ -80,6 +80,7 @@ router.get('/karyawan',(req,res)=>{
     on k.id_user = s.id
     join subDivisi sd
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0
+    ORDER BY jabatan
 `
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error:err.message})
@@ -116,12 +117,9 @@ router.post ('/karyawan',(req,res)=>{
     }
     conn.query(sql2,  (err,result) =>{
         if(err) throw res.send({error:err.message})
-        console.log('tambah data')
         conn.query(sql,  (err,result) =>{
-            if(err) console.log(err)
+            if(err) console.log(err.message)
             res.send('Success Nambah')
-            console.log('tambah data')
-
         })
     })
 
@@ -131,15 +129,15 @@ router.post ('/karyawan',(req,res)=>{
 
 // Get profile Karyawan
 router.get('/karyawan/profile/:userid',(req,res)=>{
-    let sql = `select *
+    let sql = `select k.id,k.id_user , k.nik, s.username, s.email, s.password , 
+	k.nama, k.gender, k.tanggal_lahir, k.agama, k.pendidikan, d.divisi, sd.subDivisi, k.jabatan,  k.phone, k.avatar
   from karyawan k
     join divisi d
     on k.divisi_id = d.id
     join users s 
     on k.id_user = s.id
     join subDivisi sd
-    on k.subdivisi_id = sd.id
-    WHERE k.id='${req.params.userid}'`
+    on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and k.id_user='${req.params.userid}'`
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error:err.message})
         res.send({
@@ -149,19 +147,36 @@ router.get('/karyawan/profile/:userid',(req,res)=>{
     })
 })
 
+// Get karyawan berdasarkan divisi
+router.get('/karyawan/divisi/:divisi',(req,res)=>{
+    let sql = `select k.id,k.id_user , k.nik, s.username, s.email, s.password , 
+	k.nama, k.gender, k.tanggal_lahir, k.agama, k.pendidikan, d.divisi, sd.subDivisi, k.jabatan,  k.phone, k.avatar
+  from karyawan k
+    join divisi d
+    on k.divisi_id = d.id
+    join users s 
+    on k.id_user = s.id
+    join subDivisi sd
+    on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and k.jabatan='Karyawan' and d.divisi ='${req.params.divisi}'`
+    conn.query(sql, (err,result)=>{
+        if(err) return res.send({error:err.message})
+        res.send(result)
+    })
+})
+
 // login
 router.post('/login',(req,res)=>{
     let {email,username,password} =req.body
-    let sql = `SELECT users.id, users.username, users.password, karyawan.jabatan, divisi.divisi FROM users 
+    let sql = `SELECT users.id, users.username, users.password, users.is_deleted, karyawan.jabatan, divisi.divisi FROM users 
                 join karyawan 
                 on karyawan.id_user = users.id
                 join divisi
-                on karyawan.divisi_id = divisi.id WHERE email ='${email}'`
-    if(!email) sql = `SELECT users.id, users.username, users.password, karyawan.jabatan, divisi.divisi FROM users 
+                on karyawan.divisi_id = divisi.id WHERE users.email ='${email}' and users.is_deleted = 0`
+    if(!email) sql = `SELECT users.id, users.username, users.password,users.is_deleted, karyawan.jabatan, divisi.divisi FROM users 
                         join karyawan 
                         on karyawan.id_user = users.id
                         join divisi
-                        on karyawan.divisi_id = divisi.id  WHERE username='${username}'`
+                        on karyawan.divisi_id = divisi.id  WHERE users.username='${username}' and users.is_deleted = 0`
 
     conn.query(sql, async (err,result)=>{
         if(err) return res.send({error:err.message})
@@ -178,24 +193,33 @@ router.post('/login',(req,res)=>{
 // update
 router.patch('/karyawan/:userid', (req,res)=>{
     let sql = `UPDATE karyawan SET ? WHERE id ='${req.params.userid}'`
+    let sql2 = `UPDATE users SET ? WHERE id =${req.params.userid}`
     let data = [req.body, req.params.userid]
-    
+    console.log(data)
+
     if(data[0].password === '') delete data[0].password
     if(data[0].password) data[0].password = bcrypt.hashSync(data[0].password, 8)
 
     conn.query(sql,data, (err,result)=>{
         if(err) return res.send({error:err.message})
-        res.send(result)
+        conn.query(sql2,data, (err,result)=>{
+            if(err) return res.send({error:err.message})
+            res.send(result)
+        })
     })
 })
 
 // delete
-router.delete('/karyawan/delete/:nik',(req,res)=>{
-    let sql = `UPDATE karyawan SET is_deleted = 1 WHERE nik = '${req.params.nik}'`
+router.delete('/karyawan/delete/:id_user',(req,res)=>{
+    let sql = `UPDATE karyawan SET is_deleted = 1 WHERE id_user = '${req.params.id_user}'`
+    let sql2 = `UPDATE users SET is_deleted = 1 WHERE id = '${req.params.id_user}'`
     conn.query(sql, (err, result)=>{
         try {
             if(err) throw err
-            res.send('Berhasil di delete')
+            conn.query(sql2, (err,result)=>{
+                if(err) throw err
+                res.send('Berhasil di delete')
+            })
         } catch (error) {
             res.send({error: error.message})
         }

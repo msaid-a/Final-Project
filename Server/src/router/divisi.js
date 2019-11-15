@@ -10,7 +10,14 @@ router.post('/divisi',(req, res)=>{
     conn.query(sql, data, (err, result)=>{
         try {
             if(err) throw err
-            res.send('Berhasil Menambahkan')
+            let id = token.generate(20)
+            let subDivisi = 'Manager ' + req.body.divisi
+            let divisi_id = data.id
+            let sql2 = `INSERT INTO subDivisi (id, subDivisi, divisi_id) VALUES ('${id}', '${subDivisi}', '${divisi_id}')`
+            conn.query(sql2, (err, result)=>{
+                if(err) return res.send({error:err.message})
+                res.send('Berhasil Menambahkan')
+            })
         } catch (error) {
             res.send({error: error})
         }
@@ -44,7 +51,7 @@ router.post('/subdivisi',(req, res)=>{
 })
 
 router.get('/subdivisi',(req,res)=>{
-    let sql = `SELECT * FROM subDivisi join divisi on divisi.id = subDivisi.divisi_id`
+    let sql = `SELECT s.id, s.subDivisi,d.divisi, s.divisi_id FROM subDivisi s join divisi d on d.id = s.divisi_id`
     conn.query(sql, (err,result)=>{
         try {
             if(err) throw err

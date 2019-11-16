@@ -46,7 +46,13 @@ export class Detail extends Component {
                 <img className="card-img-top" src={avatar} alt="Card image cap" />
                 <div className="card-body">
                     
-                    <input type="file" ref={input => this.avatar =input}  />
+                    {/* <input type="file"   /> */}
+
+  <div className="custom-file">
+  <input type="file" className="custom-file-input" id="validatedCustomFile" ref={input => this.avatar =input} />
+  <label className="custom-file-label text-left" htmlFor="validatedCustomFile">Choose file...</label>
+</div>
+
                     <button className="btn btn-secondary btn-block mt-2" onClick={()=>this.saveAvatar(id)}>Save Image</button>
                 </div>
             </div>

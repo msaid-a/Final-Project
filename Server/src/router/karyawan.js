@@ -196,20 +196,19 @@ router.post('/login',(req,res)=>{
 
 // update
 router.patch('/karyawan/:userid', (req,res)=>{
-    let sql = `UPDATE karyawan SET ? WHERE id ='${req.params.userid}'`
-    let sql2 = `UPDATE users SET ? WHERE id =${req.params.userid}`
-    let data = [req.body, req.params.userid]
-    console.log(data)
-
-    if(data[0].password === '') delete data[0].password
-    if(data[0].password) data[0].password = bcrypt.hashSync(data[0].password, 8)
+    let sql = `UPDATE karyawan INNER JOIN users on karyawan.id_user = users.id SET ? WHERE users.id ='${req.params.userid}'`
+    let data = req.body
+    
+    if(data.password === '') delete data.password
+    if(data.password) data.password = bcrypt.hashSync(data.password, 8)
 
     conn.query(sql,data, (err,result)=>{
         if(err) return res.send({error:err.message})
-        conn.query(sql2,data, (err,result)=>{
-            if(err) return res.send({error:err.message})
+        
+        // conn.query(sql2,data, (err,result)=>{
+        //     if(err) return res.send({error:err.message})
             res.send(result)
-        })
+        // })
     })
 })
 

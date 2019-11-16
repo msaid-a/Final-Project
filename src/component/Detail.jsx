@@ -45,13 +45,10 @@ export class Detail extends Component {
             <div className="card mt-4" style={{width: '18rem'}}>
                 <img className="card-img-top" src={avatar} alt="Card image cap" />
                 <div className="card-body">
-                    
-                    {/* <input type="file"   /> */}
-
-  <div className="custom-file">
-  <input type="file" className="custom-file-input" id="validatedCustomFile" ref={input => this.avatar =input} />
-  <label className="custom-file-label text-left" htmlFor="validatedCustomFile">Choose file...</label>
-</div>
+                    <div className="custom-file">
+                        <input type="file" className="custom-file-input" id="validatedCustomFile" ref={input=> this.avatar =input} />
+                        <label className="custom-file-label text-left" htmlFor="validatedCustomFile">Choose file...</label>
+                    </div>
 
                     <button className="btn btn-secondary btn-block mt-2" onClick={()=>this.saveAvatar(id)}>Save Image</button>
                 </div>
@@ -59,7 +56,7 @@ export class Detail extends Component {
 
         </div>
         <div className="col-6 mt-4">
-        <h1>Hello </h1>
+        <h1>Hello </h1> 
 
              <table className="table table-hover text-left mb-5">
                  <tr>

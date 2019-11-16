@@ -74,10 +74,10 @@ router.get('/tugas',(req,res)=>{
 
 // Read tugas with user id 
 router.get('/tugas/:userid',(req,res)=>{
-    let sql = `SELECT t.id, k.nama, k.id as user_id, t.user_id, t.title, t.description, t.deadline, t.pengirim, t.hasil, t.status FROM tugas t
+    let sql = `SELECT t.id, k.nama, k.id as user_id, k.id_user, t.user_id, t.title, t.description, t.deadline, t.pengirim, t.hasil, t.status FROM tugas t
 	join karyawan k
     on k.id = t.user_id
-    WHERE t.user_id=k.id`
+    WHERE k.id_user = '${req.params.userid}'`
 
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error : err.message})

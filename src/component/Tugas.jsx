@@ -79,7 +79,7 @@ class Tugas extends Component {
     getTugas = () =>{
         axios.get('/tugas/'+this.props.iD,{
         }).then(res => {
-            console.log(res.data)
+            console.log(this.props.iD)
             this.setState({tugas: res.data.reverse(), search: res.data.reverse()})
         })
     }

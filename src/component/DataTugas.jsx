@@ -93,6 +93,7 @@ export class DataTugas extends Component {
             no++
             let deadline = new Date (data.deadline)
             if(now > deadline && (data.status.toLowerCase().includes('belum') || data.status =='REVISI')){
+                data.status = 'Terlambat'
              axios.patch('/tugas/'+data.id,{
                     status : 'Terlambat'
                 })

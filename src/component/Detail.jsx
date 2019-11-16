@@ -23,17 +23,34 @@ export class Detail extends Component {
      
     }
     
+    saveAvatar = (id) =>{
+        let formData = new FormData()
+        let avatar = this.avatar.files[0]
+            formData.append('avatar',avatar)
+        axios.post('/avatar/'+id,formData)
+            .then(res=>{
+                this.getKaryawan()
+            })
+    }
 
     componentDidMount = () =>{
         this.getKaryawan()
     }
 
     tampilProfile = () =>{
-    let {nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,subDivisi,tanggal_lahir,phone,id_user} = this.state.profile 
+    let {id,nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,subDivisi,tanggal_lahir,phone,id_user, avatar} = this.state.profile 
        console.log(this.state.profile)
        return( <div className="row mt-5 ">
-            <div className="col-4 mt-4">
-            <img />
+            <div className="col-4 mt-5">
+            <div className="card mt-4" style={{width: '18rem'}}>
+                <img className="card-img-top" src={avatar} alt="Card image cap" />
+                <div className="card-body">
+                    
+                    <input type="file" ref={input => this.avatar =input}  />
+                    <button className="btn btn-secondary btn-block mt-2" onClick={()=>this.saveAvatar(id)}>Save Image</button>
+                </div>
+            </div>
+
         </div>
         <div className="col-6 mt-4">
         <h1>Hello </h1>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import axios from '../config/index'
 import {connect} from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
+import { async } from 'q';
 
 
 export class DataTugas extends Component {
@@ -12,7 +13,8 @@ export class DataTugas extends Component {
         modal : false,
         selectTugas :{id:'', title:''},
         search:[],
-        show : 0
+        show : 0,
+        data : []
     }
 
 
@@ -29,7 +31,7 @@ export class DataTugas extends Component {
       }
 
     getTugas = () =>{
-        axios.get('http://localhost:2020/tugas',{
+        axios.get('/tugas',{
             
         }).then(res => {
             this.setState({karyawan: res.data.reverse(), search: res.data.reverse()})
@@ -38,10 +40,10 @@ export class DataTugas extends Component {
     }
 
     doneTugas = (id,title) =>{
-        axios.patch('http://localhost:2020/tugas/'+id,{
+        axios.patch('/tugas/'+id,{
             status : 'Selesai'
         }).then(res=>{
-            axios.post('http://localhost:2020/history',{
+            axios.post('/history',{
                 user:this.props.userName,
                 desc:'menyatakan tugas selesai pada judul ' + title,
                 divisi: this.props.divisi,
@@ -57,12 +59,12 @@ export class DataTugas extends Component {
     revisiTugas = (id) =>{
         let revisi = this.revisi.value
         let deadline = this.deadline.value
-        axios.patch('http://localhost:2020/tugas/'+id,{
+        axios.patch('/tugas/'+id,{
             description: revisi,
             deadline,
             status:"REVISI"
         }).then(res => {
-            axios.post('http://localhost:2020/history',{
+            axios.post('/history',{
                 user:this.props.userName,
                 desc:'merevisi pada judul ' + this.state.selectTugas.title,
                 divisi: this.props.divisi, 
@@ -80,24 +82,27 @@ export class DataTugas extends Component {
         this.getTugas()
     }
 
-    renderTugas = () =>{
+
+    renderTugas =  () =>{
         let no = 0
         let now = new Date()
         let show = this.state.show
         if(!show) show = 5
         if(show == 'all') show = this.state.karyawan.length
-        return this.state.search.map(data => {
+        return  this.state.search.map ( data => {
             no++
-            let deadline = new Date(data.deadline.replace(/-/g,','))
-            if(now > deadline && (data.status =='belum di kumpulkan' || data.status =='REVISI')){
-                data.status = 'TERLAMBAT'
-           }
+            let deadline = new Date (data.deadline)
+            if(now > deadline && (data.status.toLowerCase().includes('belum') || data.status =='REVISI')){
+             axios.patch('/tugas/'+data.id,{
+                    status : 'Terlambat'
+                })
+            }
             return (<tr>
                 <td>{no}</td>
-                <td>{data.namaUser}</td>
+                <td>{data.nama}</td>
                 <td>{data.title}</td>
                 <td>{data.deadline}</td>
-                <td><a href={data.hasil} className="btn btn-warning"> Download Hasil </a></td>
+                <td><a href={'http://localhost:2020/download/'+data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
                 <td><button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
                     <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button></td>
                 <td>{data.status}</td>

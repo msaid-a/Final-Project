@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import axios from 'axios'
+import axios from '../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class Tugas extends Component {
@@ -47,27 +47,28 @@ class Tugas extends Component {
 
 
     postTugas = (id,_status,title) =>{
-        let hasil = this.hasil.value
+        let formData = new FormData()
+        let hasil = this.hasil.files[0]
+            formData.append("hasil",hasil)
         let status = 'Terupload'
         if(_status == 'REVISI'){
             status = 'Revisi Terupload'
         }else if(_status =="TERLAMBAT"){
             status = 'Terupload(Terlambat)'
         }
-        axios.patch('http://localhost:2020/tugas/'+id,{
-            hasil : hasil,
-            status : status
-        }).then(res =>{
-            axios.post('http://localhost:2020/history',{
-                user: this.props.userName,
-                desc :'Telah menguload tugas dengan judul ' + title,
-                divisi:this.props.jabatan.split(' ')[1],
-                date: new Date() 
-
-            }).then(res=>{
-                alert('success')
-                this.getTugas()
-            })
+        formData.append("status",status)
+        axios.post('/tugas/uploads/'+ id,formData).then(res=>{
+                axios.post('/history',{
+                    user: this.props.userName,
+                    desc :'Telah menguload tugas dengan judul ' + title,
+                    divisi:this.props.jabatan.split(' ')[1],
+                    date: new Date() 
+    
+                }).then(res=>{
+                    alert(id)
+                    this.getTugas()
+                })
+            
         })
     }
 
@@ -76,10 +77,7 @@ class Tugas extends Component {
 
 
     getTugas = () =>{
-        axios.get('http://localhost:2020/tugas',{
-            params: {
-                idUser : this.props.iD
-            }
+        axios.get('/tugas/'+this.props.iD,{
         }).then(res => {
             console.log(res.data)
             this.setState({tugas: res.data.reverse(), search: res.data.reverse()})
@@ -104,7 +102,7 @@ class Tugas extends Component {
                 return (<tr>
                     <td>{no}</td>
                     <td><button className="btn btn-primary" onClick={()=>this.toggle(data.id,data.title,data.description)}>Lihat Tugas</button></td>
-                    <td>{data.from}</td>
+                    <td>{data.pengirim}</td>
                     <td>{data.deadline}</td>
                     <td><button className="btn btn-success" onClick={()=>this.toggleTugas(data.id,data.title,data.description,data.status)}>Upload Tugas</button></td>
                     <td>{data.status}</td>
@@ -178,7 +176,8 @@ class Tugas extends Component {
         <ModalHeader toggle={this.toggleTugasCancel}></ModalHeader>
         <ModalBody>
             <form onSubmit={e=> e.preventDefault()}>
-            <input type="text" name="" id="" placeholder="Upload Tugas" className="form-control" ref={input => {this.hasil = input}}/>
+            <label htmlFor="">Upload Max 200Mb (.zip/.rar/.dock/.xlsx/.pptx/.pdf)</label>
+            <input type="file" name="" id="" placeholder="Upload Tugas" className="form-control h-100" ref={input => {this.hasil = input}}/>
             </form>
         </ModalBody> 
         <ModalFooter>

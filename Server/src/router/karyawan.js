@@ -42,16 +42,17 @@ router.post('/avatar/:userid',(req,res,next)=>{
 },upload.single('avatar'), (req,res)=>{
     const sql = `UPDATE karyawan SET avatar = '${req.file.filename}' WHERE id ='${req.params.userid}'`
     const sql2=`SELECT avatar FROM karyawan WHERE id='${req.params.userid}'`
-
+    
     conn.query(sql2, (err,result)=>{
         if(err) return res.send({error:err.message})
+        // res.send(result[0])
         if(result[0].avatar !== 'default-avatar.png'){
-            fs.unlink(avatarDirectory+result[0].avatar)
+            fs.unlinkSync(avatarDirectory+result[0].avatar, (err) => {return res.send(err)})
         }
-
+        
         conn.query(sql,(err,result)=>{
             if(err) return res.send({error:err.message})
-            res.send({filename:req.file.filename})
+            res.send('Success')
         })
     })
 })
@@ -129,7 +130,7 @@ router.post ('/karyawan',(req,res)=>{
 
 // Get profile Karyawan
 router.get('/karyawan/profile/:userid',(req,res)=>{
-    let sql = `select k.id,k.id_user , k.nik, s.username, s.email, s.password , 
+    let sql = `select k.id, k.id_user , k.nik, s.username, s.email, s.password , 
 	k.nama, k.gender, k.tanggal_lahir, k.agama, k.pendidikan, d.divisi, sd.subDivisi, k.jabatan,  k.phone, k.avatar
   from karyawan k
     join divisi d
@@ -140,9 +141,12 @@ router.get('/karyawan/profile/:userid',(req,res)=>{
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and k.id_user='${req.params.userid}'`
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error:err.message})
+        if(result.length === 0){
+            return res.send({error:'User Not Found'})
+        }
         res.send({
             ...result[0],
-            avatar: `http://localhost:2222/avatar/${result[0].avatar}`
+            avatar: `http://localhost:2020/avatar/${result[0].avatar}`
         })
     })
 })

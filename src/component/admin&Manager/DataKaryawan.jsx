@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect, Link} from 'react-router-dom'
-import axios from '../config/index'
+import axios from '../../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import moment from 'moment'
+import { Paginator } from 'primereact/paginator';
+
 
 class DataKaryawan extends Component {
 
@@ -13,16 +15,18 @@ class DataKaryawan extends Component {
         modal : false,
         modal2: false,
         selectKaryawan : {id :'',id_karyawan:'', nama: '', nik:''},
-        show : 0
+        first: 0,
+        rows: 10,
+        lastIndex : 10
     }
 
 
-toggle  = (id,nama) => {
+toggle  = (id,id_karyawan,nama) => {
     axios.get('/karyawan/profile/' + id).then(res => {
         console.log(id)
         this.setState(prevState => ({
             modal: !prevState.modal,
-            selectKaryawan :{id, nama}
+            selectKaryawan :{id,id_karyawan, nama}
         }));
     })
  }
@@ -91,6 +95,7 @@ getData =  () =>{
                 .then(res => {
                      this.setState({karyawan : res.data,
                     search: res.data})
+                    console.log(res.data)
                      })
     }
     if(this.props.jabatan.includes('Manager')){
@@ -147,12 +152,9 @@ deleteKaryawan = (id,username) =>{
     })
 }
 
-renderKaryawan = () =>{
+renderKaryawan = (first,last) =>{
     let no = 0
-    let show = this.state.show
-    if (!show) show = 5
-    if(show == 'all') show = this.state.karyawan.length
-    return this.state.search.slice(0,show).map(data => {
+    return this.state.search.slice(first,last).map(data => {
         no++
         if(this.props.jabatan =="admin"){
 
@@ -165,7 +167,7 @@ renderKaryawan = () =>{
             <td>{data.subDivisi}</td>
            <td><Link to={'/detailkaryawan/'+data.id_user}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
            <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}>Delete</button> 
-           <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id_user, data.nama)} data-target='#gaji'>Add Gaji</button></td>
+           <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id,data.id_user, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
         }
 
@@ -187,11 +189,18 @@ renderKaryawan = () =>{
 
 onSearch = () =>{
      let result = this.state.karyawan.filter(data => {
-                return data.nama.toLoweCase().includes(this.search.value.toLowerCase())
+                return data.nama.toLowerCase().includes(this.search.value)
     })
     this.setState({search:result})
 }
 
+onPageChange(event) {
+    this.setState({
+        first: event.first,
+        rows: event.rows,
+        lastIndex : event.first + event.rows
+    });
+}
 
 
     render() {
@@ -202,24 +211,16 @@ onSearch = () =>{
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
+                <h4>Data Karyawan</h4>
+
                     <div className="form-group d-flex justify-content-end">
-                    <label className="h5 mt-2">Show tables:</label>
-                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
-                        <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="all">All</option>
-                                    </select>
-                    <label className="h5 mt-2">search :</label>
+                     <label className="h5 mt-2">search :</label>
                             <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
                         <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
-                <table className=" table table-striped table-responsive-md btn-table mb-5">
+                <table className=" table table-striped table-responsive-md btn-table mb-5 ">
                     <thead   className='thead-dark' style={{height:50}}>
                     <tr >
                     <th>NO</th>
@@ -231,10 +232,19 @@ onSearch = () =>{
                     <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody className='text-left'style={{fontSize: 15}}>
+                    <tbody className='text-left'style={{fontSize: 13}}>
                         {this.renderKaryawan()}
                     </tbody>
                 </table>
+                <Paginator
+						first={this.state.first}
+						rows={this.state.rows}
+						totalRecords={this.state.karyawan.length}
+						rowsPerPageOptions={[10, 20, 30]}
+                        onPageChange={(e)=>this.onPageChange(e)}
+                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
+
+					/>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                 <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
         <ModalBody>
@@ -262,7 +272,7 @@ onSearch = () =>{
         </ModalBody> 
         <ModalFooter>
           <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
-          <Button color="primary" onClick={()=> this.saveGaji(id,nama, nik)}>Submit</Button>
+          <Button color="primary" onClick={()=> this.saveGaji(id,nama)}>Submit</Button>
         </ModalFooter>
       </Modal>
       <Modal isOpen={this.state.modal2} toggle={this.toggleTugas} fullHeight position="right" id='tugas'>

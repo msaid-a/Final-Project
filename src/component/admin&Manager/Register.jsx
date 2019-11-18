@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from '../config/index'
+import axios from '../../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import moment from 'moment'
@@ -33,6 +33,9 @@ class Register extends Component {
         axios.post('/karyawan/',{
             nik,username,email,password,nama,gender,agama,tanggal_lahir,pendidikan,divisi_id,jabatan,subdivisi_id,phone
         }).then(res=> {
+            if(res.data.error){
+                return alert("username/email Telah di gunakan")
+            }
             axios.post('/history',{
                 user: "admin",
                 desc: "telah menambahkan karyawan baru dengan username " + username,
@@ -106,7 +109,7 @@ class Register extends Component {
                                <label htmlFor="inputEmail">NIK</label>
                                <div className="form-label-group">
                                    <input type="number"  className="form-control" placeholder="NIK"
-                                       required="required" ref={input => {this.nik = input}} />
+                                       required="required" maxLength={10} ref={input => {this.nik = input}} />
                                </div>
                            </div>
                            <div className="form-group">

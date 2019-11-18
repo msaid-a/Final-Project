@@ -1,21 +1,22 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect,Link} from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../config/index'
+import { Paginator } from 'primereact/paginator';
 
 
 class Gaji extends Component {
 
     state={
         gaji : [],
-        show : 0
+        first: 0,
+        rows: 10,
+        lastIndex : 10
     }
 
 getData =  () =>{
-    axios.get('http://localhost:2020/gaji',{
-        params: {
-            id_User: this.props.iD
-        }
+    axios.get('/gaji/profile/'+this.props.iD,{
+       
     })
     .then(res => {
         this.setState({gaji : res.data})
@@ -27,12 +28,9 @@ componentDidMount= () =>{
     this.getData()
 }
 
-renderGaji = () =>{
+renderGaji = (first,last) =>{
     let no = 0
-    let show = this.state.show
-    if(!show) show = 5
-    if(show =='all') show = this.state.gaji.length
-    return this.state.gaji.slice(0,show).map(data => {
+    return this.state.gaji.slice(first,last).map(data => {
         let total= 0
         total += data.gaji
         total +=data.tunjanganKeluarga
@@ -49,6 +47,13 @@ renderGaji = () =>{
     })
 }
 
+onPageChange(event) {
+    this.setState({
+        first: event.first,
+        rows: event.rows,
+        lastIndex : event.first + event.rows
+    });
+}
     render() {
         if(!this.props.iD){
             return <Redirect to="/"></Redirect>
@@ -58,16 +63,7 @@ renderGaji = () =>{
                 <form style={{marginTop:80}} className="ml-auto">
                     <h1>Data Gaji Bulanan</h1>
                     <div className="form-group d-flex justify-content-end">
-                    <label className="h5 mt-2">Show tables:</label>
-                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
-                        <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="all">All</option>
-                                    </select>
+                    
                         <label className="sr-only">Password</label>
                             <input type="text" className=""  placeholder="Search"></input>
                         <button type="submit" class="btn btn-primary ml-1">Seach</button>
@@ -83,9 +79,18 @@ renderGaji = () =>{
                     </tr>
                     </thead>
                     <tbody style={{fontSize: 15}}>
-                        {this.renderGaji()}
+                        {this.renderGaji(this.state.first, this.state.lastIndex)}
                     </tbody>
                 </table>
+                <Paginator
+						first={this.state.first}
+						rows={this.state.rows}
+						totalRecords={this.state.gaji.length}
+						rowsPerPageOptions={[10, 20, 30]}
+                        onPageChange={(e)=>this.onPageChange(e)}
+                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
+
+					/>
             </div>
         )
     }

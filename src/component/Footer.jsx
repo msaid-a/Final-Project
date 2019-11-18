@@ -4,7 +4,7 @@ class Footer extends Component {
     render() {
         return (
        
-            <div className=" footer" style={{marginTop:'24%'}}>
+            <div className=" footer" style={{marginTop:'27%'}}>
               <footer className="">
                   <div className=" container-fluid">
 

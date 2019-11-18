@@ -89,6 +89,41 @@ router.get('/karyawan',(req,res)=>{
     })
 })
 
+// Total Karyawan
+router.get('/karyawan/total',(req,res)=>{
+    let sql = `select  d.divisi, sd.subDivisi, COUNT(k.id) as jumlah_karyawan
+    from karyawan k
+join divisi d
+on k.divisi_id = d.id
+join users s 
+on k.id_user = s.id
+join subDivisi sd
+on k.subdivisi_id = sd.id WHERE k.is_deleted = 0
+GROUP BY d.divisi, sd.subdivisi
+`
+    conn.query(sql, (err,result)=>{
+        if(err) return res.send({error:err.message})
+        res.send(result)
+    })
+})
+
+router.get('/karyawan/total/:divisi',(req,res)=>{
+    let sql = `select  d.divisi, sd.subDivisi, COUNT(k.id) as jumlah_karyawan
+    from karyawan k
+join divisi d
+on k.divisi_id = d.id
+join users s 
+on k.id_user = s.id
+join subDivisi sd
+on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and d.divisi = '${req.params.divisi}'
+GROUP BY d.divisi, sd.subdivisi
+`
+    conn.query(sql, (err,result)=>{
+        if(err) return res.send({error:err.message})
+        res.send(result)
+    })
+})
+
 // Create 
 router.post ('/karyawan',(req,res)=>{
     let id_users = token.generate(20)
@@ -117,9 +152,9 @@ router.post ('/karyawan',(req,res)=>{
         return res.send({error:'is not email'})
     }
     conn.query(sql2,  (err,result) =>{
-        if(err) throw res.send({error:err.message})
+        if(err) return res.send({error:err.message})
         conn.query(sql,  (err,result) =>{
-            if(err) console.log(err.message)
+            if(err) return ({error:err.message})
             res.send('Success Nambah')
         })
     })

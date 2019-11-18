@@ -25,7 +25,7 @@ router.post('/divisi',(req, res)=>{
 })
 
 router.get('/divisi',(req,res)=>{
-    let sql = `SELECT * FROM divisi WHERE is_deleted = 0`
+    let sql = `SELECT * FROM divisi WHERE is_deleted = 0 ORDER BY divisi`
     conn.query(sql, (err,result)=>{
         try {
             if(err) throw err

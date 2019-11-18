@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './component/App'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import  'primereact/resources/primereact.css';
+import  'primereact/resources/themes/nova-light/theme.css';
+import  'primeicons/primeicons.css';
 // Membuat store dengan menggunakan reducers yang sudah di buat  
 import { createStore, applyMiddleware, compose } from 'redux'
 // Provider, memberi akses komponen APP agar bisa di akess semua child

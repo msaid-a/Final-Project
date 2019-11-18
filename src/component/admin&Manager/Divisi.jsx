@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import axios from '../config/index'
+import axios from '../../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+import { Paginator } from 'primereact/paginator';
 
 
 export class Divisi extends Component {
@@ -11,7 +12,10 @@ export class Divisi extends Component {
         divisi : [],
         modal : false,
         selectDivisi : {id : '', divisi : ''},
-        subDivisi : []
+        subDivisi : [],
+        first: 0,
+        rows: 5,
+        lastIndex : 5
     }
 
     toggle  = (id,divisi) => {
@@ -83,10 +87,16 @@ export class Divisi extends Component {
                 this.getDivisi()
             })
     }
-
-    renderDivisi = () =>{
+    onPageChange(event) {
+        this.setState({
+            first: event.first,
+            rows: event.rows,
+            lastIndex : event.first + event.rows
+        });
+    }
+    renderDivisi = (first,last) =>{
         let no = 0
-       return this.state.divisi.map(data =>{
+       return this.state.divisi.slice(first,last).map(data =>{
            no++
            return( <tr>
                <td>{no}</td>
@@ -123,9 +133,18 @@ export class Divisi extends Component {
                     <th>Action</th>
                     </thead>
                     <tbody>
-                        {this.renderDivisi()}
+                        {this.renderDivisi(this.state.first, this.state.lastIndex)}
                     </tbody>
                 </table>
+                <Paginator
+						first={this.state.first}
+						rows={this.state.rows}
+						totalRecords={this.state.divisi.length}
+						rowsPerPageOptions={[10, 20, 30]}
+                        onPageChange={(e)=>this.onPageChange(e)}
+                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
+
+					/>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                 <ModalHeader toggle={this.toggleCancel}>{divisi}</ModalHeader>
         <ModalBody>

@@ -74,3 +74,6 @@ body {
 }
 
 
+.chartjs-render-monitor{
+  height: 400px;
+}

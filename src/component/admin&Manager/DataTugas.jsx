@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import axios from '../config/index'
+import axios from '../../config/index'
 import {connect} from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
-import { async } from 'q';
-
+import moment from 'moment'
+import { Paginator } from 'primereact/paginator';
 
 export class DataTugas extends Component {
 
@@ -14,7 +14,10 @@ export class DataTugas extends Component {
         selectTugas :{id:'', title:''},
         search:[],
         show : 0,
-        data : []
+        data : [],
+        first: 0,
+        rows: 10,
+        lastIndex : 10
     }
 
 
@@ -82,27 +85,32 @@ export class DataTugas extends Component {
         this.getTugas()
     }
 
+    onPageChange(event) {
+        this.setState({
+            first: event.first,
+            rows: event.rows,
+            lastIndex : event.first + event.rows
+        });
+    }
+    
 
-    renderTugas =  () =>{
+    renderTugas =  (first,last) =>{
         let no = 0
         let now = new Date()
-        let show = this.state.show
-        if(!show) show = 5
-        if(show == 'all') show = this.state.karyawan.length
-        return  this.state.search.map ( data => {
+        return  this.state.search.slice(first,last).map ( data => {
             no++
             let deadline = new Date (data.deadline)
             if(now > deadline && (data.status.toLowerCase().includes('belum') || data.status =='REVISI')){
                 data.status = 'Terlambat'
-             axios.patch('/tugas/'+data.id,{
-                    status : 'Terlambat'
-                })
+                axios.patch('/tugas/'+data.id,{
+                        status : 'Terlambat'
+                    })
             }
             return (<tr>
                 <td>{no}</td>
                 <td>{data.nama}</td>
                 <td>{data.title}</td>
-                <td>{data.deadline}</td>
+                <td>{moment(data.deadline).format('YYYY-MM-DD')}</td>
                 <td><a href={'http://localhost:2020/download/'+data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
                 <td><button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
                     <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button></td>
@@ -113,7 +121,7 @@ export class DataTugas extends Component {
 
     onSearch = () =>{
         let result = this.state.karyawan.filter(data => {
-                   return data.namaUser.toLowerCase().includes(this.search.value.toLowerCase())
+                   return data.nama.toLowerCase().includes(this.search.value.toLowerCase())
        })
        this.setState({search:result})
     }
@@ -130,24 +138,15 @@ export class DataTugas extends Component {
         return (
             <div className="container">
                  <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
+                    <h4>Data Tugas</h4>
                     <div className="form-group d-flex justify-content-end">
-                 <label className="h5 mt-2">Show tables:</label>
-                        <select  className="mr-auto" ref={input => this.show = input} onChange={() => this.setState({show:this.show.value})}>
-                        <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="all">All</option>
-                                    </select>
                     <label className="h5 mt-2">search :</label>
                             <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
                         <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
-                <table className="table table-striped table-responsive-md btn-table mt-3" >
+                <table className="table table-striped table-responsive-md btn-table mt-5" >
                     <thead>
                     <th>NO</th>
                     <th>Karyawan</th>
@@ -158,9 +157,18 @@ export class DataTugas extends Component {
                     <th>Status</th>
                     </thead>
                     <tbody>
-                        {this.renderTugas()}
+                        {this.renderTugas(this.state.first, this.state.lastIndex)}
                     </tbody>
                 </table>
+                <Paginator
+						first={this.state.first}
+						rows={this.state.rows}
+						totalRecords={this.state.karyawan.length}
+						rowsPerPageOptions={[10, 20, 30]}
+                        onPageChange={(e)=>this.onPageChange(e)}
+                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
+
+					/>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                     <ModalHeader toggle={this.toggleCancel}></ModalHeader>
                     <ModalBody>

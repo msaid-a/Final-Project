@@ -236,7 +236,11 @@ import moment from 'moment'
             )
         }
         return (
+            
             <div className="container col-8 text-left">
+                {
+                    this.state.profile ?
+
             <div className="card card-register mx-auto mb-5" style={{marginTop:100}}>
                 <div className="card-header">Edit  Account</div>
                 <div className="card-body">
@@ -285,6 +289,7 @@ import moment from 'moment'
                             </select>
                             <div className="form mt-3">
                                <label htmlFor="inputPassword">Tanggal Lahir</label>
+                               {console.log(tanggal_lahir)}
                                <input type="date" defaultValue={tanggal_lahir} ref={input => this.tanggal_lahir = input}/>
                            </div>
                         </div>
@@ -317,6 +322,9 @@ import moment from 'moment'
                     </form>
                 </div>
             </div>
+                    :
+                    'loading ...'
+                }
         </div>
         )
     }

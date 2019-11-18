@@ -2,23 +2,24 @@ import React, { Component } from 'react'
 import {BrowserRouter, Route} from 'react-router-dom'
 import { connect } from 'react-redux'
 
+
 import Login from './Login'
-import Register from './Register'
+import Register from './admin&Manager/Register'
 import Navbar from './Navbar'
 import './App.css'
 import Footer from './Footer'
-import GajiKaryawan from './GajiKaryawan'
-import DataTugas from './DataTugas'
+import GajiKaryawan from './admin&Manager/GajiKaryawan'
+import DataTugas from './admin&Manager/DataTugas'
 import History from './History'
-import DataKaryawan from './DataKaryawan'
+import DataKaryawan from './admin&Manager/DataKaryawan'
 
 import {session} from '../actions/index'
-import Tugas from './Tugas'
-import Gaji from './Gaji'
+import Tugas from './Karyawan/Tugas'
+import Gaji from './Karyawan/Gaji'
 import Detail from './Detail'
 import EditProfile from './EditProfile'
-import Divisi from './Divisi'
-import Dasboard from './Dasboard'
+import Divisi from './admin&Manager/Divisi'
+import Dasboard from './admin&Manager/Dasboard'
 import DetailGaji from './DetailGaji'
 
 class App extends Component {
@@ -61,7 +62,7 @@ class App extends Component {
                 <Route path='/dasboard' component={Dasboard} />               
                 <Route path='/detailgaji/:idgaji' component={DetailGaji} />               
                 <Route path='/editprofile/:idkaryawan' component={EditProfile} />               
-                <Route path='/detailkaryawan/:idkaryawan' component={Detail} />               
+                <Route path='/detailkaryawan/:idkaryawan' component={Detail} />       
               </div>
               <Footer></Footer>
         </div>

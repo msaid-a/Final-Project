@@ -62,7 +62,7 @@ saveGaji = (id, nama) =>{
         let tunjanganKeluarga = parseInt(this.keluarga.value)
         let tunjanganTransportasi=parseInt(this.transportasi.value)
         let bonus= parseInt(this.bonus.value)
-    
+        let now = moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
         axios.post('/gaji',{
             user_id : id,
             bulan,
@@ -74,12 +74,12 @@ saveGaji = (id, nama) =>{
     
         }).then(res=>{
             axios.post('/history',{
-                user_id:this.props.id,
-                desc:'Telah memberi gaji kepada' + nama,
+                description:'Telah memberi gaji kepada ' + nama,
+                user_id:this.props.iD,
                 divisi : this.props.divisi,
-                date: new Date() 
+                tanggal: now 
             }).then(res=>{
-                alert('success')            
+                alert('Success')         
             })
             // this.toggleCancel()
         }).catch(err => {
@@ -122,10 +122,10 @@ postTugas = (id,nama,nik) =>{
         user_id,title,description,deadline,pengirim,hasil,status
     }).then(res=>{
         axios.post('/history',{
-                user:this.props.userName,
-                desc:'Telah memberi Tugas kepada' + nama,
-                divisi:this.props.divisi,
-                date: new Date() 
+                description:'Telah memberi Tugas kepada ' + nama,
+                user_id: this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
                 alert('success')            
             })
@@ -141,10 +141,10 @@ deleteKaryawan = (id,username) =>{
     axios.delete('/karyawan/delete/'+ id,{
     }).then(res=>{
         axios.post('/history',{
-                user:this.props.userName,
-                desc:'Telah Menghapus Karyawan dengan id' + username,
+                description:'Telah Menghapus Karyawan dengan username ' + username,
+                user_id:this.props.iD,
                 divisi : this.props.divisi,
-                date: new Date() 
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
                 alert('success')            
                 this.getData()

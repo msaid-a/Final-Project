@@ -63,13 +63,13 @@ class Tugas extends Component {
         formData.append("status",status)
         axios.post('/tugas/uploads/'+ id,formData).then(res=>{
                 axios.post('/history',{
-                    user: this.props.userName,
-                    desc :'Telah menguload tugas dengan judul ' + title,
+                    user_id: this.props.iD,
+                    description :'Telah menguload tugas dengan judul ' + title,
                     divisi:this.props.jabatan.split(' ')[1],
-                    date: new Date() 
+                    tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss') 
     
                 }).then(res=>{
-                    alert(id)
+                    alert('success')
                     this.getTugas()
                 })
             

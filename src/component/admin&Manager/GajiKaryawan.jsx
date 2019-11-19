@@ -112,9 +112,10 @@ onSearch = () =>{
 
 const mapStateToProps = (state) =>{
     return {
-      userName : state.auth.username,
-      iD : state.auth.id,
-      jabatan : state.auth.jabatan
+        userName : state.auth.username,
+        iD : state.auth.id,
+        jabatan : state.auth.jabatan,
+        divisi: state.auth.divisi
     }
   }
 

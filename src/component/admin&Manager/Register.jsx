@@ -15,7 +15,7 @@ class Register extends Component {
 
     onRegiter = () =>{
         let nik = parseInt(this.nik.value)
-        let username = this.username.value
+        let username = this.username.value.toLowerCase()
         let email = this.email.value
         let password = this.password.value
         let nama = this.nama.value
@@ -37,9 +37,10 @@ class Register extends Component {
                 return alert("username/email Telah di gunakan")
             }
             axios.post('/history',{
-                user: "admin",
-                desc: "telah menambahkan karyawan baru dengan username " + username,
-                date: new Date() 
+                description: "telah menambahkan karyawan baru dengan username " + username,
+                user_id:this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
                 alert('Success')
             })
@@ -221,9 +222,10 @@ class Register extends Component {
 }
 const mapStateToProps = (state) =>{
     return {
-      userName : state.auth.username,
-      iD : state.auth.id,
-      jabatan : state.auth.jabatan
+        userName : state.auth.username,
+        iD : state.auth.id,
+        jabatan : state.auth.jabatan,
+        divisi: state.auth.divisi
     }
   }
 export default connect(mapStateToProps,{})(Register)

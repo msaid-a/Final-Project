@@ -44,14 +44,21 @@ import moment from 'moment'
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,divisi_id,jabatan,subdivisi_id,tanggal_lahir
         }).then(res=> {
-            alert('Success')
+            axios.post('/history',{
+                description:'Telah Meng edit profile Karyawan  ' + username,
+                user_id: this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+            }).then(res=>{
+                alert('Success')
+            })
         })
         
     }
 
     onUpdate = () =>{
         let nik = parseInt(this.nik.value)
-        let username = this.username.value
+        let username = this.username.value.toLowerCase()
         let email = this.email.value
         let password = this.password.value
         let nama = this.nama.value
@@ -63,6 +70,12 @@ import moment from 'moment'
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,tanggal_lahir
         }).then(res=> {
+            axios.post('/history',{
+                description:"Telah mengupdate user " + this.username.value,
+                user_id:this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+            })
             alert('Success')
         })
         
@@ -119,10 +132,14 @@ import moment from 'moment'
     
           }
         let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,subDivisi, tanggal_lahir} = this.state.profile 
+        if(this.state.profile === ''){
+            return <h1>Loading</h1>
+        }
         if(this.props.jabatan === 'admin'){
 
             return (
                 <div className="container col-8 text-left">
+                    this.state.profile ?
                 <div className="card card-register mx-auto mb-5" style={{marginTop:100}}>
                     <div className="card-header">Edit  Account</div>
                     <div className="card-body">
@@ -171,7 +188,7 @@ import moment from 'moment'
                                 </select>
                                 <div className="form mt-3">
                                    <label htmlFor="inputPassword">Tanggal Lahir</label>
-                                   <input type="date" defaultValue={tanggal_lahir} ref={input => this.tanggal_lahir = input}/>
+                                   <input type="date" defaultValue={moment(tanggal_lahir).format('MM-DD-YYYY')} ref={input => this.tanggal_lahir = input}/>
                                </div>
                             </div>
                             <div className="form">
@@ -208,7 +225,7 @@ import moment from 'moment'
                                             <option value="Karyawan">Karyawan</option>
                                         </select>
                                    </div>
-    </div>
+    </div> 
                                <div className="form">
                                    <label htmlFor="inputPassword">Divisi</label>
                                    <div className="form-label-group">
@@ -232,15 +249,13 @@ import moment from 'moment'
                         </form>
                     </div>
                 </div>
+               
             </div>
             )
         }
         return (
             
             <div className="container col-8 text-left">
-                {
-                    this.state.profile ?
-
             <div className="card card-register mx-auto mb-5" style={{marginTop:100}}>
                 <div className="card-header">Edit  Account</div>
                 <div className="card-body">
@@ -289,8 +304,7 @@ import moment from 'moment'
                             </select>
                             <div className="form mt-3">
                                <label htmlFor="inputPassword">Tanggal Lahir</label>
-                               {console.log(tanggal_lahir)}
-                               <input type="date" defaultValue={tanggal_lahir} ref={input => this.tanggal_lahir = input}/>
+                               <input type="date" defaultValue={moment(tanggal_lahir).format('MM-DD-YYYY')} ref={input => this.tanggal_lahir = input}/>
                            </div>
                         </div>
                         <div className="form">
@@ -322,18 +336,17 @@ import moment from 'moment'
                     </form>
                 </div>
             </div>
-                    :
-                    'loading ...'
-                }
+                    
         </div>
         )
     }
 }
 const mapStateToProps = (state) =>{
     return {
-      userName : state.auth.username,
-      iD : state.auth.id,
-      jabatan : state.auth.jabatan
+        userName : state.auth.username,
+        iD : state.auth.id,
+        jabatan : state.auth.jabatan,
+        divisi: state.auth.divisi
     }
   }
 export default connect(mapStateToProps)(EditProfile)

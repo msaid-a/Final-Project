@@ -4,6 +4,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { Paginator } from 'primereact/paginator';
+import moment from 'moment'
+
 
 
 export class Divisi extends Component {
@@ -37,8 +39,16 @@ export class Divisi extends Component {
         axios.post('/divisi',{
             divisi
         }).then(res =>{
-            alert('Success')
-            this.getDivisi()
+            if(res.data.error) return alert('Divisi Sudah Ada')
+            axios.post('/history',{
+                description : "telah menambahkan divisi baru yaitu " + this.divisi.value,
+                user_id:this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+            }).then(res=>{
+                alert('Success')
+                this.getDivisi()
+            })
 
         })
 
@@ -49,9 +59,16 @@ export class Divisi extends Component {
         axios.post('/subdivisi',{
             subDivisi,divisi_id
         }).then(res=>{
-            alert('success')
-            this.getDivisi()
-            this.toggleCancel()
+            axios.post('/history',{
+                description : "telah menambahkan subdivisi baru yaitu " + this.subDivisi.value,
+                user_id:this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+            }).then(res=>{
+                alert('success')
+                this.getDivisi()
+                this.toggleCancel()
+            })
 
         })
     }
@@ -80,11 +97,19 @@ export class Divisi extends Component {
         })
     }
 
-    deleteDivisi = (id) =>{
+    deleteDivisi = (id,divisi) =>{
         axios.delete('/divisi/'+ id)
             .then(res=>{
-                alert('success')
-                this.getDivisi()
+                axios.post('/history',{
+                    description : "telah mengahpus divisi yaitu " + divisi,
+                    user_id:this.props.iD,
+                    divisi : this.props.divisi,
+                    tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+                }).then(res=>{
+                    alert('success')
+                    this.getDivisi()
+                })
+               
             })
     }
     onPageChange(event) {
@@ -104,7 +129,7 @@ export class Divisi extends Component {
                 <td className="text-left"><ul>{this.renderSubDivisi(data.divisi)}</ul></td>
                 <td className="text-center ">
                     <button className="btn btn-success mr-1" onClick={()=>this.toggle(data.id,data.divisi)}>Add Subdivisi</button> 
-                    <button className="btn btn-danger" onClick={()=>{this.deleteDivisi(data.id)}}>Delete</button> 
+                    <button className="btn btn-danger" onClick={()=>{this.deleteDivisi(data.id, data.divisi)}}>Delete</button> 
                 </td>
             </tr>)
         })
@@ -165,7 +190,8 @@ const mapStateToProps = (state) =>{
     return {
       userName : state.auth.username,
       iD : state.auth.id,
-      jabatan : state.auth.jabatan
+      jabatan : state.auth.jabatan,
+      divisi: state.auth.divisi
     }
   }
 export default connect(mapStateToProps)(Divisi)

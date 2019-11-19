@@ -27,12 +27,8 @@ router.post('/divisi',(req, res)=>{
 router.get('/divisi',(req,res)=>{
     let sql = `SELECT * FROM divisi WHERE is_deleted = 0 ORDER BY divisi`
     conn.query(sql, (err,result)=>{
-        try {
-            if(err) throw err
+            if(err) return console.log (err)
             res.send(result)
-        } catch (error) {
-            res.send({error: error})
-        }
     })
 })
 
@@ -41,23 +37,20 @@ router.post('/subdivisi',(req, res)=>{
     let data = req.body
         data.id = token.generate(20)
     conn.query(sql, data, (err, result)=>{
-        try {
-            if(err) throw err
+            if(err) return console.log(err)
             res.send('Berhasil Menambahkan')
-        } catch (error) {
-            res.send({error: error})
-        }
+      
     })
 })
 
 router.get('/subdivisi',(req,res)=>{
-    let sql = `SELECT s.id, s.subDivisi,d.divisi, s.divisi_id FROM subDivisi s join divisi d on d.id = s.divisi_id`
+    let sql = `SELECT s.id, s.subDivisi,d.divisi, s.divisi_id FROM subDivisi s join divisi d on d.id = s.divisi_id WHERE d.is_deleted=0`
     conn.query(sql, (err,result)=>{
         try {
             if(err) throw err
             res.send(result)
         } catch (error) {
-            res.send({error: error})
+            res.send({error: error.message})
         }
     })
 })

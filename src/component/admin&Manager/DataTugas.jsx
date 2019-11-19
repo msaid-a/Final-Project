@@ -47,10 +47,10 @@ export class DataTugas extends Component {
             status : 'Selesai'
         }).then(res=>{
             axios.post('/history',{
-                user:this.props.userName,
-                desc:'menyatakan tugas selesai pada judul ' + title,
-                divisi: this.props.divisi,
-                date: new Date() 
+                description:'menyatakan tugas selesai pada judul ' + title,
+                user_id: this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
                 alert('success')            
                 this.getTugas()
@@ -68,10 +68,10 @@ export class DataTugas extends Component {
             status:"REVISI"
         }).then(res => {
             axios.post('/history',{
-                user:this.props.userName,
-                desc:'merevisi pada judul ' + this.state.selectTugas.title,
-                divisi: this.props.divisi, 
-                date: new Date() 
+                description:'merevisi pada judul ' + this.state.selectTugas.title,
+                user_id: this.props.iD,
+                divisi : this.props.divisi,
+                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
 
             }).then(res=>{
                 alert('success')            
@@ -104,6 +104,13 @@ export class DataTugas extends Component {
                 data.status = 'Terlambat'
                 axios.patch('/tugas/'+data.id,{
                         status : 'Terlambat'
+                    }).then(res=>{
+                        axios.post('/history',{
+                            description : "terlambat mengerjakan tugas dengan judul " + data.title,
+                            user_id: data.id,
+                            divisi : data.divisi,
+                            tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+                        })    
                     })
             }
             return (<tr>
@@ -194,9 +201,10 @@ export class DataTugas extends Component {
 
 const mapStateToProps = (state) =>{
     return {
-      userName : state.auth.username,
-      iD : state.auth.id,
-      jabatan : state.auth.jabatan
+        userName : state.auth.username,
+        iD : state.auth.id,
+        jabatan : state.auth.jabatan,
+        divisi: state.auth.divisi
     }
   }
 

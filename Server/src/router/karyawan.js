@@ -46,7 +46,7 @@ router.post('/avatar/:userid',(req,res,next)=>{
     conn.query(sql2, (err,result)=>{
         if(err) return res.send({error:err.message})
         // res.send(result[0])
-        if(result[0].avatar !== 'default-avatar.png'){
+        if(result[0].avatar !== 'default_avatar.png'){
             fs.unlinkSync(avatarDirectory+result[0].avatar, (err) => {return res.send(err)})
         }
         

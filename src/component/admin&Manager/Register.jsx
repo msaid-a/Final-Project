@@ -28,13 +28,16 @@ class Register extends Component {
         let phone = this.phone.value
         let tanggal_lahir = new Date(this.tanggal_lahir.value)
             tanggal_lahir =moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss')
-        console.log(subdivisi_id)
+
       
         axios.post('/karyawan/',{
             nik,username,email,password,nama,gender,agama,tanggal_lahir,pendidikan,divisi_id,jabatan,subdivisi_id,phone
         }).then(res=> {
-            if(res.data.error){
+            if(res.data.error.includes("UNIQUE")){
                 return alert("username/email Telah di gunakan")
+            }
+            if(res.data.error){
+                return alert("Isi semua form")
             }
             axios.post('/history',{
                 description: "telah menambahkan karyawan baru dengan username " + username,
@@ -43,6 +46,19 @@ class Register extends Component {
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
                 alert('Success')
+                this.nik.value = null
+                this.username.value= null
+                this.email.value = null
+                this.password.value = null
+                this.nama.value = null
+                this.gender.value = null
+                this.agama.value = null
+                this.pendidikan.value = null
+                this.divisi.value = null
+                this.jabatan.value = null
+                this.subDivisi.value = null
+                this.phone.value = null
+                this.tanggal_lahir.value = null
             })
         })
         

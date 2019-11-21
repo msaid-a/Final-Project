@@ -48,11 +48,11 @@ renderGaji = (first,last) =>{
         total += data.bonus
         no++
         return (<tr>
-            <td>{no}</td>
-            <td>{data.nama}</td>
-            <td>{`${data.bulan}/${data.tahun}`}</td>
-            <td>Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
-            <td><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
+            <td className="align-middle">{no}</td>
+            <td className="align-middle">{data.nama}</td>
+            <td className="align-middle">{`${data.bulan}/${data.tahun}`}</td>
+            <td className="align-middle">Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
+            <td className="align-middle"><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
         </tr>)
     })
 }
@@ -75,6 +75,9 @@ onSearch = () =>{
              </div>
                   <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
+                    <div className="mr-auto">
+                        <h4>Gaji Karyawan</h4>
+                    </div>
                     <label className="h5 mt-2">search :</label>
                             <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>

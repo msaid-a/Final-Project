@@ -3,7 +3,7 @@ import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import moment from 'moment'
-
+import LoadingOverlay from 'react-loading-overlay';
 
  class EditProfile extends Component {
 
@@ -27,7 +27,7 @@ import moment from 'moment'
     }
     onUpdateAdmin = () =>{
         let nik = parseInt(this.nik.value)
-        let username = this.username.value
+        let username = this.state.profile.username
         let email = this.email.value
         let password = this.password.value
         let nama = this.nama.value
@@ -58,7 +58,7 @@ import moment from 'moment'
 
     onUpdate = () =>{
         let nik = parseInt(this.nik.value)
-        let username = this.username.value.toLowerCase()
+        let username = this.state.username
         let email = this.email.value
         let password = this.password.value
         let nama = this.nama.value
@@ -70,6 +70,9 @@ import moment from 'moment'
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,tanggal_lahir
         }).then(res=> {
+            if(Object.keys(res.data).length === 0){
+                return alert('Email Telah di gunakan')
+            }
             axios.post('/history',{
                 description:"Telah mengupdate user " + this.username.value,
                 user_id:this.props.iD,
@@ -132,9 +135,8 @@ import moment from 'moment'
     
           }
         let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,subDivisi, tanggal_lahir} = this.state.profile 
-        if(this.state.profile === ''){
-            return <h1>Loading</h1>
-        }
+    if(this.state.profile && this.state.divisi.length !== 0 && this.state.subdivisi.length !== 0 ){
+      
         if(this.props.jabatan === 'admin'){
 
             return (
@@ -150,13 +152,6 @@ import moment from 'moment'
                                 <div className="form-label-group">
                                     <input type="number" defaultValue={nik} className="form-control" placeholder="NIK"
                                         required="required" ref={input => {this.nik = input}} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="inputEmail">Username</label>
-                                <div className="form-label-group">
-                                    <input type="text" defaultValue={username}  className="form-control" placeholder="Username"
-                                        required="required" ref={input => this.username = input}/>
                                 </div>
                             </div>
                             <div className="form">
@@ -188,7 +183,8 @@ import moment from 'moment'
                                 </select>
                                 <div className="form mt-3">
                                    <label htmlFor="inputPassword">Tanggal Lahir</label>
-                                   <input type="date" defaultValue={moment(tanggal_lahir).format('MM-DD-YYYY')} ref={input => this.tanggal_lahir = input}/>
+                                   <input type="date" ref={input => this.tanggal_lahir = input}/>
+                                   <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
                                </div>
                             </div>
                             <div className="form">
@@ -223,16 +219,19 @@ import moment from 'moment'
                                             <option value="" hidden>Jabatan</option>
                                             <option value="Manager">Manager</option>
                                             <option value="Karyawan">Karyawan</option>
-                                        </select>
-                                   </div>
+                                        </select> 
+                                   </div> 
     </div> 
                                <div className="form">
                                    <label htmlFor="inputPassword">Divisi</label>
+                                  
                                    <div className="form-label-group">
                                         <select className="mb-3" defaultValue={divisi} ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
                                         <option value="" hidden>Divisi</option>
                                             {this.renderDivisi()}
-                                        </select>
+                                        </select>                                    
+                                        <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
+
                                    </div>
                                </div>   <div className="form">
                                    <label htmlFor="inputPassword">Pekerjaan</label>
@@ -241,6 +240,7 @@ import moment from 'moment'
                                         <option value="" hidden>Pekerjaan</option>
                                             {this.renderSubDivisi()}
                                         </select>
+                                        <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
                                    </div>
                                </div>
                              
@@ -303,7 +303,7 @@ import moment from 'moment'
                                 <option value="Wanita">Wanita</option>
                             </select>
                             <div className="form mt-3">
-                               <label htmlFor="inputPassword">Tanggal Lahir</label>
+                               <label htmlFor="inputPassword">Tanggal Lahir</label> 
                                <input type="date" defaultValue={moment(tanggal_lahir).format('MM-DD-YYYY')} ref={input => this.tanggal_lahir = input}/>
                            </div>
                         </div>
@@ -340,6 +340,10 @@ import moment from 'moment'
         </div>
         )
     }
+    return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                <span class="sr-only">Loading...</span>
+             </div>)
+}
 }
 const mapStateToProps = (state) =>{
     return {

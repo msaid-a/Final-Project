@@ -85,9 +85,7 @@ export class Dasboard extends Component {
         return <Redirect to="/" ></Redirect>
 
       }
-      if(this.state.data.length === 0 ){
-          return <h1>Loading</h1>
-      }
+    
         return (
             <div style={{marginTop:90}} className="container">
                 <div className="row ">

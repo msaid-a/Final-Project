@@ -15,7 +15,7 @@ router.post('/divisi',(req, res)=>{
             let divisi_id = data.id
             let sql2 = `INSERT INTO subDivisi (id, subDivisi, divisi_id) VALUES ('${id}', '${subDivisi}', '${divisi_id}')`
             conn.query(sql2, (err, result)=>{
-                if(err) return res.send({error:err.message})
+                if(err) return res.send({error:err.sqlmessage})
                 res.send('Berhasil Menambahkan')
             })
         } catch (error) {
@@ -37,7 +37,7 @@ router.post('/subdivisi',(req, res)=>{
     let data = req.body
         data.id = token.generate(20)
     conn.query(sql, data, (err, result)=>{
-            if(err) return console.log(err)
+            if(err) return res.send({error:err.sqlMessage})
             res.send('Berhasil Menambahkan')
       
     })
@@ -50,7 +50,7 @@ router.get('/subdivisi',(req,res)=>{
             if(err) throw err
             res.send(result)
         } catch (error) {
-            res.send({error: error.message})
+            res.send({error: error.sqlmessage})
         }
     })
 })
@@ -63,7 +63,7 @@ router.delete('/divisi/:divisi_id',(req,res)=>{
             if(err) throw err
             res.send('Berhasil di hapus')
         } catch (error) {
-            res.send({error:error.message})
+            res.send({error:error.sqlmessage})
         }
     })
 })

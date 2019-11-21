@@ -159,13 +159,13 @@ renderKaryawan = (first,last) =>{
         if(this.props.jabatan =="admin"){
 
             return (<tr>
-            <td>{no}</td>
-            <td>{data.nik}</td>
-            <td>{data.email}</td>
-            <td>{data.nama}</td>
-            <td>{data.gender}</td>
-            <td>{data.subDivisi}</td>
-           <td><Link to={'/detailkaryawan/'+data.id_user}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
+            <td className="align-middle">{no}</td>
+            <td className="align-middle">{data.nik}</td>
+            <td className="align-middle">{data.email}</td>
+            <td className="align-middle">{data.nama}</td>
+            <td className="align-middle">{data.gender}</td>
+            <td className="align-middle">{data.subDivisi}</td>
+           <td className="align-middle"><Link to={'/detailkaryawan/'+data.id_user}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
            <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}>Delete</button> 
            <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id,data.id_user, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
@@ -173,13 +173,13 @@ renderKaryawan = (first,last) =>{
 
         if(this.props.jabatan.includes('Manager')){
             return (<tr>
-                <td>{no}</td>
-                <td>{data.nik}</td>
-                <td>{data.email}</td>
-                <td>{data.nama}</td>
-                <td>{data.gender}</td>
-                <td>{data.subDivisi}</td>
-                <td><button className="btn btn-primary btn-sm m-1"onClick={()=>this.toggleTugas(data.id_user,data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
+                <td className="align-middle">{no}</td>
+                <td className="align-middle">{data.nik}</td>
+                <td className="align-middle">{data.email}</td>
+                <td className="align-middle">{data.nama}</td>
+                <td className="align-middle">{data.gender}</td>
+                <td className="align-middle">{data.subDivisi}</td>
+                <td className="align-middle"><button className="btn btn-primary btn-sm m-1"onClick={()=>this.toggleTugas(data.id_user,data.id, data.nama, data.nik)} data-targer='#tugas'>Tambah Tugas</button> </td>
             </tr>)
             
         }
@@ -211,9 +211,12 @@ onPageChange(event) {
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
-                <h4>Data Karyawan</h4>
+                
 
                     <div className="form-group d-flex justify-content-end">
+                    <div className="mr-auto">
+                        <h4>Data Karyawan</h4>
+                    </div>
                      <label className="h5 mt-2">search :</label>
                             <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>

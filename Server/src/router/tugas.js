@@ -36,7 +36,7 @@ const upload = multer({
 router.post('/tugas/uploads/:tugasid',(upload.single('hasil')),(req,res)=>{
     let sql = `UPDATE tugas SET hasil ='${req.file.filename}', status='${req.body.status}' WHERE id = '${req.params.tugasid}'`
     conn.query(sql,(err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send('success Upload')
     })
 })
@@ -54,7 +54,7 @@ router.post('/tugas/:userid',(req,res)=>{
     }
 
     conn.query(sql,data,(err, result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send('success')
     })
 
@@ -67,7 +67,7 @@ router.get('/tugas',(req,res)=>{
 	on k.id = t.user_id`
 
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error : err.message})
+        if(err) return res.send({error : err.sqlmessage})
         res.send(result)
     })
 })
@@ -81,7 +81,7 @@ router.get('/tugas/:userid',(req,res)=>{
     ORDER BY t.deadline DESC`
 
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error : err.message})
+        if(err) return res.send({error : err.sqlmessage})
         res.send(result)
     })
 })
@@ -94,7 +94,7 @@ router.get('/download/:filename',(req,res)=>{
     }
     let fileName = req.params.filename
     res.sendFile(fileName, directory, function(err){
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
     })
 })
 
@@ -105,7 +105,7 @@ router.patch('/tugas/:tugasid', (req,res)=>{
     console.log(req.params.tugasid)
 
     conn.query(sql,data, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
             res.send(result)
     })
 })

@@ -8,7 +8,7 @@ router.get('/gaji',(req,res)=>{
                 join karyawan k
                 on k.id = g.user_id`
     conn.query(sql,(err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -20,7 +20,7 @@ router.get('/gaji/profile/:userid',(req,res)=>{
                 on k.id = g.user_id
                 WHERE k.id_user ='${req.params.userid}'`
     conn.query(sql,(err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -32,7 +32,7 @@ router.get('/gaji/:userid',(req,res)=>{
                 on k.id = g.user_id
                 WHERE g.id ='${req.params.userid}'`
     conn.query(sql,(err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -43,7 +43,7 @@ router.post('/gaji',(req,res)=>{
     let data = req.body
     data.id = token.generate(20)
     conn.query(sql,data,(err,result)=>{
-        if(err) return console.log({error:err.message})
+        if(err) return console.log({error:err.sqlmessage})
         res.send('Success Added Gaji')
     })
 })

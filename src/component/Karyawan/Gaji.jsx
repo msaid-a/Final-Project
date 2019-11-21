@@ -38,10 +38,10 @@ renderGaji = (first,last) =>{
         total += data.bonus
         no++
         return (<tr>
-            <td>{no}</td>
-            <td>{`${data.bulan}/${data.tahun}`}</td>
-            <td>Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
-            <td><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
+            <td className="align-middle">{no}</td>
+            <td className="align-middle">{`${data.bulan}/${data.tahun}`}</td>
+            <td className="align-middle">Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
+            <td className="align-middle"><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
 
         </tr>)
     })
@@ -57,6 +57,11 @@ onPageChange(event) {
     render() {
         if(!this.props.iD){
             return <Redirect to="/"></Redirect>
+        }
+        if(this.state.gaji.length === 0){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                <span class="sr-only">Loading...</span>
+             </div>)
         }
         return (
             <div className="container">

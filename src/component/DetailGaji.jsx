@@ -86,9 +86,9 @@ export class DetailGaji extends Component {
         }
     render() {
         if(this.state.gaji.length === 0){
-            return <div>
-                <h1>Loading</h1>
-            </div>
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                <span class="sr-only">Loading...</span>
+             </div>)
         }
         return (
             <div>

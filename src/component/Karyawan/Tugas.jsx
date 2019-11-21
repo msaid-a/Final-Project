@@ -56,8 +56,8 @@ class Tugas extends Component {
             formData.append("hasil",hasil)
         let status = 'Terupload'
         if(_status == 'REVISI'){
-            status = 'Revisi Terupload'
-        }else if(_status =="TERLAMBAT"){
+            status = 'REVISI Terupload'
+        }else if(_status =="Terlambat"){
             status = 'Terupload(Terlambat)'
         }
         formData.append("status",status)
@@ -102,12 +102,31 @@ class Tugas extends Component {
                     data.status = 'TERLAMBAT'
                 }
                 return (<tr>
-                    <td>{no}</td>
-                    <td><button className="btn btn-primary" onClick={()=>this.toggle(data.id,data.title,data.description)}>Lihat Tugas</button></td>
-                    <td>{data.pengirim}</td>
-                    <td>{moment(data.deadline).format('YYYY-MM-DD')}</td>
-                    <td><button className="btn btn-success" onClick={()=>this.toggleTugas(data.id,data.title,data.description,data.status)}>Upload Tugas</button></td>
-                    <td>{data.status}</td>
+                    <td className="align-middle">{no}</td>
+                    <td className="align-middle"><button className="btn btn-primary" onClick={()=>this.toggle(data.id,data.title,data.description)}>Lihat Tugas</button></td>
+                    <td  className="align-middle">{data.pengirim}</td>
+                    <td className="align-middle">{moment(data.deadline).format('YYYY-MM-DD')}</td>
+                    {
+                         data.status == "Selesai" ?
+                         <td className="align-middle">
+                             <i className="fas fa-check-square"></i>
+                             <p>Done</p>
+                         </td>
+                         : 
+                         <td className="align-middle"><button className="btn btn-success" onClick={()=>this.toggleTugas(data.id,data.title,data.description,data.status)}>Upload Tugas</button></td>
+
+                    }
+                    {
+                    data.status.includes("REVISI") ?
+                    <td className="align-middle text-warning font-weight-bold">{data.status}</td>
+                    : data.status.includes("Terlambat") ?
+                    <td className="align-middle text-danger font-weight-bold">{data.status}</td>
+                    : data.status === "Terupload" || data.status === "Selesai" ?
+                    <td className="align-middle text-success font-weight-bold">{data.status}</td>
+                    :
+                    <td className="">{data.status}</td>
+
+                }
                 </tr>)
             })
         
@@ -131,6 +150,11 @@ class Tugas extends Component {
     render() {
         if(!this.props.jabatan.includes('Karyawan')){
             return <Redirect to='/'></Redirect>
+        }
+        if(this.state.tugas.length===0){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                <span class="sr-only">Loading...</span>
+             </div>)
         }
         let {id,title, description,status} = this.state.selectTugas
         return (

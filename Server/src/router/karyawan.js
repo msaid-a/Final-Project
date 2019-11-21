@@ -44,14 +44,14 @@ router.post('/avatar/:userid',(req,res,next)=>{
     const sql2=`SELECT avatar FROM karyawan WHERE id='${req.params.userid}'`
     
     conn.query(sql2, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         // res.send(result[0])
         if(result[0].avatar !== 'default_avatar.png'){
             fs.unlinkSync(avatarDirectory+result[0].avatar, (err) => {return res.send(err)})
         }
         
         conn.query(sql,(err,result)=>{
-            if(err) return res.send({error:err.message})
+            if(err) return res.send({error:err.sqlmessage})
             res.send('Success')
         })
     })
@@ -64,7 +64,7 @@ router.get('/avatar/:filename',(req,res)=>{
     }
     let fileName = req.params.filename
     res.sendFile(fileName, directory, function(err){
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
     })
 })
 
@@ -81,10 +81,10 @@ router.get('/karyawan',(req,res)=>{
     on k.id_user = s.id
     join subDivisi sd
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0
-    ORDER BY jabatan
+    ORDER BY k.jabatan desc
 `
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -102,7 +102,7 @@ on k.subdivisi_id = sd.id WHERE k.is_deleted = 0
 GROUP BY d.divisi, sd.subdivisi
 `
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -119,7 +119,7 @@ on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and d.divisi = '${req.params.di
 GROUP BY d.divisi, sd.subdivisi
 `
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -152,9 +152,9 @@ router.post ('/karyawan',(req,res)=>{
         return res.send({error:'is not email'})
     }
     conn.query(sql2,  (err,result) =>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlMessage})
         conn.query(sql,  (err,result) =>{
-            if(err) return ({error:err.message})
+            if(err) return ({error:err.sqlmessage})
             res.send('Success Nambah')
         })
     })
@@ -175,7 +175,7 @@ router.get('/karyawan/profile/:userid',(req,res)=>{
     join subDivisi sd
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and k.id_user='${req.params.userid}'`
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         if(result.length === 0){
             return res.send({error:'User Not Found'})
         }
@@ -198,7 +198,7 @@ router.get('/karyawan/divisi/:divisi',(req,res)=>{
     join subDivisi sd
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and k.jabatan='Karyawan' and d.divisi ='${req.params.divisi}'`
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         res.send(result)
     })
 })
@@ -218,7 +218,7 @@ router.post('/login',(req,res)=>{
                         on karyawan.divisi_id = divisi.id  WHERE users.username='${username}' and users.is_deleted = 0`
 
     conn.query(sql, async (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         if(result.length === 0 ) return res.send({error:'User Not Found'})
 
         let user = result[0]
@@ -238,10 +238,10 @@ router.patch('/karyawan/:userid', (req,res)=>{
     if(data.password) data.password = bcrypt.hashSync(data.password, 8)
 
     conn.query(sql,data, (err,result)=>{
-        if(err) return res.send({error:err.message})
+        if(err) return res.send({error:err.sqlmessage})
         
         // conn.query(sql2,data, (err,result)=>{
-        //     if(err) return res.send({error:err.message})
+        //     if(err) return res.send({error:err.sqlmessage})
             res.send(result)
         // })
     })

@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { Paginator } from 'primereact/paginator';
 import moment from 'moment'
-
+import Swal from 'sweetalert2' 
 
 
 export class Divisi extends Component {
@@ -65,7 +65,12 @@ export class Divisi extends Component {
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
-                alert('success')
+                Swal.fire({
+                    type: 'success',
+                    title: 'Success',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
                 this.getDivisi()
                 this.toggleCancel()
             })
@@ -98,6 +103,16 @@ export class Divisi extends Component {
     }
 
     deleteDivisi = (id,divisi) =>{
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
         axios.delete('/divisi/'+ id)
             .then(res=>{
                 axios.post('/history',{
@@ -106,11 +121,17 @@ export class Divisi extends Component {
                     divisi : this.props.divisi,
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
                 }).then(res=>{
-                    alert('success')
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                      )
                     this.getDivisi()
                 })
                
             })
+        }
+        })
     }
     onPageChange(event) {
         this.setState({
@@ -124,10 +145,10 @@ export class Divisi extends Component {
        return this.state.divisi.slice(first,last).map(data =>{
            no++
            return( <tr>
-               <td>{no}</td>
-                <td>{data.divisi}</td>
-                <td className="text-left"><ul>{this.renderSubDivisi(data.divisi)}</ul></td>
-                <td className="text-center ">
+               <td className="align-middle">{no}</td>
+                <td className="align-middle">{data.divisi}</td>
+                <td className="text-left align-middle"><ul>{this.renderSubDivisi(data.divisi)}</ul></td>
+                <td className="text-center align-middle ">
                     <button className="btn btn-success mr-1" onClick={()=>this.toggle(data.id,data.divisi)}>Add Subdivisi</button> 
                     <button className="btn btn-danger" onClick={()=>{this.deleteDivisi(data.id, data.divisi)}}>Delete</button> 
                 </td>

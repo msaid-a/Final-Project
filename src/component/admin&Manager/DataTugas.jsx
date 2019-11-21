@@ -119,9 +119,29 @@ export class DataTugas extends Component {
                 <td>{data.title}</td>
                 <td>{moment(data.deadline).format('YYYY-MM-DD')}</td>
                 <td><a href={'http://localhost:2020/download/'+data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
-                <td><button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
-                    <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button></td>
-                <td>{data.status}</td>
+                {
+                    data.status == "Selesai" ?
+                    <td>
+                        <i className="fas fa-check-square"></i>
+                        <p>Done</p>
+                    </td>
+                    : 
+                    <td>
+                        <button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
+                        <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
+                    </td>
+                }
+                {
+                    data.status.includes("REVISI") ?
+                    <td className="text-warning font-weight-bold">{data.status}</td>
+                    : data.status.includes("Terlambat") ?
+                    <td className="text-danger font-weight-bold">{data.status}</td>
+                    : data.status === "Terupload" || data.status === "Selesai" ?
+                    <td className="text-success font-weight-bold">{data.status}</td>
+                    :
+                    <td className="">{data.status}</td>
+
+                }
             </tr>)
         })
     }

@@ -3,7 +3,7 @@ import axios from '../config/index'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import { Paginator } from 'primereact/paginator';
-
+import moment from 'moment'
 
 export class History extends Component {
     state={
@@ -14,7 +14,7 @@ export class History extends Component {
         lastIndex : 10
     }
     getHistory =() =>{
-            if(this.props.jabatan=="admin"){
+            if(this.props.jabatan==="admin"){
                 return axios.get('/history')
                         .then(res=>{
                         this.setState({history:res.data,cari : res.data})
@@ -23,20 +23,23 @@ export class History extends Component {
                     })
            
             }
-     
-             axios.get('/history',{
-                             params:{
-                                divisi : this.props.divisi
-                                }
-                            })
-                        .then(res=>{
-                        this.setState({history: res.data, cari : res.data})
-                        console.log(this.state.cari)
-                    }).catch(err => {
-                        console.log(err)
-                    })
+            if(this.props.jabatan ==='Manager'){
+
+               return axios.get('/history/' + this.props.divisi)
+                           .then(res=>{
+                           this.setState({history: res.data, cari : res.data})
+                       }).catch(err => {
+                           console.log(err)
+                       })
+            }
+            return axios.get('/history/profile/' + this.props.userName)
+            .then(res=>{
+                    this.setState({history: res.data, cari : res.data})
+                     }).catch(err => {
+                         console.log(err)
+                     })
+                
             
-          
     }
     
     componentDidMount = () =>{
@@ -51,10 +54,11 @@ export class History extends Component {
         return this.state.cari.slice(first,last).map(data =>{
             no++
             return (<tr>
-                <td>{no}</td>
-                <td>{data.user}</td>
-                <td>{data.desc}</td>
-                <td>{data.date.slice(0,10)}</td>
+                <td className="align-middle">{no}</td>
+                <td className="align-middle">{data.username}</td>
+                <td className="align-middle">{data.divisi}</td>
+                <td className="align-middle">{data.description}</td>
+                <td className="align-middle">{moment(data.tanggal).format('YYYY-MM-DD')}</td>
             </tr>)
         })
     }
@@ -70,7 +74,7 @@ export class History extends Component {
     onSearch = () =>{
         let username = this.search.value
         let result = this.state.history.filter(data => {
-            return data.user.includes(username)
+            return data.username.includes(username)
        })
        this.setState({cari:result})
     }
@@ -84,6 +88,9 @@ export class History extends Component {
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
+                    <div className="mr-auto">
+                        <h3>History</h3>
+                    </div>
                     <label className="h5 mt-2">search :</label>
                             <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
@@ -95,6 +102,7 @@ export class History extends Component {
                     <tr>
                     <th>NO</th>
                     <th>Username</th>
+                    <th>Divisi</th>
                     <th>Description</th>
                     <th>Date</th>
                     </tr>

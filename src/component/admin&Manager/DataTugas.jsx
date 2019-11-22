@@ -5,6 +5,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 import moment from 'moment'
 import { Paginator } from 'primereact/paginator';
+import Swal from 'sweetalert2'
 
 export class DataTugas extends Component {
 
@@ -52,7 +53,12 @@ export class DataTugas extends Component {
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
-                alert('success')            
+                Swal.fire(
+                    'Done!',
+                    '',
+                    'success'
+                  )   
+                           
                 this.getTugas()
             })
         })
@@ -74,7 +80,11 @@ export class DataTugas extends Component {
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
 
             }).then(res=>{
-                alert('success')            
+                Swal.fire(
+                    'Done!',
+                    'Revisi',
+                    'success'
+                  )   
                 this.getTugas()
                 this.toggleCancel()
             })
@@ -114,30 +124,30 @@ export class DataTugas extends Component {
                     })
             }
             return (<tr>
-                <td>{no}</td>
-                <td>{data.nama}</td>
-                <td>{data.title}</td>
-                <td>{moment(data.deadline).format('YYYY-MM-DD')}</td>
-                <td><a href={'http://localhost:2020/download/'+data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
+                <td className="align-middle">{no}</td>
+                <td className="align-middle">{data.nama}</td>
+                <td className="align-middle">{data.title}</td>
+                <td className="align-middle">{moment(data.deadline).format('YYYY-MM-DD')}</td>
+                <td className="align-middle"><a href={'http://localhost:2020/download/'+data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
                 {
                     data.status == "Selesai" ?
-                    <td>
+                    <td className="align-middle">
                         <i className="fas fa-check-square"></i>
                         <p>Done</p>
                     </td>
                     : 
-                    <td>
+                    <td className="align-middle">
                         <button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
                         <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
                     </td>
                 }
                 {
                     data.status.includes("REVISI") ?
-                    <td className="text-warning font-weight-bold">{data.status}</td>
+                    <td className="text-warning font-weight-bold align-middle">{data.status}</td>
                     : data.status.includes("Terlambat") ?
-                    <td className="text-danger font-weight-bold">{data.status}</td>
+                    <td className="text-danger font-weight-bold align-middle">{data.status}</td>
                     : data.status === "Terupload" || data.status === "Selesai" ?
-                    <td className="text-success font-weight-bold">{data.status}</td>
+                    <td className="text-success font-weight-bold align-middle">{data.status}</td>
                     :
                     <td className="">{data.status}</td>
 
@@ -173,7 +183,7 @@ export class DataTugas extends Component {
                         <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
-                <table className="table table-striped table-responsive-md btn-table mt-5" >
+                <table className="table table-sm table-striped table-responsive-md btn-table mt-5" >
                     <thead>
                     <th>NO</th>
                     <th>Karyawan</th>

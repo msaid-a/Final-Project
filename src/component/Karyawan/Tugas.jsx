@@ -5,6 +5,7 @@ import axios from '../../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Paginator } from 'primereact/paginator';
 import moment from 'moment'
+import Swal from 'sweetalert2'
 
 class Tugas extends Component {
 
@@ -69,8 +70,13 @@ class Tugas extends Component {
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss') 
     
                 }).then(res=>{
-                    alert('success')
+                    Swal.fire(
+                        'Added!',
+                        '',
+                        'success'
+                      )   
                     this.getTugas()
+                    this.toggleTugasCancel()
                 })
             
         })

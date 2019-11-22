@@ -3,6 +3,7 @@ import axios from '../../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import moment from 'moment'
+import Swal from 'sweetalert2'
 
 class Register extends Component {
     
@@ -15,6 +16,14 @@ class Register extends Component {
 
     onRegiter = () =>{
         let nik = parseInt(this.nik.value)
+        if(isNaN(parseInt(this.nik.value))){
+            return  Swal.fire({
+                type: 'error',
+                title: 'NIK Harus berupa Angka',
+                showConfirmButton:false,
+                timer:900
+            })       
+        }
         let username = this.username.value.toLowerCase()
         let email = this.email.value
         let password = this.password.value
@@ -33,19 +42,36 @@ class Register extends Component {
         axios.post('/karyawan/',{
             nik,username,email,password,nama,gender,agama,tanggal_lahir,pendidikan,divisi_id,jabatan,subdivisi_id,phone
         }).then(res=> {
-            if(res.data.error.includes("UNIQUE")){
-                return alert("username/email Telah di gunakan")
-            }
+
             if(res.data.error){
-                return alert("Isi semua form")
+                if(res.data.error.includes("UNIQUE")){
+                    return  Swal.fire({
+                        type: 'error',
+                        title: 'username/email Telah di gunakan',
+                        showConfirmButton:false,
+                        timer:900
+                    })       
+                }
+                    return Swal.fire({
+                        type: 'error',
+                        title: 'Isi Semua From',
+                        showConfirmButton:false,
+                        timer:900
+                    })   
             }
+
             axios.post('/history',{
                 description: "telah menambahkan karyawan baru dengan username " + username,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
-                alert('Success')
+                Swal.fire({
+                    type: 'success',
+                    title: 'Success',
+                    showConfirmButton:false,
+                    timer:900
+                })                
                 this.nik.value = null
                 this.username.value= null
                 this.email.value = null
@@ -125,36 +151,36 @@ class Register extends Component {
                            <div className="form-group">
                                <label htmlFor="inputEmail">NIK</label>
                                <div className="form-label-group">
-                                   <input type="number"  className="form-control" placeholder="NIK"
-                                       required="required" maxLength={10} ref={input => {this.nik = input}} />
+                                   <input type="text"  className="form-control" placeholder="NIK"
+                                        maxlength="16" ref={input => {this.nik = input}} />
                                </div>
                            </div>
                            <div className="form-group">
                                <label htmlFor="inputEmail">Username</label>
                                <div className="form-label-group">
                                    <input type="text"  className="form-control" placeholder="Username"
-                                       required="required" ref={input => this.username = input}/>
+                                       maxlength="20" ref={input => this.username = input}/>
                                </div>
                            </div>
                            <div className="form">
                                <label htmlFor="inputEmail">Email address</label>
                                <div className="form-label-group">
                                    <input type="email"  className="form-control"
-                                       placeholder="Email address" required="required" ref={input => this.email= input}/>
+                                       placeholder="Email address"  ref={input => this.email= input}/>
                                </div>
                            </div>
                            <div className="form">
                                <label htmlFor="inputEmail">Password</label>
                                <div className="form-label-group">
                                    <input type="Password"  className="form-control"
-                                       placeholder="Password" required="required" ref ={input => this.password = input}/>
+                                       placeholder="Password"  ref ={input => this.password = input}/>
                                </div>
                            </div>
                            <div className="form">
                                <label htmlFor="inputPassword">Nama</label>
                                <div className="form-label-group">
                                    <input type="text" className="form-control" placeholder="Nama"
-                                       required="required" ref={input => this.nama = input}/>
+                                        ref={input => this.nama = input}/>
                                </div>
                            </div>
                            <div className="form mt-3">
@@ -184,7 +210,7 @@ class Register extends Component {
                                <label htmlFor="inputPassword">Pendidikan Terakhir</label>
                                <div className="form-label-group">
                                    <select type="text" className="form-control"
-                                     required="required" ref={input => this.pendidikan = input}>
+                                      ref={input => this.pendidikan = input}>
                                          <option value="SMA/SMK">SMA/SMK</option>
                                          <option value="S1">S1</option>
                                          <option value="S2">S2</option>

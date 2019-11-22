@@ -5,6 +5,7 @@ import axios from '../../config/index'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import moment from 'moment'
 import { Paginator } from 'primereact/paginator';
+import Swal from 'sweetalert2'
 
 
 class DataKaryawan extends Component {
@@ -79,9 +80,12 @@ saveGaji = (id, nama) =>{
                 divisi : this.props.divisi,
                 tanggal: now 
             }).then(res=>{
-                alert('Success')         
-            })
-            // this.toggleCancel()
+                Swal.fire(
+                    'Added!',
+                    '',
+                    'success'
+                  )            })
+            this.toggleCancel()
         }).catch(err => {
             alert(err.message)
         })
@@ -127,7 +131,12 @@ postTugas = (id,nama,nik) =>{
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
-                alert('success')            
+                Swal.fire(
+                    'Added!',
+                    '',
+                    'success'
+                  )   
+                  this.toggleTugasCancel()          
             })
     })
 }
@@ -138,18 +147,36 @@ componentDidMount= () =>{
 }
 
 deleteKaryawan = (id,username) =>{
-    axios.delete('/karyawan/delete/'+ id,{
-    }).then(res=>{
-        axios.post('/history',{
-                description:'Telah Menghapus Karyawan dengan username ' + username,
-                user_id:this.props.iD,
-                divisi : this.props.divisi,
-                tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+            axios.delete('/karyawan/delete/'+ id,{
             }).then(res=>{
-                alert('success')            
-                this.getData()
+                axios.post('/history',{
+                        description:'Telah Menghapus Karyawan dengan username ' + username,
+                        user_id:this.props.iD,
+                        divisi : this.props.divisi,
+                        tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+                    }).then(res=>{
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                          )
+                     this.getData()
+                    })
             })
-    })
+          
+        }
+      })
+    
 }
 
 renderKaryawan = (first,last) =>{
@@ -236,7 +263,7 @@ onPageChange(event) {
                     </tr>
                     </thead>
                     <tbody className='text-left'style={{fontSize: 13}}>
-                        {this.renderKaryawan()}
+                        {this.renderKaryawan(this.state.first, this.state.lastIndex)}
                     </tbody>
                 </table>
                 <Paginator

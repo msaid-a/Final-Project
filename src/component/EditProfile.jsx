@@ -3,7 +3,7 @@ import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import moment from 'moment'
-import LoadingOverlay from 'react-loading-overlay';
+import Swal from 'sweetalert2';
 
  class EditProfile extends Component {
 
@@ -50,7 +50,12 @@ import LoadingOverlay from 'react-loading-overlay';
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             }).then(res=>{
-                alert('Success')
+                Swal.fire({
+                    type: 'success',
+                    title: 'Success',
+                    showConfirmButton:false,
+                    timer:900
+                })   
             })
         })
         
@@ -79,7 +84,13 @@ import LoadingOverlay from 'react-loading-overlay';
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             })
-            alert('Success')
+            Swal.fire({
+                type: 'success',
+                title: 'Success',
+                showConfirmButton:false,
+                timer:900
+            })   
+            
         })
         
     }

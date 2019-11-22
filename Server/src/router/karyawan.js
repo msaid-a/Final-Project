@@ -151,11 +151,31 @@ router.post ('/karyawan',(req,res)=>{
     if(!validator.isEmail(req.body.email)){
         return res.send({error:'is not email'})
     }
-    conn.query(sql2,  (err,result) =>{
-        if(err) return res.send({error:err.sqlMessage})
-        conn.query(sql,  (err,result) =>{
-            if(err) return ({error:err.sqlmessage})
-            res.send('Success Nambah')
+    conn.beginTransaction((err)=>{
+        if(err) return res.send({error : err.sqlMessage})
+        conn.query(sql2,  (err,result) =>{
+            if(err){
+                return conn.rollback(()=>{
+                    res.send({error:err.sqlMessage})
+                })  
+            } 
+            conn.query(sql,  (err,result) =>{
+                if(err){
+                    return conn.rollback(()=>{
+                        res.send ({error:err.sqlmessage})
+                    })
+
+                } 
+                conn.commit(err => {
+                    if(err){
+                        return conn.rollback(()=>{
+                            res.send ({error:err.sqlmessage})
+                        })
+    
+                    } 
+                })
+                res.send('Success Nambah')
+            })
         })
     })
 
@@ -265,3 +285,36 @@ router.delete('/karyawan/delete/:id_user',(req,res)=>{
 })
 
 module.exports = router
+
+// let id_users = token.generate(20)
+//     let id_karyawan = token.generate(20)
+//     let defaultAvatar = 'default_avatar.png'
+//     req.body.password = bcrypt.hashSync(req.body.password, 8)
+//     let sql = `INSERT INTO karyawan
+//     (id, id_user, nik,nama, gender, tanggal_lahir, agama, pendidikan, divisi_id,subdivisi_id ,jabatan,  phone, avatar) VALUES 
+//     ('${id_karyawan}',
+//         '${id_users}',
+//         '${req.body.nik}',
+//         '${req.body.nama}',
+//         '${req.body.gender}',
+//         '${req.body.tanggal_lahir}', 
+//         '${req.body.agama}', 
+//         '${req.body.pendidikan}', 
+//         '${req.body.divisi_id}',
+//         '${req.body.subdivisi_id}', 
+//         '${req.body.jabatan}', 
+//         '${req.body.phone}', 
+//         '${defaultAvatar}')`
+    
+//     let sql2 = `INSERT INTO users (id, username, email, password) VALUES ('${id_users}', '${req.body.username}', '${req.body.email}', '${req.body.password}')`
+    
+//     if(!validator.isEmail(req.body.email)){
+//         return res.send({error:'is not email'})
+//     }
+//     conn.query(sql2,  (err,result) =>{
+//         if(err) return res.send({error:err.sqlMessage})
+//         conn.query(sql,  (err,result) =>{
+//             if(err) return ({error:err.sqlmessage})
+//             res.send('Success Nambah')
+//         })
+//     })

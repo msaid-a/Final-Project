@@ -9,6 +9,7 @@ import {Redirect} from 'react-router-dom'
 import {sendData} from '../actions/index'
 import { connect } from 'react-redux'
 
+const bcrypt = require('bcryptjs')
 
 export class Login extends Component {
   
@@ -19,11 +20,11 @@ export class Login extends Component {
   }
 
     render() {
-    if(this.props.jabatan === 'admin' || this.props.jabatan === "Manager"){
+    if(bcrypt.compareSync("admin", this.props.jabatan) || bcrypt.compareSync("Manager", this.props.jabatan)){
       return <Redirect to ='/dasboard'></Redirect>
     }
     
-    if(this.props.jabatan.split(' ')[0] === 'Karyawan'){
+    if(bcrypt.compareSync("Karyawan", this.props.jabatan)){
       return <Redirect to ='/tugas'></Redirect>
     }
         return (

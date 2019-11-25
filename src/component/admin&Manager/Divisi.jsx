@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import { Paginator } from 'primereact/paginator';
 import moment from 'moment'
 import Swal from 'sweetalert2' 
-
+import bcrypt from 'bcryptjs'
 
 export class Divisi extends Component {
     
@@ -161,6 +161,9 @@ export class Divisi extends Component {
             return <Redirect to="/" ></Redirect>
     
           }
+        if(!bcrypt.compareSync("admin", this.props.jabatan)){
+            return <Redirect to='/' ></Redirect>
+        }
         let {id, divisi} = this.state.selectDivisi
         return (
             <div className="container">

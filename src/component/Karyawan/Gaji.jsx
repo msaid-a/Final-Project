@@ -58,11 +58,7 @@ onPageChange(event) {
         if(!this.props.iD){
             return <Redirect to="/"></Redirect>
         }
-        if(this.state.gaji.length === 0){
-            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
-                <span class="sr-only">Loading...</span>
-             </div>)
-        }
+        
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto">

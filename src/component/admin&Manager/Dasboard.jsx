@@ -6,6 +6,7 @@ import randtoken  from 'rand-token'
 import { Chart } from 'primereact/chart';
 import { number } from 'prop-types'
 
+const bcrypt = require('bcryptjs')
 
 export class Dasboard extends Component {
 
@@ -20,7 +21,7 @@ export class Dasboard extends Component {
     }
 
     getData = () =>{
-        if(this.props.divisi =='admin'){
+        if(bcrypt.compareSync("admin", this.props.jabatan)){
           return  axios.get('/karyawan/total')
                 .then(res=>{
                     this.setState({data : res.data})
@@ -78,7 +79,7 @@ export class Dasboard extends Component {
         
 
           
-      if(this.props.jabatan == 'Karyawan'){
+      if(bcrypt.compareSync("Karyawan", this.props.jabatan)){
           return <Redirect to="/" ></Redirect>
       }
       if(!this.props.iD){

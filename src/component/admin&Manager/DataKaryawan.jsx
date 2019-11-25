@@ -6,7 +6,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import moment from 'moment'
 import { Paginator } from 'primereact/paginator';
 import Swal from 'sweetalert2'
-
+import bcrypt from 'bcryptjs'
 
 class DataKaryawan extends Component {
 
@@ -56,7 +56,7 @@ toggle  = (id,id_karyawan,nama) => {
 }
 
 saveGaji = (id, nama) =>{
-    if(this.props.jabatan=="admin"){
+    if(bcrypt.compareSync("admin", this.props.jabatan)){
         let bulan = this.bulan.value
         let tahun = this.tahun.value
         let gaji = parseInt(this.gaji.value)
@@ -94,7 +94,7 @@ saveGaji = (id, nama) =>{
 
 
 getData =  () =>{
-    if(this.props.jabatan =="admin"){
+    if(bcrypt.compareSync("admin", this.props.jabatan)){
      return   axios.get('/karyawan')
                 .then(res => {
                      this.setState({karyawan : res.data,
@@ -102,7 +102,7 @@ getData =  () =>{
                     console.log(res.data)
                      })
     }
-    if(this.props.jabatan.includes('Manager')){
+    if(bcrypt.compareSync("Manager", this.props.jabatan)){
         return   axios.get(`/karyawan/divisi/${this.props.divisi}`,)
         .then(res => {
             console.log(res.data)
@@ -183,7 +183,7 @@ renderKaryawan = (first,last) =>{
     let no = 0
     return this.state.search.slice(first,last).map(data => {
         no++
-        if(this.props.jabatan =="admin"){
+        if(bcrypt.compareSync("admin", this.props.jabatan)){
 
             return (<tr>
             <td className="align-middle">{no}</td>
@@ -198,7 +198,7 @@ renderKaryawan = (first,last) =>{
         </tr>)
         }
 
-        if(this.props.jabatan.includes('Manager')){
+        if(bcrypt.compareSync("Manager", this.props.jabatan)){
             return (<tr>
                 <td className="align-middle">{no}</td>
                 <td className="align-middle">{data.nik}</td>

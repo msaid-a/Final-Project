@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {BrowserRouter, Route} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 
@@ -21,7 +21,7 @@ import EditProfile from './EditProfile'
 import Divisi from './admin&Manager/Divisi'
 import Dasboard from './admin&Manager/Dasboard'
 import DetailGaji from './DetailGaji'
-
+import NotFound from './NotFound'
 class App extends Component {
 
   state = {
@@ -50,19 +50,22 @@ class App extends Component {
         <div id="App">
             <Navbar/>
               <div id="page-wrap">
-                <Route path='/'  component={Login} exact/>
-                <Route path='/register' component={Register} />
-                <Route path='/gajikaryawan' component={GajiKaryawan} />
-                <Route path='/datatugas' component={DataTugas} />
-                <Route path='/history' component={History} />
-                <Route path='/datakaryawan' component={DataKaryawan} />               
-                <Route path='/tugas' component={Tugas} />               
-                <Route path='/gaji' component={Gaji} />               
-                <Route path='/divisi' component={Divisi} />               
-                <Route path='/dasboard' component={Dasboard} />               
-                <Route path='/detailgaji/:idgaji' component={DetailGaji} />               
-                <Route path='/editprofile/:idkaryawan' component={EditProfile} />               
-                <Route path='/detailkaryawan/:idkaryawan' component={Detail} />       
+                <Switch>
+                  <Route path='/'  component={Login} exact/>
+                  <Route path='/register' component={Register} />
+                  <Route path='/gajikaryawan' component={GajiKaryawan} />
+                  <Route path='/datatugas' component={DataTugas} />
+                  <Route path='/history' component={History} />
+                  <Route path='/datakaryawan' component={DataKaryawan} />               
+                  <Route path='/tugas' component={Tugas} />               
+                  <Route path='/gaji' component={Gaji} />               
+                  <Route path='/divisi' component={Divisi} />               
+                  <Route path='/dasboard' component={Dasboard} />               
+                  <Route path='/detailgaji/:idgaji' component={DetailGaji} />               
+                  <Route path='/editprofile/:idkaryawan' component={EditProfile} />               
+                  <Route path='/detailkaryawan/:idkaryawan' component={Detail} />       
+                  <Route path='*' component={NotFound} />       
+                </Switch>
               </div>
               <Footer></Footer>
         </div>

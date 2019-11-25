@@ -6,6 +6,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Paginator } from 'primereact/paginator';
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import bcrypt from 'bcryptjs'
 
 class Tugas extends Component {
 
@@ -154,7 +155,7 @@ class Tugas extends Component {
    }
 
     render() {
-        if(!this.props.jabatan.includes('Karyawan')){
+        if(!bcrypt.compareSync("Karyawan", this.props.jabatan)){
             return <Redirect to='/'></Redirect>
         }
         if(this.state.tugas.length===0){

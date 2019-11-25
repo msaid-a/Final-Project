@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Redirect, Link} from 'react-router-dom'
 import axios from '../../config/index'
 import { Paginator } from 'primereact/paginator';
- 
+import bcrypt from 'bcryptjs'
 
 class DataKaryawan extends Component {
 
@@ -65,7 +65,7 @@ onSearch = () =>{
 }
 
     render() {
-        if(this.props.jabatan !=='admin'){
+        if(!bcrypt.compareSync("admin", this.props.jabatan)){
             return <Redirect to ='/'></Redirect>
         }
         return (

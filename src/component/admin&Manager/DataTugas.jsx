@@ -6,6 +6,7 @@ import {Redirect} from 'react-router-dom'
 import moment from 'moment'
 import { Paginator } from 'primereact/paginator';
 import Swal from 'sweetalert2'
+import bcrypt from 'bcryptjs'
 
 export class DataTugas extends Component {
 
@@ -128,7 +129,7 @@ export class DataTugas extends Component {
                 <td className="align-middle">{data.nama}</td>
                 <td className="align-middle">{data.title}</td>
                 <td className="align-middle">{moment(data.deadline).format('YYYY-MM-DD')}</td>
-                <td className="align-middle"><a href={'http://localhost:2020/download/'+data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
+                <td className="align-middle"><a href={data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
                 {
                     data.status == "Selesai" ?
                     <td className="align-middle">
@@ -164,7 +165,7 @@ export class DataTugas extends Component {
     }
 
     render() {
-        if(!this.props.jabatan.includes('Manager')){
+        if(!bcrypt.compareSync("Manager", this.props.jabatan)){
             return <Redirect to="/"></Redirect>
         }
         if(!this.props.iD){

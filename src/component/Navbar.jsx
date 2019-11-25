@@ -4,10 +4,12 @@ import {logoutData} from '../actions/index'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
+const bcrypt = require('bcryptjs')
+
 class Header extends Component {
 
     renderNav = () =>{
-        if (this.props.jabatan == 'admin'){
+        if (bcrypt.compareSync("admin", this.props.jabatan)){
             return ( <Menu>
              
                 <Link to="/dasboard" className="menu-item" >
@@ -33,7 +35,7 @@ class Header extends Component {
                 </Link>
         </Menu>)
         }
-        if(this.props.jabatan.includes('Manager')){
+        if(bcrypt.compareSync("Manager", this.props.jabatan)){
             return ( <Menu>
                 <Link to="/dasboard" className="menu-item" >
                     <span>Dasboard</span></Link>
@@ -55,7 +57,7 @@ class Header extends Component {
                 </Link>
         </Menu>)
         }
-        if(this.props.jabatan.includes('Karyawan')){
+        if(bcrypt.compareSync("Karyawan", this.props.jabatan)){
             return ( <Menu>
              
                 <Link to="/gaji" className="menu-item" >

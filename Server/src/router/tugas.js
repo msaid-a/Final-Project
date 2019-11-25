@@ -68,6 +68,10 @@ router.get('/tugas',(req,res)=>{
 
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error : err.sqlmessage})
+        let data = result
+        data.map(tugas =>{
+            tugas.hasil = `http://localhost:2020/download/${tugas.hasil}`
+        })
         res.send(result)
     })
 })

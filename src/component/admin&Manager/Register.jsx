@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import bcrypt from 'bcryptjs'
 
 class Register extends Component {
     
@@ -138,7 +139,7 @@ class Register extends Component {
 
     
     render() {
-        if(this.props.jabatan != 'admin'){
+        if(!bcrypt.compareSync("admin", this.props.jabatan)){
             return <Redirect to ="/" ></Redirect>
         }
         return (

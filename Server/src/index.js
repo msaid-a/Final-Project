@@ -5,6 +5,7 @@ const tugas = require('./router/tugas')
 const gaji = require('./router/gaji')
 const divisi = require('./router/divisi')
 const history = require('./router/history')
+const jwt = require('jsonwebtoken')
 
 const app = express()
 const cors = require('cors')

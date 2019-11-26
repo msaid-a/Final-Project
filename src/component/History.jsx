@@ -7,7 +7,7 @@ import moment from 'moment'
 
 export class History extends Component {
     state={
-        history:[],
+        history:null,
         cari:[],
         first: 0,
         rows: 10,
@@ -15,7 +15,10 @@ export class History extends Component {
     }
     getHistory =() =>{
             if(this.props.jabatan==="admin"){
-                return axios.get('/history')
+                return axios.get('/history',{
+                    headers:{
+                    keys : this.props.token
+                }})
                         .then(res=>{
                         this.setState({history:res.data,cari : res.data})
                     }).catch(err => {
@@ -25,14 +28,20 @@ export class History extends Component {
             }
             if(this.props.jabatan ==='Manager'){
 
-               return axios.get('/history/' + this.props.divisi)
+               return axios.get('/history/' + this.props.divisi,{
+                headers:{
+                keys : this.props.token
+            }})
                            .then(res=>{
                            this.setState({history: res.data, cari : res.data})
                        }).catch(err => {
                            console.log(err)
                        })
             }
-            return axios.get('/history/profile/' + this.props.userName)
+            return axios.get('/history/profile/' + this.props.userName,{
+                headers:{
+                keys : this.props.token
+            }})
             .then(res=>{
                     this.setState({history: res.data, cari : res.data})
                      }).catch(err => {
@@ -84,6 +93,11 @@ export class History extends Component {
         if(!this.props.iD){
             return <Redirect to="/"></Redirect>
         }
+        if(this.state.history === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+          }
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
@@ -129,9 +143,9 @@ const mapStateToProps = (state) =>{
       userName : state.auth.username,
       iD : state.auth.id,
       jabatan : state.auth.jabatan,
-      divisi : state.auth.divisi
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
-
 
 export default connect(mapStateToProps)(History)

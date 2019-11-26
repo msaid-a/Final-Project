@@ -7,7 +7,8 @@ const initState = {
     id :0,
     username: '',
     jabatan : '',
-    divisi :''
+    divisi :'',
+    token : ''
 }
 
 
@@ -15,7 +16,7 @@ const initState = {
 const authReducer = (state = initState, action) =>{
     switch(action.type){
         case "LOGIN_SUCCESS":
-            return {...state, id: action.payload.id, username: action.payload.username, jabatan: action.payload.jabatan, divisi : action.payload.divisi}   
+            return {...state, id: action.payload.id, username: action.payload.username, jabatan: action.payload.jabatan, divisi : action.payload.divisi, token: action.payload.token}   
 
         case "LOGOUT_SUCCESS":
             return {...state,...initState} 

@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs'
 class DataKaryawan extends Component {
 
     state={
-        gaji : [],
+        gaji : null,
         search:[],
         first: 0,
         rows: 10,
@@ -17,7 +17,10 @@ class DataKaryawan extends Component {
     }
 
 getData =  () =>{
-    axios.get('/gaji')
+    axios.get('/gaji',{
+        headers:{
+        keys : this.props.token
+    }})
     .then(res => {
         console.log(res.data)
         this.setState({gaji : res.data})
@@ -68,6 +71,11 @@ onSearch = () =>{
         if(!bcrypt.compareSync("admin", this.props.jabatan)){
             return <Redirect to ='/'></Redirect>
         }
+        if(this.state.gaji === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+          }
         return (
             <div className="container">
             <div className="row">
@@ -115,10 +123,11 @@ onSearch = () =>{
 
 const mapStateToProps = (state) =>{
     return {
-        userName : state.auth.username,
-        iD : state.auth.id,
-        jabatan : state.auth.jabatan,
-        divisi: state.auth.divisi
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 

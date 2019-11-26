@@ -91,16 +91,16 @@ router.get('/tugas/:userid',(req,res)=>{
 })
 
 
-// Download Tugas
-router.get('/download/:filename',(req,res)=>{
-    let directory = {
-        root : tugasDirectory
-    }
-    let fileName = req.params.filename
-    res.sendFile(fileName, directory, function(err){
-        if(err) return res.send({error:err.sqlmessage})
-    })
-})
+// // Download Tugas
+// router.get('/download/:filename',(req,res)=>{
+//     let directory = {
+//         root : tugasDirectory
+//     }
+//     let fileName = req.params.filename
+//     res.sendFile(fileName, directory, function(err){
+//         if(err) return res.send({error:err.sqlmessage})
+//     })
+// })
 
 // update tugas
 router.patch('/tugas/:tugasid', (req,res)=>{

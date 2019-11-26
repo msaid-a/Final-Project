@@ -17,7 +17,10 @@ import Swal from 'sweetalert2';
     }
     getKaryawan = () =>{
    
-        axios.get('/karyawan/profile/'+this.props.match.params.idkaryawan)
+        axios.get('/karyawan/profile/'+this.props.match.params.idkaryawan,{
+            headers:{
+            keys : this.props.token
+        }})
                 .then(res => {
                      this.setState({profile : res.data})
                      }).catch(err => {
@@ -43,13 +46,19 @@ import Swal from 'sweetalert2';
 
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,divisi_id,jabatan,subdivisi_id,tanggal_lahir
-        }).then(res=> {
+        },{
+            headers:{
+            keys : this.props.token
+        }}).then(res=> {
             axios.post('/history',{
                 description:'Telah Meng edit profile Karyawan  ' + username,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            }).then(res=>{
+            },{
+                headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire({
                     type: 'success',
                     title: 'Success',
@@ -74,7 +83,10 @@ import Swal from 'sweetalert2';
             tanggal_lahir = moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss ')
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,tanggal_lahir
-        }).then(res=> {
+        },{
+            headers:{
+            keys : this.props.token
+        }}).then(res=> {
             if(Object.keys(res.data).length === 0){
                 return alert('Email Telah di gunakan')
             }
@@ -83,7 +95,10 @@ import Swal from 'sweetalert2';
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            })
+            },{
+                headers:{
+                keys : this.props.token
+            }})
             Swal.fire({
                 type: 'success',
                 title: 'Success',
@@ -96,11 +111,17 @@ import Swal from 'sweetalert2';
     }
     
     getDivisi = () =>{
-        axios.get('/divisi')
+        axios.get('/divisi',{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res=>{
                 this.setState({divisi: res.data})
             })
-        axios.get('/subdivisi')
+        axios.get('/subdivisi',{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res=>{
                 this.setState({subdivisi:res.data})
             })
@@ -358,10 +379,11 @@ import Swal from 'sweetalert2';
 }
 const mapStateToProps = (state) =>{
     return {
-        userName : state.auth.username,
-        iD : state.auth.id,
-        jabatan : state.auth.jabatan,
-        divisi: state.auth.divisi
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 export default connect(mapStateToProps)(EditProfile)

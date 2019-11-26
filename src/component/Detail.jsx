@@ -9,14 +9,18 @@ import {connect} from 'react-redux'
 export class Detail extends Component {
 
     state={
-        profile : []
+        profile : null
     }
 
     getKaryawan = () =>{
    
-        axios.get('/karyawan/profile/'+this.props.match.params.idkaryawan)
+        axios.get('/karyawan/profile/'+this.props.match.params.idkaryawan,{
+            headers:{
+            keys : this.props.token
+        }})
                 .then(res => {
                      this.setState({profile : res.data})
+                     console.log(res.data)
                      }).catch(err => {
                          console.log(err)
                      })
@@ -27,7 +31,10 @@ export class Detail extends Component {
         let formData = new FormData()
         let avatar = this.avatar.files[0]
             formData.append('avatar',avatar)
-        axios.post('/avatar/'+id,formData)
+        axios.post('/avatar/'+id,formData,{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res=>{
                 this.getKaryawan()
             })
@@ -118,6 +125,11 @@ export class Detail extends Component {
             return <Redirect to="/" ></Redirect>
     
           }
+          if(this.state.profile === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+          }
         return (
             <div className="container">
                 {this.tampilProfile()}
@@ -128,10 +140,11 @@ export class Detail extends Component {
 
 const mapStateToProps = (state) =>{
     return {
-        userName : state.auth.username,
-        iD : state.auth.id,
-        jabatan : state.auth.jabatan,
-        divisi: state.auth.divisi
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 export default connect(mapStateToProps)(Detail)

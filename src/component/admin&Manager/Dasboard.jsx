@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs')
 export class Dasboard extends Component {
 
     state={
-        data :[],
+        data :null,
         pekerjaan:[],
         jumlah:[]
     }
@@ -22,7 +22,11 @@ export class Dasboard extends Component {
 
     getData = () =>{
         if(bcrypt.compareSync("admin", this.props.jabatan)){
-          return  axios.get('/karyawan/total')
+          return  axios.get('/karyawan/total',{
+              headers:{
+                  keys : this.props.token
+              }
+          })
                 .then(res=>{
                     this.setState({data : res.data})
                     this.filter()
@@ -39,7 +43,11 @@ export class Dasboard extends Component {
                     //     this.setState({karyawan,manager}) 
                     //    })
         }
-        axios.get('/karyawan/total/'+this.props.divisi)
+        axios.get('/karyawan/total/'+this.props.divisi,{
+            headers:{
+                keys : this.props.token
+            }
+        })
             .then(res=>{
                 this.setState({data : res.data})
                 console.log(res.data)
@@ -63,7 +71,11 @@ export class Dasboard extends Component {
     }
 
     render() {
-      
+      if(this.state.data === null){
+        return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                     <span class="sr-only">Loading...</span>
+                </div>)
+      }
         const data = {
             labels: this.state.pekerjaan,
             datasets: [
@@ -104,7 +116,8 @@ const mapStateToProps = (state) =>{
       userName : state.auth.username,
       iD : state.auth.id,
       jabatan : state.auth.jabatan,
-      divisi : state.auth.divisi
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 export default connect(mapStateToProps)(Dasboard)

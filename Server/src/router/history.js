@@ -18,6 +18,7 @@ router.post('/history',(req,res)=>{
 })
 
 router.get('/history',(req,res)=>{
+    
     let sql = `SELECT u.username, d.divisi, h.description, h.tanggal 
     FROM history h join users u on h.user_id = u.id 
     join karyawan k 

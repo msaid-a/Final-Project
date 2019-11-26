@@ -42,8 +42,10 @@ class Register extends Component {
       
         axios.post('/karyawan/',{
             nik,username,email,password,nama,gender,agama,tanggal_lahir,pendidikan,divisi_id,jabatan,subdivisi_id,phone
-        }).then(res=> {
-
+        },{
+            headers:{
+            keys : this.props.token
+        }}).then(res=> {
             if(res.data.error){
                 if(res.data.error.includes("UNIQUE")){
                     return  Swal.fire({
@@ -66,7 +68,10 @@ class Register extends Component {
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            }).then(res=>{
+            },{
+                headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire({
                     type: 'success',
                     title: 'Success',
@@ -91,11 +96,17 @@ class Register extends Component {
         
     }
     getDivisi = () =>{
-        axios.get('/divisi')
+        axios.get('/divisi',{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res=>{
                 this.setState({divisi: res.data})
             })
-        axios.get('/subdivisi')
+        axios.get('/subdivisi',{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res=>{
                 this.setState({subdivisi:res.data})
             })
@@ -265,10 +276,11 @@ class Register extends Component {
 }
 const mapStateToProps = (state) =>{
     return {
-        userName : state.auth.username,
-        iD : state.auth.id,
-        jabatan : state.auth.jabatan,
-        divisi: state.auth.divisi
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 export default connect(mapStateToProps,{})(Register)

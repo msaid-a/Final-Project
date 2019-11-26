@@ -6,6 +6,8 @@ const token = require('rand-token')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
+const jwt = require('jsonwebtoken')
+const exjwt = require('express-jwt')
 
 const avatarDirectory = path.join(__dirname, '../../public/avatar/')
 
@@ -58,15 +60,15 @@ router.post('/avatar/:userid',(req,res,next)=>{
 })
 
 // read avatar
-router.get('/avatar/:filename',(req,res)=>{
-    let directory = {
-        root : avatarDirectory
-    }
-    let fileName = req.params.filename
-    res.sendFile(fileName, directory, function(err){
-        if(err) return res.send({error:err.sqlmessage})
-    })
-})
+// router.get('/avatar/:filename',(req,res)=>{
+//     let directory = {
+//         root : avatarDirectory
+//     }
+//     let fileName = req.params.filename
+//     res.sendFile(fileName, directory, function(err){
+//         if(err) return res.send({error:err.sqlmessage})
+//     })
+// })
 
 
 
@@ -223,30 +225,7 @@ router.get('/karyawan/divisi/:divisi',(req,res)=>{
     })
 })
 
-// login
-router.post('/login',(req,res)=>{
-    let {email,username,password} =req.body
-    let sql = `SELECT users.id, users.username, users.password, users.is_deleted, karyawan.jabatan, divisi.divisi FROM users 
-                join karyawan 
-                on karyawan.id_user = users.id
-                join divisi
-                on karyawan.divisi_id = divisi.id WHERE users.email ='${email}' and users.is_deleted = 0`
-    if(!email) sql = `SELECT users.id, users.username, users.password,users.is_deleted, karyawan.jabatan, divisi.divisi FROM users 
-                        join karyawan 
-                        on karyawan.id_user = users.id
-                        join divisi
-                        on karyawan.divisi_id = divisi.id  WHERE users.username='${username}' and users.is_deleted = 0`
 
-    conn.query(sql, async (err,result)=>{
-        if(err) return res.send({error:err.sqlmessage})
-        if(result.length === 0 ) return res.send({error:'User Not Found'})
-
-        let user = result[0]
-        let hash =  await bcrypt.compare(password, user.password)
-        if(!hash) return res.send({error:'Wrong password'})
-        res.send(result[0])
-    })
-})
 
 
 // update

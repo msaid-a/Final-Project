@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs'
 export class DataTugas extends Component {
 
     state={
-        karyawan:[],
+        karyawan:null,
         modal : false,
         selectTugas :{id:'', title:''},
         search:[],
@@ -37,8 +37,9 @@ export class DataTugas extends Component {
 
     getTugas = () =>{
         axios.get('/tugas',{
-            
-        }).then(res => {
+            headers:{
+            keys : this.props.token
+        }}).then(res => {
             this.setState({karyawan: res.data.reverse(), search: res.data.reverse()})
             console.log(this.state.karyawan)
         })
@@ -47,13 +48,19 @@ export class DataTugas extends Component {
     doneTugas = (id,title) =>{
         axios.patch('/tugas/'+id,{
             status : 'Selesai'
-        }).then(res=>{
+        },{
+            headers:{
+            keys : this.props.token
+        }}).then(res=>{
             axios.post('/history',{
                 description:'menyatakan tugas selesai pada judul ' + title,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            }).then(res=>{
+            },{
+                headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire(
                     'Done!',
                     '',
@@ -73,14 +80,20 @@ export class DataTugas extends Component {
             description: revisi,
             deadline,
             status:"REVISI"
-        }).then(res => {
+        },{
+            headers:{
+            keys : this.props.token
+        }}).then(res => {
             axios.post('/history',{
                 description:'merevisi pada judul ' + this.state.selectTugas.title,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
 
-            }).then(res=>{
+            },{
+                headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire(
                     'Done!',
                     'Revisi',
@@ -115,13 +128,19 @@ export class DataTugas extends Component {
                 data.status = 'Terlambat'
                 axios.patch('/tugas/'+data.id,{
                         status : 'Terlambat'
-                    }).then(res=>{
+                    },{
+                        headers:{
+                        keys : this.props.token
+                    }}).then(res=>{
                         axios.post('/history',{
                             description : "terlambat mengerjakan tugas dengan judul " + data.title,
                             user_id: data.id,
                             divisi : data.divisi,
                             tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-                        })    
+                        },{
+                            headers:{
+                            keys : this.props.token
+                        }})    
                     })
             }
             return (<tr>
@@ -171,6 +190,11 @@ export class DataTugas extends Component {
         if(!this.props.iD){
             return <Redirect to="/" ></Redirect>
     
+          }
+          if(this.state.karyawan === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
           }
         let {id,title} = this.state.selectTugas
         return (
@@ -232,10 +256,11 @@ export class DataTugas extends Component {
 
 const mapStateToProps = (state) =>{
     return {
-        userName : state.auth.username,
-        iD : state.auth.id,
-        jabatan : state.auth.jabatan,
-        divisi: state.auth.divisi
+      userName : state.auth.username,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 

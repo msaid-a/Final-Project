@@ -9,12 +9,15 @@ import {connect} from 'react-redux'
 export class DetailGaji extends Component {
 
     state={
-        gaji : []
+        gaji : null
     }
 
     getKaryawan = () =>{
    
-        axios.get('http://localhost:2020/gaji/'+this.props.match.params.idgaji)
+        axios.get('http://localhost:2020/gaji/'+this.props.match.params.idgaji,{
+            headers:{
+            keys : this.props.token
+        }})
                 .then(res => {
                      this.setState({gaji : res.data})
                     //  console.log(this.state.gaji[0])
@@ -85,7 +88,7 @@ export class DetailGaji extends Component {
         )
         }
     render() {
-        if(this.state.gaji.length === 0){
+        if(this.state.gaji === null){
             return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
                 <span class="sr-only">Loading...</span>
              </div>)
@@ -97,5 +100,10 @@ export class DetailGaji extends Component {
         )
     }
 }
-
-export default DetailGaji
+const mapStateToProps = (state) =>{
+    return {
+      
+      token : state.auth.token
+    }
+  }
+export default connect(mapStateToProps)(DetailGaji)

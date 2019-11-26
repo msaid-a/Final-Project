@@ -11,10 +11,10 @@ import bcrypt from 'bcryptjs'
 class Tugas extends Component {
 
     state={
-        tugas:[],
+        tugas:null,
         modal : false,
         selectTugas : {id: '', title :'', description: '', status:''},
-        search:[],
+        search:null,
         first: 0,
         rows: 10,
         lastIndex : 10
@@ -63,14 +63,20 @@ class Tugas extends Component {
             status = 'Terupload(Terlambat)'
         }
         formData.append("status",status)
-        axios.post('/tugas/uploads/'+ id,formData).then(res=>{
+        axios.post('/tugas/uploads/'+ id,formData,{
+            headers:{
+            keys : this.props.token
+        }}).then(res=>{
                 axios.post('/history',{
                     user_id: this.props.iD,
                     description :'Telah menguload tugas dengan judul ' + title,
                     divisi:this.props.jabatan.split(' ')[1],
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss') 
     
-                }).then(res=>{
+                },{
+                    headers:{
+                    keys : this.props.token
+                }}).then(res=>{
                     Swal.fire(
                         'Added!',
                         '',
@@ -89,7 +95,9 @@ class Tugas extends Component {
 
     getTugas = () =>{
         axios.get('/tugas/'+this.props.iD,{
-        }).then(res => {
+            headers:{
+            keys : this.props.token
+        }}).then(res => {
             console.log(this.props.iD)
             this.setState({tugas: res.data.reverse(), search: res.data.reverse()})
         })
@@ -100,6 +108,7 @@ class Tugas extends Component {
     }
 
     rendertugas =  (first,last) =>{
+        if(this.state.search){
             let no = 0
             let now = new Date()
             return this.state.search.slice(first,last).map(data =>{
@@ -136,6 +145,8 @@ class Tugas extends Component {
                 }
                 </tr>)
             })
+        }
+            
         
     }
 
@@ -149,7 +160,7 @@ class Tugas extends Component {
 
     onSearch = () =>{
         let result = this.state.tugas.filter(data => {
-                   return data.from.toLowerCase().includes(this.search.value.toLowerCase())
+                   return data.pengirim.toLowerCase().includes(this.search.value.toLowerCase())
        })
        this.setState({search:result})
    }
@@ -158,11 +169,11 @@ class Tugas extends Component {
         if(!bcrypt.compareSync("Karyawan", this.props.jabatan)){
             return <Redirect to='/'></Redirect>
         }
-        if(this.state.tugas.length===0){
+        if(this.state.tugas === null && this.state.search === null){
             return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
-                <span class="sr-only">Loading...</span>
-             </div>)
-        }
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+          }
         let {id,title, description,status} = this.state.selectTugas
         return (
             <div className="container">
@@ -171,7 +182,7 @@ class Tugas extends Component {
                     <label className="h5 mt-2">search :</label>
                             <input type="text" className=""  placeholder="Pengirim" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
-                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
+                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.tugas})}}>Show All</button>
                              </div>
                 </form>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5  ">
@@ -234,8 +245,9 @@ const mapStateToProps = (state) =>{
     return {
       userName : state.auth.username,
       iD : state.auth.id,
-      jabatan : state.auth.jabatan
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
-
 export default connect(mapStateToProps,{})(Tugas)

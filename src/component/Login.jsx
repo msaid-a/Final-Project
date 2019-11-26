@@ -66,7 +66,8 @@ const mapStateToProps = (state) =>{
   return {
     userName : state.auth.username,
     iD : state.auth.id,
-    jabatan : state.auth.jabatan
+    jabatan : state.auth.jabatan,
+    token : state.auth.token
   }
 }
 export default connect(mapStateToProps, {sendData})(Login)

@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs'
 export class Divisi extends Component {
     
     state = {
-        divisi : [],
+        divisi : null,
         modal : false,
         selectDivisi : {id : '', divisi : ''},
         subDivisi : [],
@@ -38,14 +38,18 @@ export class Divisi extends Component {
         let divisi = this.divisi.value
         axios.post('/divisi',{
             divisi
-        }).then(res =>{
+        },{headers:{
+            keys : this.props.token
+        }}).then(res =>{
             if(res.data.error) return alert('Divisi Sudah Ada')
             axios.post('/history',{
                 description : "telah menambahkan divisi baru yaitu " + this.divisi.value,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            }).then(res=>{
+            },{headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 alert('Success')
                 this.getDivisi()
             })
@@ -58,13 +62,17 @@ export class Divisi extends Component {
         let subDivisi = this.subDivisi.value
         axios.post('/subdivisi',{
             subDivisi,divisi_id
-        }).then(res=>{
+        },{headers:{
+            keys : this.props.token
+        }}).then(res=>{
             axios.post('/history',{
                 description : "telah menambahkan subdivisi baru yaitu " + this.subDivisi.value,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            }).then(res=>{
+            },{headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire({
                     type: 'success',
                     title: 'Success',
@@ -79,11 +87,17 @@ export class Divisi extends Component {
     }
 
     getDivisi = () =>{
-        axios.get('/divisi')
+        axios.get('/divisi',{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res =>{
                 this.setState({divisi : res.data})
             })
-        axios.get('/subdivisi')
+        axios.get('/subdivisi',{
+            headers:{
+            keys : this.props.token
+        }})
             .then(res => {
                 this.setState({subDivisi: res.data})
             })
@@ -113,14 +127,18 @@ export class Divisi extends Component {
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.value) {
-        axios.delete('/divisi/'+ id)
+        axios.delete('/divisi/'+ id,{headers:{
+            keys : this.props.token
+        }})
             .then(res=>{
                 axios.post('/history',{
                     description : "telah mengahpus divisi yaitu " + divisi,
                     user_id:this.props.iD,
                     divisi : this.props.divisi,
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-                }).then(res=>{
+                },{headers:{
+                    keys : this.props.token
+                }}).then(res=>{
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -164,6 +182,11 @@ export class Divisi extends Component {
         if(!bcrypt.compareSync("admin", this.props.jabatan)){
             return <Redirect to='/' ></Redirect>
         }
+        if(this.state.divisi === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+          }
         let {id, divisi} = this.state.selectDivisi
         return (
             <div className="container">
@@ -215,7 +238,8 @@ const mapStateToProps = (state) =>{
       userName : state.auth.username,
       iD : state.auth.id,
       jabatan : state.auth.jabatan,
-      divisi: state.auth.divisi
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 export default connect(mapStateToProps)(Divisi)

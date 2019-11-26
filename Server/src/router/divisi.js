@@ -1,9 +1,13 @@
 const conn = require('../connection/index')
 const router = require('express').Router()
+const express = require('express')
+const app = express()
 const token = require('rand-token')
+const jwt = require('jsonwebtoken')
 
 
 router.post('/divisi',(req, res)=>{
+    
     let sql = `INSERT INTO divisi SET ?`
     let data = req.body
         data.id = token.generate(20)
@@ -25,6 +29,7 @@ router.post('/divisi',(req, res)=>{
 })
 
 router.get('/divisi',(req,res)=>{
+   
     let sql = `SELECT * FROM divisi WHERE is_deleted = 0 ORDER BY divisi`
     conn.query(sql, (err,result)=>{
             if(err) return console.log (err)

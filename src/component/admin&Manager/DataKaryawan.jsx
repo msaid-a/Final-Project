@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs'
 class DataKaryawan extends Component {
 
     state={
-        karyawan : [],
+        karyawan : null,
         search :[],
         modal : false,
         modal2: false,
@@ -23,7 +23,10 @@ class DataKaryawan extends Component {
 
 
 toggle  = (id,id_karyawan,nama) => {
-    axios.get('/karyawan/profile/' + id).then(res => {
+    axios.get('/karyawan/profile/' + id,{
+        headers:{
+        keys : this.props.token
+    }}).then(res => {
         console.log(id)
         this.setState(prevState => ({
             modal: !prevState.modal,
@@ -33,7 +36,10 @@ toggle  = (id,id_karyawan,nama) => {
  }
 
   toggleTugas =  (id, id_karyawan , nama, nik) => {
-    axios.get('/karyawan/profile/' + id).then(res => {
+    axios.get('/karyawan/profile/' + id,{
+        headers:{
+        keys : this.props.token
+    }}).then(res => {
         this.setState(prevState => ({
             modal2: !prevState.modal,
             selectKaryawan :{id,id_karyawan, nama, nik}
@@ -73,13 +79,19 @@ saveGaji = (id, nama) =>{
             tunjanganTransportasi,
             bonus
     
-        }).then(res=>{
+        },{
+            headers:{
+            keys : this.props.token
+        }}).then(res=>{
             axios.post('/history',{
                 description:'Telah memberi gaji kepada ' + nama,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: now 
-            }).then(res=>{
+            },{
+                headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire(
                     'Added!',
                     '',
@@ -95,7 +107,10 @@ saveGaji = (id, nama) =>{
 
 getData =  () =>{
     if(bcrypt.compareSync("admin", this.props.jabatan)){
-     return   axios.get('/karyawan')
+     return   axios.get('/karyawan',{
+        headers:{
+        keys : this.props.token
+    }})
                 .then(res => {
                      this.setState({karyawan : res.data,
                     search: res.data})
@@ -103,7 +118,10 @@ getData =  () =>{
                      })
     }
     if(bcrypt.compareSync("Manager", this.props.jabatan)){
-        return   axios.get(`/karyawan/divisi/${this.props.divisi}`,)
+        return   axios.get(`/karyawan/divisi/${this.props.divisi}`,{
+            headers:{
+            keys : this.props.token
+        }})
         .then(res => {
             console.log(res.data)
              this.setState({karyawan : res.data, search: res.data})
@@ -124,13 +142,19 @@ postTugas = (id,nama,nik) =>{
 
     axios.post('/tugas/'+ user_id,{
         user_id,title,description,deadline,pengirim,hasil,status
-    }).then(res=>{
+    },{
+        headers:{
+        keys : this.props.token
+    }}).then(res=>{
         axios.post('/history',{
                 description:'Telah memberi Tugas kepada ' + nama,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-            }).then(res=>{
+            },{
+                headers:{
+                keys : this.props.token
+            }}).then(res=>{
                 Swal.fire(
                     'Added!',
                     '',
@@ -158,13 +182,18 @@ deleteKaryawan = (id,username) =>{
       }).then((result) => {
         if (result.value) {
             axios.delete('/karyawan/delete/'+ id,{
-            }).then(res=>{
+                headers:{
+                    keys : this.props.token
+            }}).then(res=>{
                 axios.post('/history',{
                         description:'Telah Menghapus Karyawan dengan username ' + username,
                         user_id:this.props.iD,
                         divisi : this.props.divisi,
                         tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
-                    }).then(res=>{
+                    },{
+                        headers:{
+                        keys : this.props.token
+                    }}).then(res=>{
                         Swal.fire(
                             'Deleted!',
                             'Your file has been deleted.',
@@ -234,6 +263,11 @@ onPageChange(event) {
         if(!this.props.userName){
             return <Redirect to ='/'></Redirect>
         }
+        if(this.state.karyawan === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+          }
         let {id, id_karyawan, nama, nik} = this.state.selectKaryawan
         return (
             <div className="container">
@@ -331,8 +365,8 @@ const mapStateToProps = (state) =>{
       userName : state.auth.username,
       iD : state.auth.id,
       jabatan : state.auth.jabatan,
-      divisi : state.auth.divisi
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
-
 export default connect(mapStateToProps,{})(DataKaryawan)

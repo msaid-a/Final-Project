@@ -22,10 +22,10 @@ export const sendData = (_username, _password) =>{
                        timer:900
                    })
                }else{
-                   let {id, username, jabatan, divisi} = res.data[0]
+                   let {id, username, jabatan, divisi,token} = res.data
                    jabatan =  bcrypt.hashSync(jabatan, 8)
                    // kirim id dan username ke reducers
-                       localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi}))
+                       localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi, token}))
                        // Action
                        dispatch( {
                            type : "LOGIN_SUCCESS",
@@ -33,7 +33,8 @@ export const sendData = (_username, _password) =>{
                                id, 
                                username,
                                jabatan ,
-                               divisi 
+                               divisi,
+                               token 
                            }
                        }
                        )
@@ -57,10 +58,10 @@ export const sendData = (_username, _password) =>{
                     timer:900
                 })
             }else{
-                let {id, username, jabatan, divisi} = res.data
+                let {id, username, jabatan, divisi,token} = res.data
                 // kirim id dan username ke reducers
                 jabatan =  bcrypt.hashSync(jabatan, 8)
-                    localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi}))
+                    localStorage.setItem('userData',JSON.stringify({id, username, jabatan,divisi,token}))
                     // Action
                     dispatch( {
                         type : "LOGIN_SUCCESS",
@@ -68,7 +69,8 @@ export const sendData = (_username, _password) =>{
                             id, 
                             username,
                             jabatan,
-                            divisi 
+                            divisi,
+                            token 
                         }
                     }
                     )
@@ -101,7 +103,8 @@ export const session = (userData) =>{
             id : userData.id,
             username: userData.username,
             jabatan : userData.jabatan,
-            divisi : userData.divisi
+            divisi : userData.divisi,
+            token : userData.token
         }
     }
 }

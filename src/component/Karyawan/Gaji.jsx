@@ -8,7 +8,7 @@ import { Paginator } from 'primereact/paginator';
 class Gaji extends Component {
 
     state={
-        gaji : [],
+        gaji : null,
         first: 0,
         rows: 10,
         lastIndex : 10
@@ -16,8 +16,9 @@ class Gaji extends Component {
 
 getData =  () =>{
     axios.get('/gaji/profile/'+this.props.iD,{
-       
-    })
+        headers:{
+        keys : this.props.token
+    }})
     .then(res => {
         this.setState({gaji : res.data})
     })
@@ -58,7 +59,11 @@ onPageChange(event) {
         if(!this.props.iD){
             return <Redirect to="/"></Redirect>
         }
-        
+        if(this.state.gaji === null){
+            return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+                         <span class="sr-only">Loading...</span>
+                    </div>)
+        }
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto">
@@ -101,7 +106,9 @@ const mapStateToProps = (state) =>{
     return {
       userName : state.auth.username,
       iD : state.auth.id,
-      jabatan : state.auth.jabatan
+      jabatan : state.auth.jabatan,
+      divisi : state.auth.divisi,
+      token : state.auth.token
     }
   }
 

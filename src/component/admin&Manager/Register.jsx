@@ -150,9 +150,10 @@ class Register extends Component {
              })
          }else{
              let subdivisi = this.state.subdivisi.filter(data=>{
-                 return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
+                 return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') === false
              })
              return subdivisi.map (data => {
+                return <option value={data.id}>{data.subDivisi}</option>
              })
          }
     }else{
@@ -260,7 +261,8 @@ class Register extends Component {
                            </div>
 
                             
-                                
+                                {
+                                    this.state.jabatan ? 
                                     <div className="form">
                                         <label htmlFor="inputPassword">Divisi</label>
                                         <div className="form-label-group">
@@ -270,10 +272,13 @@ class Register extends Component {
                                                 </select>
                                         </div>
                                     </div>  
-                                
+                                    :
+                                    null
+                                }
 
                             
-
+                                {
+                                    this.state.selectDivisi ? 
                                     <div className="form">
                                     <label htmlFor="inputPassword">Pekerjaan</label>
                                     <div className="form-label-group">
@@ -283,6 +288,9 @@ class Register extends Component {
                                             </select>
                                     </div>
                                 </div>
+                                
+                                    :null
+                                }
                            
                           
 

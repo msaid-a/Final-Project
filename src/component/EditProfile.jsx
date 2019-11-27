@@ -38,9 +38,9 @@ import bcrypt from 'bcryptjs'
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
-        let divisi_id = this.divisi.value == '' ? this.state.profile.divisi_id : this.divisi.value
+        let divisi_id = this.divisi == undefined ? this.state.profile.divisi_id : this.divisi.value
         let jabatan = this.jabatan.value =='' ? this.state.profile.jabatan : this.jabatan.value 
-        let subdivisi_id = this.subDivisi.value == '' ? this.state.profile.subdivisi_id : this.subDivisi.value
+        let subdivisi_id = this.subDivisi == undefined ? this.state.profile.subdivisi_id : this.subDivisi.value
         let tanggal_lahir = this.tanggal_lahir.value == '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
         tanggal_lahir = moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss ')
 
@@ -161,6 +161,7 @@ import bcrypt from 'bcryptjs'
                  return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
              })
              return subdivisi.map (data => {
+                return <option value={data.id}>{data.subDivisi}</option>
              })
          }
     }else{
@@ -265,19 +266,29 @@ import bcrypt from 'bcryptjs'
                                             <option value="Karyawan">Karyawan</option>
                                         </select> 
                                    </div> 
-    </div> 
-                               <div className="form">
-                                   <label htmlFor="inputPassword">Divisi</label>
-                                  
-                                   <div className="form-label-group">
-                                        <select className="mb-3" defaultValue={divisi} ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
-                                        <option value="" hidden>Divisi</option>
-                                            {this.renderDivisi()}
-                                        </select>                                    
-                                        <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
+                            </div> 
 
-                                   </div>
-                               </div>   <div className="form">
+
+                        {
+                            this.state.jabatan ?
+                            <div className="form">
+                            <label htmlFor="inputPassword">Divisi</label>
+                           
+                            <div className="form-label-group">
+                                 <select className="mb-3" defaultValue={divisi} ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
+                                 <option value="" hidden>Divisi</option>
+                                     {this.renderDivisi()}
+                                 </select>                                    
+                                 <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
+
+                            </div>
+                        </div>
+                        : null
+                        }
+                        
+                        {
+                            this.state.selectDivisi ?
+                                 <div className="form">
                                    <label htmlFor="inputPassword">Pekerjaan</label>
                                    <div className="form-label-group">
                                         <select className="mb-3" defaultValue={subDivisi} ref={input => this.subDivisi = input} >
@@ -287,6 +298,8 @@ import bcrypt from 'bcryptjs'
                                         <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
                                    </div>
                                </div>
+                            :null
+                        }    
                              
                          
                             <button className="btn btn-primary btn-block mt-3" onClick={this.onUpdateAdmin}>Update</button>

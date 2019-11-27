@@ -35,7 +35,15 @@ class Register extends Component {
         let divisi_id = this.divisi.value
         let jabatan = this.jabatan.value
         let subdivisi_id = this.subDivisi.value
-        let phone = this.phone.value
+        let phone = parseInt(this.phone.value)
+        if(isNaN(parseInt(this.phone.value))){
+            return  Swal.fire({
+                type: 'error',
+                title: 'Phone Harus berupa Angka',
+                showConfirmButton:false,
+                timer:900
+            })       
+        }
         let tanggal_lahir = new Date(this.tanggal_lahir.value)
             tanggal_lahir =moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss')
 
@@ -101,7 +109,7 @@ class Register extends Component {
             keys : this.props.token
         }})
             .then(res=>{
-                this.setState({divisi: res.data})
+                    this.setState({divisi: res.data})
             })
         axios.get('/subdivisi',{
             headers:{
@@ -118,28 +126,38 @@ class Register extends Component {
     }
     
     renderDivisi = () =>{
-        return this.state.divisi.map(data => {
-            return(<option value={data.id}>{data.divisi}</option>)
-        })
+        if(this.state.jabatan){
+            let data3 = this.state.divisi.filter(val=>{
+                return val.divisi !== 'admin'
+            })
+            return data3.map(data=>{
+                return(<option value={data.id}>{data.divisi}</option>)
+            })
+
+        }else{
+            return(<option value=''>Divisi</option>)
+        }
     }
 
     renderSubDivisi = () =>{
-       
+    if(this.state.selectDivisi){
         if(this.state.jabatan =="Manager"){
-            let subdivisi = this.state.subdivisi.filter(data=>{
-                return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
-            })
-            return subdivisi.map (data => {
-                return <option value={data.id}>{data.subDivisi}</option>
-            })
-        }else{
-            let subdivisi = this.state.subdivisi.filter(data=>{
-                return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
-            })
-            return subdivisi.map (data => {
-                return <option value={data.id}>{data.subDivisi}</option>
-            })
-        }
+             let subdivisi = this.state.subdivisi.filter(data=>{
+                 return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
+             })
+             return subdivisi.map (data => {
+                 return <option value={data.id}>{data.subDivisi}</option>
+             })
+         }else{
+             let subdivisi = this.state.subdivisi.filter(data=>{
+                 return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
+             })
+             return subdivisi.map (data => {
+             })
+         }
+    }else{
+        return <option value=''>Pekerjaan</option>
+    }
 
     }
 
@@ -171,7 +189,7 @@ class Register extends Component {
                                <label htmlFor="inputEmail">Username</label>
                                <div className="form-label-group">
                                    <input type="text"  className="form-control" placeholder="Username"
-                                       maxlength="20" ref={input => this.username = input}/>
+                                       maxlength="10" ref={input => this.username = input}/>
                                </div>
                            </div>
                            <div className="form">
@@ -185,14 +203,14 @@ class Register extends Component {
                                <label htmlFor="inputEmail">Password</label>
                                <div className="form-label-group">
                                    <input type="Password"  className="form-control"
-                                       placeholder="Password"  ref ={input => this.password = input}/>
+                                      maxlength="30" placeholder="Password"  ref ={input => this.password = input}/>
                                </div>
                            </div>
                            <div className="form">
                                <label htmlFor="inputPassword">Nama</label>
                                <div className="form-label-group">
                                    <input type="text" className="form-control" placeholder="Nama"
-                                        ref={input => this.nama = input}/>
+                                       maxlength="25" ref={input => this.nama = input}/>
                                </div>
                            </div>
                            <div className="form mt-3">
@@ -204,7 +222,7 @@ class Register extends Component {
                            </div>
                            <div className="form mt-3">
                                <label htmlFor="inputPassword">Tanggal Lahir</label>
-                               <input type="date" ref={input => this.tanggal_lahir = input}/>
+                               <input type="date" ref={input => this.tanggal_lahir = input} max="2010-12-31"/>
                            </div>
                            <div className="form">
                                <label htmlFor="inputPassword">Agama</label>
@@ -231,16 +249,6 @@ class Register extends Component {
                                </div>
                            </div>
                            <div className="form">
-                               <label htmlFor="inputPassword">Divisi</label>
-                               <div className="form-label-group">
-                                    <select className="mb-3" ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
-                                    <option value='' hidden>Divisi</option>
-                                        {this.renderDivisi()}
-                                    </select>
-                               </div>
-                           </div>  
-
-                           <div className="form">
                                <label htmlFor="inputPassword">Jabatan</label>
                                <div className="form-label-group">
                                     <select className="mb-3" ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
@@ -249,20 +257,38 @@ class Register extends Component {
                                         <option value="Karyawan">Karyawan</option>
                                     </select>
                                </div>
-</div>
-                          
-                            <div className="form">
-                               <label htmlFor="inputPassword">Pekerjaan</label>
-                               <div className="form-label-group">
-                                    <select className="mb-3" ref={input => this.subDivisi = input} >
-                                        <option value='' hidden>Pekerjaan</option>
-                                        {this.renderSubDivisi()}
-                                    </select>
-                               </div>
                            </div>
+
+                            
+                                
+                                    <div className="form">
+                                        <label htmlFor="inputPassword">Divisi</label>
+                                        <div className="form-label-group">
+                                                <select className="mb-3" ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
+                                                <option value='' hidden>Divisi</option>
+                                                    {this.renderDivisi()}
+                                                </select>
+                                        </div>
+                                    </div>  
+                                
+
+                            
+
+                                    <div className="form">
+                                    <label htmlFor="inputPassword">Pekerjaan</label>
+                                    <div className="form-label-group">
+                                            <select className="mb-3" ref={input => this.subDivisi = input} >
+                                                <option value='' hidden>Pekerjaan</option>
+                                                {this.renderSubDivisi()}
+                                            </select>
+                                    </div>
+                                </div>
+                           
+                          
+
                            <div className="form mt-3">
                                <label htmlFor="inputPassword">No HP</label>
-                               <input type="number" ref={input => this.phone = input}/>
+                               <input type="text" ref={input => this.phone = input} maxlength="13"/>
                            </div>
                          
                            <button className="btn btn-primary btn-block mt-3" onClick={this.onRegiter}>Register</button>

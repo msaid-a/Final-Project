@@ -29,7 +29,7 @@ router.post('/login',(req,res)=>{
         let user = result[0]
         let hash =  await bcrypt.compare(password, user.password)
         if(!hash) return res.send({error:'Wrong password'})
-        let token = jwt.sign({ id: user.id, username: user.username }, 'hjlkdsahjsahdkjahdslkj', { expiresIn: 129600 }); // Sigining the token
+        let token = jwt.sign({ id: user.id, username: user.username }, 'hjlkdsahjsahdkjahdslkj', { expiresIn: 999999 }); // Sigining the token
         res.send({...result[0],
                     token })
     })

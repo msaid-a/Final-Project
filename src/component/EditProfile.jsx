@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import moment from 'moment'
 import Swal from 'sweetalert2';
+import bcrypt from 'bcryptjs'
 
  class EditProfile extends Component {
 
@@ -133,27 +134,38 @@ import Swal from 'sweetalert2';
     }
     
     renderDivisi = () =>{
-        return this.state.divisi.map(data => {
-            return(<option value={data.id}>{data.divisi}</option>)
-        })
+        if(this.state.jabatan){
+            let data3 = this.state.divisi.filter(val=>{
+                return val.divisi !== 'admin'
+            })
+            return data3.map(data=>{
+                return(<option value={data.id}>{data.divisi}</option>)
+            })
+
+        }else{
+            return(<option value=''>Divisi</option>)
+        }
     }
 
     renderSubDivisi = () =>{
+    if(this.state.selectDivisi){
         if(this.state.jabatan =="Manager"){
-            let subdivisi = this.state.subdivisi.filter(data=>{
-                return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
-            })
-            return subdivisi.map (data => {
-                return <option value={data.id}>{data.subDivisi}</option>
-            })
-        }else{
-            let subdivisi = this.state.subdivisi.filter(data=>{
-                return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
-            })
-            return subdivisi.map (data => {
-                return <option value={data.id}>{data.subDivisi}</option>
-            })
-        }
+             let subdivisi = this.state.subdivisi.filter(data=>{
+                 return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
+             })
+             return subdivisi.map (data => {
+                 return <option value={data.id}>{data.subDivisi}</option>
+             })
+         }else{
+             let subdivisi = this.state.subdivisi.filter(data=>{
+                 return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
+             })
+             return subdivisi.map (data => {
+             })
+         }
+    }else{
+        return <option value=''>Pekerjaan</option>
+    }
 
     }
 
@@ -169,7 +181,7 @@ import Swal from 'sweetalert2';
         let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,subDivisi, tanggal_lahir} = this.state.profile 
     if(this.state.profile && this.state.divisi.length !== 0 && this.state.subdivisi.length !== 0 ){
       
-        if(this.props.jabatan === 'admin'){
+        if(bcrypt.compareSync("admin", this.props.jabatan)){
 
             return (
                 <div className="container col-8 text-left">

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import { Paginator } from 'primereact/paginator';
 import moment from 'moment'
-
+import bcrypt from 'bcryptjs'
 export class History extends Component {
     state={
         history:null,
@@ -14,7 +14,7 @@ export class History extends Component {
         lastIndex : 10
     }
     getHistory =() =>{
-            if(this.props.jabatan==="admin"){
+            if(bcrypt.compareSync("admin", this.props.jabatan)){
                 return axios.get('/history',{
                     headers:{
                     keys : this.props.token
@@ -26,7 +26,7 @@ export class History extends Component {
                     })
            
             }
-            if(this.props.jabatan ==='Manager'){
+            if(bcrypt.compareSync("Manager", this.props.jabatan)){
 
                return axios.get('/history/' + this.props.divisi,{
                 headers:{

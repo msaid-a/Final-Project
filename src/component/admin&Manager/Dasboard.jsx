@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import axios from '../../config/index'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import randtoken  from 'rand-token'
 import { Chart } from 'primereact/chart';
-import { number } from 'prop-types'
 
 const bcrypt = require('bcryptjs')
 

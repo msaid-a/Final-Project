@@ -221,9 +221,9 @@ renderKaryawan = (first,last) =>{
             <td className="align-middle">{data.nama}</td>
             <td className="align-middle">{data.gender}</td>
             <td className="align-middle">{data.subDivisi}</td>
-           <td className="align-middle"><Link to={'/detailkaryawan/'+data.id_user}><button className="btn btn-primary btn-sm m-1">Detail</button> </Link>
-           <button className="btn btn-danger btn-sm m-1" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}>Delete</button> 
-           <button className="btn btn-success btn-sm m-1" onClick={()=>this.toggle(data.id,data.id_user, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
+           <td className="align-middle"><Link to={'/detailkaryawan/'+data.id_user}><button className="btn btn-primary btn-sm btn-block m-1">Detail</button> </Link>
+           <button className="btn btn-danger btn-sm m-1 btn-block" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}>Delete</button> 
+           <button className="btn btn-success btn-sm m-1 btn-block" onClick={()=>this.toggle(data.id,data.id_user, data.nama, data.nik)} data-target='#gaji'>Add Gaji</button></td>
         </tr>)
         }
 

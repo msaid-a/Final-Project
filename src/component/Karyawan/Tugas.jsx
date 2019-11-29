@@ -16,23 +16,10 @@ class Tugas extends Component {
         selectTugas : {id: '', title :'', description: '', status:''},
         search:null,
         first: 0,
-        rows: 10,
-        lastIndex : 10
+        rows: 6,
+        lastIndex : 6
 
     }
-
-
-    toggle  = (id, title,description) => {
-        this.setState(prevState => ({
-            modal: !prevState.modal,
-            selectTugas : {id, title, description}
-        }));
-    }
-    toggleCancel = () =>{
-        this.setState(prevState => ({
-            modal : false,
-        }))
-      }
     
       toggleTugas =  (id,title,description,status) => {
             this.setState(prevState => ({
@@ -117,33 +104,43 @@ class Tugas extends Component {
                 if (now > deadline && (data.status == 'belum di kumpulkan' || data.status == 'REVISI')) {
                     data.status = 'TERLAMBAT'
                 }
-                return (<tr>
-                    <td className="align-middle">{no}</td>
-                    <td className="align-middle"><button className="btn btn-primary" onClick={()=>this.toggle(data.id,data.title,data.description)}>Lihat Tugas</button></td>
-                    <td  className="align-middle">{data.pengirim}</td>
-                    <td className="align-middle">{moment(data.deadline).format('YYYY-MM-DD')}</td>
-                    {
-                         data.status == "Selesai" ?
-                         <td className="align-middle">
-                             <i className="fas fa-check-square"></i>
-                             <p>Done</p>
-                         </td>
-                         : 
-                         <td className="align-middle"><button className="btn btn-success" onClick={()=>this.toggleTugas(data.id,data.title,data.description,data.status)}>Upload Tugas</button></td>
-
-                    }
-                    {
-                    data.status.includes("REVISI") ?
-                    <td className="align-middle text-warning font-weight-bold">{data.status}</td>
-                    : data.status.includes("Terlambat") ?
-                    <td className="align-middle text-danger font-weight-bold">{data.status}</td>
-                    : data.status === "Terupload" || data.status === "Selesai" ?
-                    <td className="align-middle text-success font-weight-bold">{data.status}</td>
-                    :
-                    <td className="">{data.status}</td>
-
-                }
-                </tr>)
+                return(
+                    <div className={
+                        this.state.tugas.length  <= 2 ?
+                        "col-sm-12 col-md-5 mb-5 mx-auto" :
+                        "col-md-4 mb-5 mx-auto" 
+                    }  style={{ minWidth:300}}>
+                                <div className="card " style={{minHeight : 350,}}>
+                                    <div className="card-header">
+                                        From : {data.pengirim}
+                                    </div>
+                                    <div className="card-body">
+                                        <h5 className="card-title">{data.title}</h5>
+                                        <p className="card-text mb-3">{data.description}</p>
+                                        <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD')}</p>
+                                        {
+                                            data.status.includes("REVISI") ?
+                                              <h5 className="text-warning font-weight-bold">{data.status}</h5>
+                                                : data.status.includes("Terlambat") ?
+                                                <h5 className="align-middle text-danger font-weight-bold">{data.status}</h5>
+                                                : data.status === "Terupload" || data.status === "Selesai" ?
+                                                <h5 className="align-middle text-success font-weight-bold">{data.status}</h5>
+                                                :
+                                                <h5 className="">{data.status}</h5>
+                            
+                                        }
+                                        {
+                                            data.status == "Selesai" ?
+                                                     <div>
+                                                         <h4><i className="fas fa-check-square">Done</i></h4>
+                                                     </div>
+                                                     : 
+                                                   <button className="btn btn-outline-dark" onClick={()=>this.toggleTugas(data.id,data.title,data.description,data.status)}>Upload Tugas</button>
+                                        }
+                                    </div>
+                                </div>
+                           </div>
+                )
             })
         }
             
@@ -179,27 +176,16 @@ class Tugas extends Component {
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
-                    <label className="h5 mt-2">search :</label>
-                            <input type="text" className=""  placeholder="Pengirim" ref={input => this.search = input}></input>
-                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
-                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.tugas})}}>Show All</button>
+                            <input type="text" className=""  placeholder="Search By Sender" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-dark ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-secondary ml-1" onClick={()=>{this.setState({search:this.state.tugas})}}>Show All</button>
                              </div>
                 </form>
-                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5  ">
-                    <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
-                    <tr>
-                    <th>NO</th>
-                    <th>Tugas</th>
-                    <th>Pengirim</th>
-                    <th>Deadline</th>
-                    <th>Action</th>
-                    <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody style={{fontSize: 15}}>
-                        {this.rendertugas(this.state.first, this.state.lastIndex)}
-                    </tbody>
-                </table>
+                <div  className="row card-deck-wrapper my-5">
+                    {this.rendertugas(this.state.first, this.state.lastIndex)}
+
+                </div>
+
                 <Paginator
 						first={this.state.first}
 						rows={this.state.rows}
@@ -209,20 +195,6 @@ class Tugas extends Component {
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
 
 					/>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
-                <ModalHeader toggle={this.toggleCancel}></ModalHeader>
-        <ModalBody>
-            <form >
-                <label htmlFor="">title :</label>
-                <input type="text" className="form-control" value={title}/>
-                <label htmlFor="">Description:</label>
-                <textarea className="form-control mt-3" rows="3" value={description}></textarea>
-            </form>
-        </ModalBody> 
-        <ModalFooter>
-          <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
-        </ModalFooter>
-      </Modal>
       <Modal isOpen={this.state.modal2} toggle={this.toggleTugas} fullHeight position="right" id='tugas'>
         <ModalHeader toggle={this.toggleTugasCancel}></ModalHeader>
         <ModalBody>
@@ -235,7 +207,7 @@ class Tugas extends Component {
           <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
           <Button color="primary" onClick={() => this.postTugas(id,status,title)}>Submit</Button>
         </ModalFooter>
-      </Modal>
+      </Modal> 
             </div>
         )
     }

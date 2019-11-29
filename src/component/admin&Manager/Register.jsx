@@ -85,20 +85,20 @@ class Register extends Component {
                     title: 'Success',
                     showConfirmButton:false,
                     timer:900
-                })                
-                this.nik.value = null
-                this.username.value= null
-                this.email.value = null
-                this.password.value = null
-                this.nama.value = null
-                this.gender.value = null
-                this.agama.value = null
-                this.pendidikan.value = null
-                this.divisi.value = null
-                this.jabatan.value = null
-                this.subDivisi.value = null
-                this.phone.value = null
-                this.tanggal_lahir.value = null
+                }) 
+                this.nik.value = ''
+                this.username.value= ''
+                this.email.value = ''
+                this.password.value = ''
+                this.nama.value = ''
+                this.gender.value = ''
+                this.agama.value = ''
+                this.pendidikan.value = ''
+                this.divisi.value = ''
+                this.jabatan.value = ''
+                this.subDivisi.value = ''
+                this.phone.value = ''
+                this.tanggal_lahir.value = ''
             })
         })
         

@@ -23,8 +23,8 @@ getData =  () =>{
     }})
     .then(res => {
         console.log(res.data)
-        this.setState({gaji : res.data})
-        this.setState({search : res.data})
+        this.setState({gaji : res.data.reverse()})
+        this.setState({search : res.data.reverse()})
     })
 }
 
@@ -55,7 +55,7 @@ renderGaji = (first,last) =>{
             <td className="align-middle">{data.nama}</td>
             <td className="align-middle">{`${data.bulan}/${data.tahun}`}</td>
             <td className="align-middle">Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
-            <td className="align-middle"><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
+            <td className="align-middle"><Link to={'/detailgaji/'+data.id} className='btn btn-outline-dark'>Rincian</Link></td>
         </tr>)
     })
 }
@@ -86,10 +86,9 @@ onSearch = () =>{
                     <div className="mr-auto">
                         <h4>Gaji Karyawan</h4>
                     </div>
-                    <label className="h5 mt-2">search :</label>
-                            <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
-                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
-                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.gaji})}}>Show All</button>
+                            <input type="text" className=""  placeholder="Search By Name" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.gaji})}}>Show All</button>
                              </div>
                 </form>
                

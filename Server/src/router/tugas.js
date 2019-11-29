@@ -22,8 +22,8 @@ const upload = multer({
         fileSize : 200000000
     },
     fileFilter(req, file, cb){
-        if(!file.originalname.match(/\.(zip|rar|pdf|docs|xlxs|pptx)$/)){
-            cb(new Error ('Format file harus zip/rar/docs/xlxs/pptx'))
+        if(!file.originalname.match(/\.(zip|rar|pdf|docx|xlxs|pptx)$/)){
+            cb(new Error ('Format file harus zip/rar/docx/xlxs/pptx'))
         }
         cb(null,true)    
     }
@@ -61,10 +61,10 @@ router.post('/tugas/:userid',(req,res)=>{
 })
 
 // read tugas
-router.get('/tugas',(req,res)=>{
+router.get('/tugas/divisi/:divisi',(req,res)=>{
     let sql = `SELECT t.id, k.nama, t.title, t.description, t.deadline, t.pengirim, t.hasil, t.status FROM tugas t
 	join karyawan k
-	on k.id = t.user_id`
+	on k.id = t.user_id JOIN divisi d on k.divisi_id = d.id WHERE d.divisi = '${req.params.divisi}'`
 
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error : err.sqlmessage})

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
-
-
-
+import {Redirect} from 'react-router-dom'
 export class DetailGaji extends Component {
 
     state={
-        gaji : null
+        gaji : null,
+        numPages: null,
+        pageNumber: 1,
     }
 
     getKaryawan = () =>{
@@ -25,6 +25,9 @@ export class DetailGaji extends Component {
      
     }
     
+    onDocumentLoadSuccess = ({ numPages }) => {
+        this.setState({ numPages });
+      }
 
     componentDidMount = () =>{
         this.getKaryawan()
@@ -41,10 +44,10 @@ export class DetailGaji extends Component {
             total +=bonus
            return( 
                <div style={{marginTop:90}}>
-               <h1>Rincian Gaji </h1>
                <div  className='container d-flex mt-4 justify-content-center'>
-    
-                 <table className="table table-hover text-left mb-5 col-6">
+                <div className="card col-6 p-5">
+               <h1>Rincian Gaji </h1>
+                 <table className="table table-hover text-left mb-5">
                      <tr>
                          <td>NIK :</td>
                          <td>{nik}</td>
@@ -81,18 +84,23 @@ export class DetailGaji extends Component {
                          <td colSpan='2'>Total : Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
                      </tr>
                  </table>
+                </div>
             </div>
             </div>
         )
         }
     render() {
+        const { pageNumber, numPages } = this.state;
+        if(!this.props.token){
+           return <Redirect to='/'></Redirect>
+        }
         if(this.state.gaji === null){
             return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
                 <span class="sr-only">Loading...</span>
              </div>)
         }
         return (
-            <div>
+            <div> 
                 {this.tampilGaji()}
             </div>
         )

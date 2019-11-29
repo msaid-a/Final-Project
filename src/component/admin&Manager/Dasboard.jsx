@@ -48,7 +48,6 @@ export class Dasboard extends Component {
         })
             .then(res=>{
                 this.setState({data : res.data})
-                console.log(res.data)
                 this.filter()
             })
         
@@ -60,6 +59,7 @@ export class Dasboard extends Component {
         const jumlah = this.state.data.map(data =>{
             return data.jumlah_karyawan
         })
+        jumlah.push(0)
         this.setState({jumlah : jumlah})
         const pekerjaan = this.state.data.map(data =>{
             return data.subDivisi
@@ -79,7 +79,7 @@ export class Dasboard extends Component {
             datasets: [
               {
                 label: 'Data Karyawan',
-                backgroundColor: '#42A5F5',
+                backgroundColor: 'gray',
                 data: this.state.jumlah
               }
             ] 
@@ -101,7 +101,7 @@ export class Dasboard extends Component {
             <div style={{marginTop:90}} className="container">
                 <div className="row ">
 
-                     <Chart className="mx-auto" type='bar' data={data} />
+                     <Chart className="mx-auto col-10" type='bar' data={data} />
 
                 </div>
 

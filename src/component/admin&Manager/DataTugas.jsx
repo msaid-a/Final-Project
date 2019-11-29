@@ -18,8 +18,8 @@ export class DataTugas extends Component {
         show : 0,
         data : [],
         first: 0,
-        rows: 10,
-        lastIndex : 10
+        rows: 6,
+        lastIndex : 6
     }
 
 
@@ -36,7 +36,7 @@ export class DataTugas extends Component {
       }
 
     getTugas = () =>{
-        axios.get('/tugas',{
+        axios.get('/tugas/divisi/'+this.props.divisi,{
             headers:{
             keys : this.props.token
         }}).then(res => {
@@ -143,36 +143,48 @@ export class DataTugas extends Component {
                         }})    
                     })
             }
-            return (<tr>
-                <td className="align-middle">{no}</td>
-                <td className="align-middle">{data.nama}</td>
-                <td className="align-middle">{data.title}</td>
-                <td className="align-middle">{moment(data.deadline).format('YYYY-MM-DD')}</td>
-                <td className="align-middle"><a href={data.hasil} target='blank' className="btn btn-warning"> Download Hasil </a></td>
-                {
+            return (
+                <div className={
+                    this.state.karyawan.length  === 2 ?
+                    "col-sm-12 col-md-5 mb-5 mx-auto" :
+                        "col-md-4 mb-5 mx-auto"  
+                } >
+                            <div className="card " style={{minHeight : 350}}>
+                                <div className="card-header">
+                                    To : {data.nama}
+                                </div>
+                                <div className="card-body">
+                                    <h5 className="card-title">{data.title}</h5>
+                                    <p className="card-text mb-3">{data.description}</p>
+                                    <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD')}</p>
+                                    {
+                                        data.status.includes("REVISI") ?
+                                          <h5 className="text-warning font-weight-bold">{data.status}</h5>
+                                            : data.status.includes("Terlambat") ?
+                                            <h5 className="align-middle text-danger font-weight-bold">{data.status}</h5>
+                                            : data.status === "Terupload" || data.status === "Selesai" ?
+                                            <h5 className="align-middle text-success font-weight-bold">{data.status}</h5>
+                                            :
+                                            <h5 className="">{data.status}</h5>
+                        
+                                    }
+                                     {
                     data.status == "Selesai" ?
-                    <td className="align-middle">
-                        <i className="fas fa-check-square"></i>
-                        <p>Done</p>
-                    </td>
+                    <div>
+                        <h4 className="mt-4"><i className="fas fa-check-square">Done</i></h4>
+                        
+                    </div>
                     : 
-                    <td className="align-middle">
-                        <button className="btn btn-success mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
-                        <button className="btn btn-danger" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
-                    </td>
+                    <div className="mt-4">
+                        <button className="btn btn-dark mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
+                        <button className="btn btn-secondary" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
+                    </div>
                 }
-                {
-                    data.status.includes("REVISI") ?
-                    <td className="text-warning font-weight-bold align-middle">{data.status}</td>
-                    : data.status.includes("Terlambat") ?
-                    <td className="text-danger font-weight-bold align-middle">{data.status}</td>
-                    : data.status === "Terupload" || data.status === "Selesai" ?
-                    <td className="text-success font-weight-bold align-middle">{data.status}</td>
-                    :
-                    <td className="">{data.status}</td>
-
-                }
-            </tr>)
+                                </div>
+                            </div>
+                       </div>
+               
+            )
         })
     }
 
@@ -202,26 +214,15 @@ export class DataTugas extends Component {
                  <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
                     <h4>Data Tugas</h4>
                     <div className="form-group d-flex justify-content-end">
-                    <label className="h5 mt-2">search :</label>
-                            <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
-                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
-                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
+                            <input type="text" className=""  placeholder="Search By Sender" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-dark ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-secondary ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                              </div>
                 </form>
-                <table className="table table-sm table-striped table-responsive-md btn-table mt-5" >
-                    <thead>
-                    <th>NO</th>
-                    <th>Karyawan</th>
-                    <th>Title Tugas</th>
-                    <th>Deadline</th>
-                    <th>Hasil</th>
-                    <th>Action</th>
-                    <th>Status</th>
-                    </thead>
-                    <tbody>
+                <div  className="row card-deck-wrapper my-5">
+
                         {this.renderTugas(this.state.first, this.state.lastIndex)}
-                    </tbody>
-                </table>
+                </div> 
                 <Paginator
 						first={this.state.first}
 						rows={this.state.rows}

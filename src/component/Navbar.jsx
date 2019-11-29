@@ -30,7 +30,7 @@ class Header extends Component {
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
                 </Link>
-                <Link onClick={this.props.logoutData}>
+                <Link style={{marginTop:'40vh'}} onClick={this.props.logoutData}>
                       <button className="menu-item btn btn-danger">Logout</button>
                 </Link>
         </Menu>)
@@ -52,7 +52,7 @@ class Header extends Component {
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
                 </Link>
-                <Link onClick={this.props.logoutData}>
+                <Link style={{marginTop:'45vh'}} onClick={this.props.logoutData}>
                       <button className="menu-item btn btn-danger">Logout</button>
                 </Link>
         </Menu>)
@@ -71,7 +71,7 @@ class Header extends Component {
                 <Link to="/history" className="menu-item" >
                     <span>History</span>
                 </Link>
-                <Link onClick={this.props.logoutData}>
+                <Link style={{marginTop:'55vh'}} onClick={this.props.logoutData}>
                       <button className="menu-item btn btn-danger">Logout</button>
                 </Link>
         </Menu>)
@@ -85,6 +85,7 @@ class Header extends Component {
                   
                   <nav className="navbar-expand fixed-top navbar-dark bg-dark static-top" style={{height:50}} >
                     {this.renderNav()}
+                    <h3 className="float-right mr-3 text-white mt-2">Work Manage</h3>
                       {/* Navbar */}
                       <ul className="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
                         

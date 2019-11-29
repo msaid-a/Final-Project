@@ -36,6 +36,14 @@ export class Divisi extends Component {
 
     addDivisi = () => {
         let divisi = this.divisi.value
+        if(divisi === ''){
+            return Swal.fire({
+                type: 'error',
+                title: 'Tolong di isi',
+                showConfirmButton: false,
+                timer: 1500
+              })
+        }
         axios.post('/divisi',{
             divisi
         },{headers:{
@@ -50,7 +58,13 @@ export class Divisi extends Component {
             },{headers:{
                 keys : this.props.token
             }}).then(res=>{
-                alert('Success')
+                Swal.fire({
+                    type: 'success',
+                    title: 'Success',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+
                 this.getDivisi()
             })
 
@@ -167,8 +181,8 @@ export class Divisi extends Component {
                 <td className="align-middle">{data.divisi}</td>
                 <td className="text-left align-middle"><ul>{this.renderSubDivisi(data.divisi)}</ul></td>
                 <td className="text-center align-middle ">
-                    <button className="btn btn-success mr-1" onClick={()=>this.toggle(data.id,data.divisi)}>Add Subdivisi</button> 
-                    <button className="btn btn-danger" onClick={()=>{this.deleteDivisi(data.id, data.divisi)}}>Delete</button> 
+                    <button className="btn btn-secondary mr-1" onClick={()=>this.toggle(data.id,data.divisi)}>Add Subdivisi</button> 
+                    <button className="btn btn-outline-dark" onClick={()=>{this.deleteDivisi(data.id, data.divisi)}}>Delete</button> 
                 </td>
             </tr>)
         })
@@ -194,7 +208,7 @@ export class Divisi extends Component {
                   <form className="ml-auto mt-3" onSubmit={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
                     <input type="text" className=""  placeholder="Divisi" ref={input => this.divisi = input}></input>
-                        <button type="submit" class="btn btn-primary ml-1" onClick={this.addDivisi}>Add Divisi</button>
+                        <button type="submit" class="btn btn-dark ml-1" onClick={this.addDivisi}>Add Divisi</button>
                              </div>
                 </form>
                 <table className="table table-striped table-responsive-md btn-table mt-1" >

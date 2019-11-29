@@ -9,8 +9,7 @@ class Footer extends Component {
                   <div className=" container-fluid">
 
                   <div className="footer-copyright text-center  py-3 w-100 bg-dark text-white">© 2018 Copyright:
-                      Your
-                      Website 2019
+                      Muhammad Said Arrafi
                   </div>
                   </div>
               </footer>

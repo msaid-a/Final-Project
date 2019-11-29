@@ -42,7 +42,7 @@ renderGaji = (first,last) =>{
             <td className="align-middle">{no}</td>
             <td className="align-middle">{`${data.bulan}/${data.tahun}`}</td>
             <td className="align-middle">Rp. {Intl.NumberFormat().format(total).replace(/,/g, '.')}</td>
-            <td className="align-middle"><Link to={'/detailgaji/'+data.id} className='btn btn-success'>Rincian</Link></td>
+            <td className="align-middle"><Link to={'/detailgaji/'+data.id} className='btn btn-outline-dark'>Rincian</Link></td>
 
         </tr>)
     })
@@ -66,15 +66,9 @@ onPageChange(event) {
         }
         return (
             <div className="container">
-                <form style={{marginTop:80}} className="ml-auto">
+                <div style={{marginTop:80}} className="ml-auto mb-5">
                     <h1>Data Gaji Bulanan</h1>
-                    <div className="form-group d-flex justify-content-end">
-                    
-                        <label className="sr-only">Password</label>
-                            <input type="text" className=""  placeholder="Search"></input>
-                        <button type="submit" class="btn btn-primary ml-1">Seach</button>
-                             </div>
-                </form>
+                </div>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
                     <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
                     <tr>

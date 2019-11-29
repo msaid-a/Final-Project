@@ -6,7 +6,7 @@ const token = require('rand-token')
 router.get('/gaji',(req,res)=>{
     let sql =`SELECT g.id, k.nama, k.nik, g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
                 join karyawan k
-                on k.id = g.user_id`
+                on k.id = g.user_id Order By g.tahun Desc`
     conn.query(sql,(err,result)=>{
         if(err) return res.send({error:err.sqlmessage})
         res.send(result)

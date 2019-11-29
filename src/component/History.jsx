@@ -105,10 +105,9 @@ export class History extends Component {
                     <div className="mr-auto">
                         <h3>History</h3>
                     </div>
-                    <label className="h5 mt-2">search :</label>
-                            <input type="text" className=""  placeholder="nama" ref={input => this.search = input}></input>
-                        <button type="submit" class="btn btn-primary ml-1" onClick={this.onSearch}>Seach</button>
-                        <button type="submit" class="btn btn-warning ml-1" onClick={()=>{this.setState({search:this.state.gaji})}}>Show All</button>
+                            <input type="text" className=""  placeholder="Search By Name" ref={input => this.search = input}></input>
+                        <button type="submit" class="btn btn-dark ml-1" onClick={this.onSearch}>Seach</button>
+                        <button type="submit" class="btn btn-secondary ml-1" onClick={()=>{this.setState({cari:this.state.history})}}>Show All</button>
                              </div>
                 </form>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">

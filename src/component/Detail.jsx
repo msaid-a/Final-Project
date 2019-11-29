@@ -115,7 +115,7 @@ export class Detail extends Component {
                      <td>{phone}</td>
                  </tr>
              </table>
-             <Link className="btn btn-danger" to={"/editprofile/"+id_user}>Edit Profile</Link>
+             <Link className="btn btn-dark" to={"/editprofile/"+id_user}>Edit Profile</Link>
         </div>
     </div>)
     }

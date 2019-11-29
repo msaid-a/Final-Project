@@ -54,7 +54,7 @@ class App extends Component {
     
     return (
         <BrowserRouter>
-        <div id="App">
+        <div id="App" >
             <Navbar/>
               <div id="page-wrap">
                 <Switch>
@@ -73,8 +73,8 @@ class App extends Component {
                   <Route path='/detailkaryawan/:idkaryawan' component={Detail} />       
                   <Route path='*' component={NotFound} />       
                 </Switch>
-              </div>
               <Footer></Footer>
+              </div>
         </div>
         </BrowserRouter>
     )

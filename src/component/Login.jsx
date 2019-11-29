@@ -28,7 +28,7 @@ export class Login extends Component {
       return <Redirect to ='/tugas'></Redirect>
     }
         return (
-        <Container className=" border col-5 mb-1" style={{marginTop : 100}}>
+        <Container className=" border  col-5 mb-1 bg-white rounded login" style={{marginTop : 100}}>
         <h2 className="mt-5">Sign In</h2>
         <form className="form" onSubmit={e => e.preventDefault()}>
           <Col>

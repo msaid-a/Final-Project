@@ -11,7 +11,7 @@ import Footer from './Footer'
 import GajiKaryawan from './admin&Manager/GajiKaryawan'
 import DataTugas from './admin&Manager/DataTugas'
 import History from './History'
-import DataKaryawan from './admin&Manager/DataKaryawan'
+import Karyawan from './admin&Manager/Karyawan'
 
 import {session} from '../actions/index'
 import Tugas from './Karyawan/Tugas'
@@ -59,11 +59,8 @@ class App extends Component {
               <div id="page-wrap">
                 <Switch>
                   <Route path='/'  component={Login} exact/>
-                  <Route path='/register' component={Register} />
-                  <Route path='/gajikaryawan' component={GajiKaryawan} />
-                  <Route path='/datatugas' component={DataTugas} />
                   <Route path='/history' component={History} />
-                  <Route path='/datakaryawan' component={DataKaryawan} />               
+                  <Route path='/datakaryawan' component={Karyawan} />               
                   <Route path='/tugas' component={Tugas} />               
                   <Route path='/gaji' component={Gaji} />               
                   <Route path='/divisi' component={Divisi} />               

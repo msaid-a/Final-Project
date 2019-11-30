@@ -16,11 +16,6 @@ class Header extends Component {
                     <span>Dasboard</span></Link>
                 <Link to="/datakaryawan" className="menu-item" >
                     <span>Data Karyawan</span></Link>
-                <Link to="/register" className="menu-item" >
-                    <span>Tambah Karyawan</span></Link>
-                <Link to="/gajikaryawan" className="menu-item" >
-                    <span>Gaji Karyawan</span>
-                </Link>
                 <Link to="/divisi" className="menu-item" >
                     <span>Divisi</span>
                 </Link>
@@ -43,9 +38,6 @@ class Header extends Component {
                     <span>Data Karyawan</span></Link>
                     <Link to="/gaji" className="menu-item" >
                     <span>Lihat Gaji</span></Link>
-                <Link to="/datatugas" className="menu-item" >
-                    <span>Data Tugas</span>
-                </Link>
                 <Link to={"/detailkaryawan/"+this.props.iD} className="menu-item" >
                     <span>Profile</span>
                 </Link>

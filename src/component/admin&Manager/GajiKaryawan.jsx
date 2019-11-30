@@ -78,10 +78,7 @@ onSearch = () =>{
           }
         return (
             <div className="container">
-            <div className="row">
-                
-             </div>
-                  <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
+                  <form  className="ml-auto mt-1" onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
                     <div className="mr-auto">
                         <h4>Gaji Karyawan</h4>

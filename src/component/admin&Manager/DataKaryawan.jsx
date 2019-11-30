@@ -7,12 +7,10 @@ import moment from 'moment'
 import { Paginator } from 'primereact/paginator';
 import Swal from 'sweetalert2'
 import bcrypt from 'bcryptjs'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import GajiKaryawan from '../admin&Manager/GajiKaryawan'
+
 
 class DataKaryawan extends Component {
-
+    
     state={
         karyawan : null,
         search :[],
@@ -67,7 +65,10 @@ toggle  = (id,id_karyawan,nama) => {
 saveGaji = (id, nama) =>{
     if(bcrypt.compareSync("admin", this.props.jabatan)){
         let bulan = this.bulan.value
-        let tahun = this.tahun.value
+        let tahun = parseInt(this.tahun.value)
+        if(isNaN(tahun)){
+            return alert("tahun harus berupa angka")
+        }
         let gaji = parseInt(this.gaji.value)
         let tunjanganKeluarga = parseInt(this.keluarga.value)
         let tunjanganTransportasi=parseInt(this.transportasi.value)
@@ -275,8 +276,8 @@ onPageChange(event) {
         lastIndex : event.first + event.rows
     });
 }
-
-
+    
+    
     render() {
         if(!this.props.userName){
             return <Redirect to ='/'></Redirect>
@@ -291,214 +292,92 @@ onPageChange(event) {
         }
         let {id, id_karyawan, nama, nik} = this.state.selectKaryawan
         return (
-            <div style={{marginTop:80}} className="container">
-                <Tabs>
-                    {
-                        bcrypt.compareSync("admin", this.props.jabatan) ?
-                            <TabList>
-                                <Tab>Data Karyawan</Tab>
-                                <Tab>Gaji Karyawan</Tab>
-                                <Tab>Tambah Karyawan</Tab>
-                            </TabList>                        
-                        :
-                        <TabList>
-                                <Tab>Data Karyawan</Tab>
-                                <Tab>Data Tugas</Tab>
-                            </TabList>
-                    }
-                    {
-                        bcrypt.compareSync("admin", this.props.jabatan) ?
-                        <div>
-                        <TabPanel>
-                        <form className="ml-auto " onClick={e => e.preventDefault()}>
-                                    
-                    
-                                                     <div className="form-group d-flex justify-content-end">
-                                                     <div className="mr-auto">
-                                                         <h4>Data Karyawan</h4>
-                                                     </div>
-                                                             <input type="text"  placeholder="Search By Name" ref={input => this.search = input}></input>
-                                                         <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Search</button>
-                                                         <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
-                                                              </div>
-                                                 </form>
-                                                 <table className=" table table-hover table-striped table-responsive-md rounded-bottom mb-5 text-center">
-                                                     <thead   className='thead-dark' style={{height:50}}>
-                                                     <tr >
-                                                     <th>NO</th>
-                                                     <th>NIK</th>
-                                                     <th>Email</th>
-                                                     <th>Nama</th>
-                                                     <th>Jenis Kelamin</th>
-                                                     <th>Pekerjaan</th>
-                                                     <th>Action</th>
-                                                     </tr>
-                                                     </thead>
-                                                     <tbody className='text-center 'style={{fontSize: 13}}>
-                                                         {this.renderKaryawan(this.state.first, this.state.lastIndex)}
-                                                     </tbody>
-                                                 </table>
-                                                 <Paginator
-                                                        first={this.state.first}
-                                                        rows={this.state.rows}
-                                                        totalRecords={this.state.karyawan.length}
-                                                        rowsPerPageOptions={[10, 20, 30]}
-                                                        onPageChange={(e)=>this.onPageChange(e)}
-                                                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
-                                
-                                                    />
-                                                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
-                                                <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
-                                        <ModalBody>
-                                            <form onSubmit={e=> e.preventDefault()}>
-                                            <select name="Bulan" className="mb-3 form-control" ref={input=> this.bulan = input} >
-                                                <option value="Januari">Januari</option>
-                                                <option value="Februari">Februari</option>
-                                                <option value="Maret">Maret</option>
-                                                <option value="April">April</option>
-                                                <option value="Mei">Mei</option>
-                                                <option value="Juni">Juni</option>
-                                                <option value="Juli">Juli</option>
-                                                <option value="Agustus">Agustus</option>
-                                                <option value="September">September</option>
-                                                <option value="Oktober">Oktober</option>
-                                                <option value="November">Novmber</option>
-                                                <option value="Desember">Desember</option>
-                                            </select>
-                                            <input className="form-control mb-3" type="number" placeholder="Tahun" ref={input => this.tahun =input}/>
-                                                <input className="form-control mb-3" type="number" placeholder="Gaji Pokok" ref={input => this.gaji =input}/>
-                                                <input className="form-control mb-3" type="number" placeholder="Tunjangan Keluarga" ref={input => this.keluarga =input}/>
-                                                <input className="form-control mb-3" type="number" placeholder="Tunjangan Transfortasi" ref={input => this.transportasi =input}/>
-                                                <input className="form-control mb-3" type="number" placeholder="Bonus" ref={input => this.bonus = input}/>
-                                            </form>
-                                        </ModalBody> 
-                                        <ModalFooter>
-                                          <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
-                                          <Button color="primary" onClick={()=> this.saveGaji(id,nama)}>Submit</Button>
-                                        </ModalFooter>
-                                      </Modal>
-                                      <Modal isOpen={this.state.modal2} toggle={this.toggleTugas} fullHeight position="right" id='tugas'>
-                                        <ModalHeader toggle={this.toggleTugasCancel}>{nama}</ModalHeader>
-                                        <ModalBody>
-                                            <form onSubmit={e=> e.preventDefault()}>
-                                            <input type="text" name="" id="" placeholder="title" className="form-control" ref={input => {this.title = input}}/>
-                                            <textarea className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
-                                            
-                                            <label>Deadline :</label>
-                                            <input type="date" name="" id="" placeholder="title" className="form-control" ref={input => {this.deadline = input}}/>
-                                            </form>
-                                        </ModalBody> 
-                                        <ModalFooter>
-                                          <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
-                                          <Button color="primary" onClick={()=> this.postTugas(id_karyawan, nama)}>Submit</Button>
-                                        </ModalFooter>
-                                      </Modal>
-                        </TabPanel>
-                        <TabPanel>
-                          <GajiKaryawan/>
-                        </TabPanel>
-                        </div> :
-                         <div>
-                         <TabPanel>
-                         <form className="ml-auto " onClick={e => e.preventDefault()}>
-                                     
-                     
-                                                      <div className="form-group d-flex justify-content-end">
-                                                      <div className="mr-auto">
-                                                          <h4>Data Karyawan</h4>
-                                                      </div>
-                                                              <input type="text"  placeholder="Search By Name" ref={input => this.search = input}></input>
-                                                          <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Search</button>
-                                                          <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
-                                                               </div>
-                                                  </form>
-                                                  <table className=" table table-hover table-striped table-responsive-md rounded-bottom mb-5 text-center">
-                                                      <thead   className='thead-dark' style={{height:50}}>
-                                                      <tr >
-                                                      <th>NO</th>
-                                                      <th>NIK</th>
-                                                      <th>Email</th>
-                                                      <th>Nama</th>
-                                                      <th>Jenis Kelamin</th>
-                                                      <th>Pekerjaan</th>
-                                                      <th>Action</th>
-                                                      </tr>
-                                                      </thead>
-                                                      <tbody className='text-center 'style={{fontSize: 13}}>
-                                                          {this.renderKaryawan(this.state.first, this.state.lastIndex)}
-                                                      </tbody>
-                                                  </table>
-                                                  <Paginator
-                                                         first={this.state.first}
-                                                         rows={this.state.rows}
-                                                         totalRecords={this.state.karyawan.length}
-                                                         rowsPerPageOptions={[10, 20, 30]}
-                                                         onPageChange={(e)=>this.onPageChange(e)}
-                                                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
-                                 
-                                                     />
-                                                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
-                                                 <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
-                                         <ModalBody>
-                                             <form onSubmit={e=> e.preventDefault()}>
-                                             <select name="Bulan" className="mb-3 form-control" ref={input=> this.bulan = input} >
-                                                 <option value="Januari">Januari</option>
-                                                 <option value="Februari">Februari</option>
-                                                 <option value="Maret">Maret</option>
-                                                 <option value="April">April</option>
-                                                 <option value="Mei">Mei</option>
-                                                 <option value="Juni">Juni</option>
-                                                 <option value="Juli">Juli</option>
-                                                 <option value="Agustus">Agustus</option>
-                                                 <option value="September">September</option>
-                                                 <option value="Oktober">Oktober</option>
-                                                 <option value="November">Novmber</option>
-                                                 <option value="Desember">Desember</option>
-                                             </select>
-                                             <input className="form-control mb-3" type="number" placeholder="Tahun" ref={input => this.tahun =input}/>
-                                                 <input className="form-control mb-3" type="number" placeholder="Gaji Pokok" ref={input => this.gaji =input}/>
-                                                 <input className="form-control mb-3" type="number" placeholder="Tunjangan Keluarga" ref={input => this.keluarga =input}/>
-                                                 <input className="form-control mb-3" type="number" placeholder="Tunjangan Transfortasi" ref={input => this.transportasi =input}/>
-                                                 <input className="form-control mb-3" type="number" placeholder="Bonus" ref={input => this.bonus = input}/>
-                                             </form>
-                                         </ModalBody> 
-                                         <ModalFooter>
-                                           <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
-                                           <Button color="primary" onClick={()=> this.saveGaji(id,nama)}>Submit</Button>
-                                         </ModalFooter>
-                                       </Modal>
-                                       <Modal isOpen={this.state.modal2} toggle={this.toggleTugas} fullHeight position="right" id='tugas'>
-                                         <ModalHeader toggle={this.toggleTugasCancel}>{nama}</ModalHeader>
-                                         <ModalBody>
-                                             <form onSubmit={e=> e.preventDefault()}>
-                                             <input type="text" name="" id="" placeholder="title" className="form-control" ref={input => {this.title = input}}/>
-                                             <textarea className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
-                                             
-                                             <label>Deadline :</label>
-                                             <input type="date" name="" id="" placeholder="title" className="form-control" ref={input => {this.deadline = input}}/>
-                                             </form>
-                                         </ModalBody> 
-                                         <ModalFooter>
-                                           <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
-                                           <Button color="primary" onClick={()=> this.postTugas(id_karyawan, nama)}>Submit</Button>
-                                         </ModalFooter>
-                                       </Modal>
-                         </TabPanel>
-                         <TabPanel>
-                           <h1>asdhjksad</h1>
-                         </TabPanel>
-                         </div>
-                    }
-   
-  </Tabs>
+            <div>
+                <form className="ml-auto " onClick={e => e.preventDefault()}>                              
+                                    <div className="form-group d-flex justify-content-end">
+                                    <div className="mr-auto">
+                                        <h4>Data Karyawan</h4>
+                                    </div>
+                                            <input type="text"  placeholder="Search By Name" ref={input => this.search = input}></input>
+                                        <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Search</button>
+                                        <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
+                                             </div>
+                                </form>
+                                <table className=" table table-hover table-striped table-responsive-md rounded-bottom mb-5 text-center">
+                                    <thead   className='thead-dark' style={{height:50}}>
+                                    <tr >
+                                    <th>NO</th>
+                                    <th>NIK</th>
+                                    <th>Email</th>
+                                    <th>Nama</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Pekerjaan</th>
+                                    <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody className='text-center 'style={{fontSize: 13}}>
+                                        {this.renderKaryawan(this.state.first, this.state.lastIndex)}
+                                    </tbody>
+                                </table>
+                                <Paginator
+                                       first={this.state.first}
+                                       rows={this.state.rows}
+                                       totalRecords={this.state.karyawan.length}
+                                       rowsPerPageOptions={[10, 20, 30]}
+                                       onPageChange={(e)=>this.onPageChange(e)}
+                                       template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
+               
+                                   />
+                               <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
+                               <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
+                       <ModalBody>
+                           <form onSubmit={e=> e.preventDefault()}>
+                           <select name="Bulan" className="mb-3 form-control" ref={input=> this.bulan = input} >
+                               <option value="Januari">Januari</option>
+                               <option value="Februari">Februari</option>
+                               <option value="Maret">Maret</option>
+                               <option value="April">April</option>
+                               <option value="Mei">Mei</option>
+                               <option value="Juni">Juni</option>
+                               <option value="Juli">Juli</option>
+                               <option value="Agustus">Agustus</option>
+                               <option value="September">September</option>
+                               <option value="Oktober">Oktober</option>
+                               <option value="November">Novmber</option>
+                               <option value="Desember">Desember</option>
+                           </select>
+                           <input className="form-control mb-3" type="text" placeholder="Tahun" ref={input => this.tahun =input} maxLength="4"/>
+                               <input className="form-control mb-3" type="number" placeholder="Gaji Pokok" ref={input => this.gaji =input}/>
+                               <input className="form-control mb-3" type="number" placeholder="Tunjangan Keluarga" ref={input => this.keluarga =input}/>
+                               <input className="form-control mb-3" type="number" placeholder="Tunjangan Transfortasi" ref={input => this.transportasi =input}/>
+                               <input className="form-control mb-3" type="number" placeholder="Bonus" ref={input => this.bonus = input}/>
+                           </form>
+                       </ModalBody> 
+                       <ModalFooter>
+                         <Button color="secondary" onClick={this.toggleCancel}>Close</Button>
+                         <Button color="primary" onClick={()=> this.saveGaji(id,nama)}>Submit</Button>
+                       </ModalFooter>
+                     </Modal>
+                     <Modal isOpen={this.state.modal2} toggle={this.toggleTugas} fullHeight position="right" id='tugas'>
+                       <ModalHeader toggle={this.toggleTugasCancel}>{nama}</ModalHeader>
+                       <ModalBody>
+                           <form onSubmit={e=> e.preventDefault()}>
+                           <input type="text" name="" id="" placeholder="title" className="form-control" ref={input => {this.title = input}}/>
+                           <textarea className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
+                           
+                           <label>Deadline :</label>
+                           <input type="date" name="" id="" placeholder="title" className="form-control" ref={input => {this.deadline = input}}/>
+                           </form>
+                       </ModalBody> 
+                       <ModalFooter>
+                         <Button color="secondary" onClick={this.toggleTugasCancel}>Close</Button>
+                         <Button color="primary" onClick={()=> this.postTugas(id_karyawan, nama)}>Submit</Button>
+                       </ModalFooter>
+                     </Modal>
             </div>
-    //         <div className="container">
-    //             
-    //         </div>
         )
     }
 }
-
 const mapStateToProps = (state) =>{
     return {
       userName : state.auth.username,
@@ -508,4 +387,5 @@ const mapStateToProps = (state) =>{
       token : state.auth.token
     }
   }
-export default connect(mapStateToProps,{})(DataKaryawan)
+  
+export default connect(mapStateToProps)(DataKaryawan)

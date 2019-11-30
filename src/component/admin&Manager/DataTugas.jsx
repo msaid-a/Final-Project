@@ -211,7 +211,7 @@ export class DataTugas extends Component {
         let {id,title} = this.state.selectTugas
         return (
             <div className="container">
-                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
+                 <form className="ml-auto mt-3" onClick={e => e.preventDefault()}>
                     <h4>Data Tugas</h4>
                     <div className="form-group d-flex justify-content-end">
                             <input type="text" className=""  placeholder="Search By Sender" ref={input => this.search = input}></input>

@@ -91,6 +91,7 @@ saveGaji = (id, nama) =>{
                 description:'Telah memberi gaji kepada ' + nama,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
+                type : "Input",
                 tanggal: now 
             },{
                 headers:{
@@ -154,6 +155,7 @@ postTugas = (id,nama,nik) =>{
                 description:'Telah memberi Tugas kepada ' + nama,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
+                type : "Input",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{
                 headers:{
@@ -193,6 +195,7 @@ deleteKaryawan = (id,username) =>{
                         description:'Telah Menghapus Karyawan dengan username ' + username,
                         user_id:this.props.iD,
                         divisi : this.props.divisi,
+                        type : "Delete",
                         tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
                     },{
                         headers:{
@@ -322,7 +325,7 @@ onPageChange(event) {
                                 <Paginator
                                        first={this.state.first}
                                        rows={this.state.rows}
-                                       totalRecords={this.state.karyawan.length}
+                                       totalRecords={this.state.search.length}
                                        rowsPerPageOptions={[10, 20, 30]}
                                        onPageChange={(e)=>this.onPageChange(e)}
                                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'

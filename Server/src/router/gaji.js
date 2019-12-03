@@ -43,7 +43,7 @@ router.post('/gaji',(req,res)=>{
     let data = req.body
     data.id = token.generate(20)
     conn.query(sql,data,(err,result)=>{
-        if(err) return console.log({error:err.sqlmessage})
+        if(err) return res.send({error:err.sqlmessage})
         res.send('Success Added Gaji')
     })
 })

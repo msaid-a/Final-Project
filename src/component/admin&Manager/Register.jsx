@@ -75,6 +75,7 @@ class Register extends Component {
                 description: "telah menambahkan karyawan baru dengan username " + username,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
+                type : "Input",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{
                 headers:{
@@ -216,7 +217,7 @@ class Register extends Component {
                            </div>
                            <div className="form mt-3">
                                <label htmlFor="inputPassword">Jenis Kelamin</label>
-                               <select name="" id="" ref={input => this.gender = input}>
+                               <select className="custom-select" id="" ref={input => this.gender = input}>
                                    <option value="Pria">Pria</option>
                                    <option value="Wanita">Wanita</option>
                                </select>
@@ -228,7 +229,7 @@ class Register extends Component {
                            <div className="form">
                                <label htmlFor="inputPassword">Agama</label>
                                <div className="form-label-group">
-                               <select name="" id="" ref={input => this.agama = input}>
+                               <select className="custom-select" id="" ref={input => this.agama = input}>
                                    <option value="Islam">Islam</option>
                                    <option value="Kristen">Kristen</option>
                                    <option value="Hindu">Hindu</option>
@@ -252,7 +253,7 @@ class Register extends Component {
                            <div className="form">
                                <label htmlFor="inputPassword">Jabatan</label>
                                <div className="form-label-group">
-                                    <select className="mb-3" ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
+                                    <select className="mb-3 custom-select" ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
                                         <option value="" hidden>Jabatan</option>
                                         <option value="Manager">Manager</option>
                                         <option value="Karyawan">Karyawan</option>

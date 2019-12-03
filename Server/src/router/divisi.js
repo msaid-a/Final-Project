@@ -32,7 +32,7 @@ router.get('/divisi',(req,res)=>{
    
     let sql = `SELECT * FROM divisi WHERE is_deleted = 0 ORDER BY divisi`
     conn.query(sql, (err,result)=>{
-            if(err) return console.log (err)
+            if(err) return res.send ({error:err.message})
             res.send(result)
     })
 })

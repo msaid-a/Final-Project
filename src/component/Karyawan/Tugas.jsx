@@ -57,7 +57,8 @@ class Tugas extends Component {
                 axios.post('/history',{
                     user_id: this.props.iD,
                     description :'Telah menguload tugas dengan judul ' + title,
-                    divisi:this.props.jabatan.split(' ')[1],
+                    divisi:this.props.jabatan,
+                    type : "Input",
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss') 
     
                 },{
@@ -189,7 +190,7 @@ class Tugas extends Component {
                 <Paginator
 						first={this.state.first}
 						rows={this.state.rows}
-						totalRecords={this.state.tugas.length}
+						totalRecords={this.state.search.length}
 						rowsPerPageOptions={[10, 20, 30]}
                         onPageChange={(e)=>this.onPageChange(e)}
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'

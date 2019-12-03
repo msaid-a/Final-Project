@@ -106,7 +106,6 @@ router.get('/tugas/:userid',(req,res)=>{
 router.patch('/tugas/:tugasid', (req,res)=>{
     let sql = `UPDATE tugas SET ? WHERE id ='${req.params.tugasid}'`
     let data = [req.body, req.params.tugasid]
-    console.log(req.params.tugasid)
 
     conn.query(sql,data, (err,result)=>{
         if(err) return res.send({error:err.sqlmessage})

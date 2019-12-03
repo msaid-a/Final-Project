@@ -106,7 +106,7 @@ onSearch = () =>{
                 <Paginator
 						first={this.state.first}
 						rows={this.state.rows}
-						totalRecords={this.state.gaji.length}
+						totalRecords={this.state.search.length}
 						rowsPerPageOptions={[10, 20, 30]}
                         onPageChange={(e)=>this.onPageChange(e)}
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'

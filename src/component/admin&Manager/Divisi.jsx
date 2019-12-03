@@ -54,6 +54,7 @@ export class Divisi extends Component {
                 description : "telah menambahkan divisi baru yaitu " + this.divisi.value,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
+                type : "Input",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{headers:{
                 keys : this.props.token
@@ -83,6 +84,7 @@ export class Divisi extends Component {
                 description : "telah menambahkan subdivisi baru yaitu " + this.subDivisi.value,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
+                type : "Input",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{headers:{
                 keys : this.props.token
@@ -149,6 +151,7 @@ export class Divisi extends Component {
                     description : "telah mengahpus divisi yaitu " + divisi,
                     user_id:this.props.iD,
                     divisi : this.props.divisi,
+                    type : "Delete",
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
                 },{headers:{
                     keys : this.props.token

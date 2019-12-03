@@ -6,7 +6,6 @@ router.post('/history',(req,res)=>{
     let sql = `INSERT INTO history SET ?`
     let data = req.body
     data.id = token.generate(20)
-    console.log(data)
     conn.query(sql,data, (err, result)=>{
         try {
             if(err) throw err
@@ -19,7 +18,7 @@ router.post('/history',(req,res)=>{
 
 router.get('/history',(req,res)=>{
     
-    let sql = `SELECT u.username, d.divisi, h.description, h.tanggal 
+    let sql = `SELECT u.username, d.divisi, h.description, h.type, h.tanggal 
     FROM history h join users u on h.user_id = u.id 
     join karyawan k 
     on u.id = k.id_user
@@ -36,7 +35,7 @@ router.get('/history',(req,res)=>{
 })
 
 router.get('/history/:divisi',(req,res)=>{
-    let sql = `SELECT u.username, d.divisi, h.description, h.tanggal 
+    let sql = `SELECT u.username, d.divisi, h.description,h.type, h.tanggal 
     FROM history h join users u on h.user_id = u.id 
     join karyawan k 
     on u.id = k.id_user
@@ -54,7 +53,7 @@ router.get('/history/:divisi',(req,res)=>{
 })
 
 router.get('/history/profile/:username',(req,res)=>{
-    let sql = `SELECT u.username, d.divisi, h.description, h.tanggal 
+    let sql = `SELECT u.username, d.divisi, h.description,h.type, h.tanggal 
     FROM history h join users u on h.user_id = u.id 
     join karyawan k 
     on u.id = k.id_user

@@ -55,6 +55,7 @@ import bcrypt from 'bcryptjs'
                 description:'Telah Meng edit profile Karyawan  ' + username,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
+                type : "Update",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{
                 headers:{
@@ -95,6 +96,7 @@ import bcrypt from 'bcryptjs'
                 description:"Telah mengupdate user " + this.username.value,
                 user_id:this.props.iD,
                 divisi : this.props.divisi,
+                type : "Update",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{
                 headers:{
@@ -222,7 +224,7 @@ import bcrypt from 'bcryptjs'
                             </div>
                             <div className="form mt-3">
                                 <label htmlFor="inputPassword">Jenis Kelamin</label>
-                                <select defaultValue={gender} name="" id="" ref={input => this.gender = input}>
+                                <select defaultValue={gender} className="custom-select" id="" ref={input => this.gender = input}>
                                     <option value="Pria">Pria</option>
                                     <option value="Wanita">Wanita</option>
                                 </select>
@@ -235,7 +237,7 @@ import bcrypt from 'bcryptjs'
                             <div className="form">
                                 <label htmlFor="inputPassword">Agama</label>
                                 <div className="form-label-group">
-                                <select defaultValue={agama} name="" id="" ref={input => this.agama = input}>
+                                <select defaultValue={agama} className="custom-select" name="" id="" ref={input => this.agama = input}>
                                     <option value="Islam">Islam</option>
                                     <option value="Kristen">Kristen</option>
                                     <option value="Hindu">Hindu</option>
@@ -260,7 +262,7 @@ import bcrypt from 'bcryptjs'
                             <div className="form">
                                    <label htmlFor="inputPassword">Jabatan</label>
                                    <div className="form-label-group">
-                                        <select className="mb-3" defaultValue={jabatan} ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
+                                        <select className="mb-3 custom-select" defaultValue={jabatan} ref={input => this.jabatan = input} onChange={() => this.setState({jabatan:this.jabatan.value})}>
                                             <option value="" hidden>Jabatan</option>
                                             <option value="Manager">Manager</option>
                                             <option value="Karyawan">Karyawan</option>
@@ -275,7 +277,7 @@ import bcrypt from 'bcryptjs'
                             <label htmlFor="inputPassword">Divisi</label>
                            
                             <div className="form-label-group">
-                                 <select className="mb-3" defaultValue={divisi} ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
+                                 <select className="mb-3 custom-select" defaultValue={divisi} ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
                                  <option value="" hidden>Divisi</option>
                                      {this.renderDivisi()}
                                  </select>                                    
@@ -291,7 +293,7 @@ import bcrypt from 'bcryptjs'
                                  <div className="form">
                                    <label htmlFor="inputPassword">Pekerjaan</label>
                                    <div className="form-label-group">
-                                        <select className="mb-3" defaultValue={subDivisi} ref={input => this.subDivisi = input} >
+                                        <select className="mb-3 custom-select" defaultValue={subDivisi} ref={input => this.subDivisi = input} >
                                         <option value="" hidden>Pekerjaan</option>
                                             {this.renderSubDivisi()}
                                         </select>
@@ -355,7 +357,7 @@ import bcrypt from 'bcryptjs'
                         </div>
                         <div className="form mt-3">
                             <label htmlFor="inputPassword">Jenis Kelamin</label>
-                            <select defaultValue={gender} name="" id="" ref={input => this.gender = input}>
+                            <select defaultValue={gender} className="custom-select" name="" id="" ref={input => this.gender = input}>
                                 <option value="Pria">Pria</option>
                                 <option value="Wanita">Wanita</option>
                             </select>
@@ -367,7 +369,7 @@ import bcrypt from 'bcryptjs'
                         <div className="form">
                             <label htmlFor="inputPassword">Agama</label>
                             <div className="form-label-group">
-                            <select defaultValue={agama} name="" id="" ref={input => this.agama = input}>
+                            <select defaultValue={agama} className="custom-select" name="" id="" ref={input => this.agama = input}>
                                 <option value="Islam">Islam</option>
                                 <option value="Kristen">Kristen</option>
                                 <option value="Hindu">Hindu</option>

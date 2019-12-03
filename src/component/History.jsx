@@ -9,6 +9,7 @@ export class History extends Component {
     state={
         history:null,
         cari:[],
+        divisi: null,
         first: 0,
         rows: 10,
         lastIndex : 10
@@ -50,22 +51,33 @@ export class History extends Component {
                 
             
     }
+
+    getDivisi = () =>{
+        axios.get('/divisi',{
+            headers :{
+                keys : this.props.token
+            }
+        })
+            .then(res=>{
+                this.setState({divisi : res.data})
+            })
+    }
     
     componentDidMount = () =>{
         this.getHistory()
-        
+        this.getDivisi()
   
     }
 
     renderHistory = (first,last) =>{
         let no = 0
-        
         return this.state.cari.slice(first,last).map(data =>{
             no++
             return (<tr>
                 <td className="align-middle">{no}</td>
                 <td className="align-middle">{data.username}</td>
                 <td className="align-middle">{data.divisi}</td>
+                <td className="align-middle">{data.type}</td>
                 <td className="align-middle">{data.description}</td>
                 <td className="align-middle">{moment(data.tanggal).format('YYYY-MM-DD')}</td>
             </tr>)
@@ -82,8 +94,55 @@ export class History extends Component {
 
     onSearch = () =>{
         let username = this.search.value
+        let type = this.type.value
+        let bagian = this.bagian.value
+        let divisi = this.divisi.value
         let result = this.state.history.filter(data => {
-            return data.username.includes(username)
+            if(!type && !bagian && !divisi){
+                return data.username.includes(username)
+            } 
+            if(!username && !bagian && !divisi){
+                return data.type.includes(type)
+            }
+            if(!type && !username && !divisi){
+                if(bagian === "tugas"){
+                    return data.description.includes('tugas') || data.description.includes('judul')
+                } 
+                return data.description.includes(bagian)
+            }
+            if(!type && !bagian && !username){
+                return data.divisi.includes(divisi)
+            }
+            if(!type && !bagian){
+                return data.divisi.includes(divisi) && data.username.includes(username)
+            }
+            if(!type && !username){
+                if(bagian === "tugas"){
+                    return (data.description.includes('tugas') || data.description.includes('judul')) && data.divisi.includes(divisi)
+                } 
+                return data.description.includes(bagian) && data.divisi.includes(divisi)
+            }
+            if(!type && !divisi){
+                if(bagian === "tugas"){
+                    return (data.description.includes('tugas') || data.description.includes('judul')) && data.username.includes(username)
+                } 
+                return data.description.includes(bagian) && data.username.includes(username)
+            }
+            if(!username && !divisi){
+                if(bagian === "tugas"){
+                    return (data.description.includes('tugas') || data.description.includes('judul')) && data.type.includes(type)
+                } 
+                return data.description.includes(bagian) && data.type.includes(type)
+            }
+            if(!username && !bagian){
+                return data.type.includes(type) && data.divisi.includes(divisi)
+            }else{
+                if(bagian === "tugas"){
+                    return (data.description.includes('tugas') || data.description.includes('judul')) && data.type.includes(type) && data.divisi.includes(divisi)
+                } 
+                return data.description.includes(bagian) && data.type.includes(type) && data.divisi.includes(divisi) && data.username.includes(username)
+            }
+
        })
        this.setState({cari:result})
     }
@@ -93,22 +152,49 @@ export class History extends Component {
         if(!this.props.iD){
             return <Redirect to="/"></Redirect>
         }
-        if(this.state.history === null){
+        if(this.state.history === null ){
             return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
                          <span class="sr-only">Loading...</span>
                     </div>)
           }
         return (
             <div className="container">
-                <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>
+                <form style={{marginTop:80}} className="ml-auto " onClick={e=> e.preventDefault()}>
+                    <h3>History</h3>
                     <div className="form-group d-flex justify-content-end">
-                    <div className="mr-auto">
-                        <h3>History</h3>
+                    <div>
+                        <select className="custom-select col-3" ref={input => this.type = input}>
+                            <option value="" hidden>Type</option>
+                            <option value="Input">Input</option>
+                            <option value="Update">Update</option>
+                            <option value="Delete">Delete</option>
+                        </select>
+                        <select className="ml-1 custom-select col-4" ref={input => this.bagian = input}>
+                            <option value="" hidden>bagian</option>
+                            <option value="tugas">Tugas</option>
+                            <option value="karyawan">Karyawan</option>
+                            <option value="divisi">Divisi</option>
+                            <option value="gaji">Gaji</option>
+                        </select>
+                        <select className="ml-1 custom-select col-3" ref={input => this.divisi = input}>
+                        <option value="" hidden>divisi</option>
+                            {
+                                    this.state.divisi !== null ?
+                                    this.state.divisi.map(data => {
+                                       return <option>{data.divisi}</option>
+                                    }) : <option value="" hidden>divisi</option>
+
+                                }
+                        </select>
                     </div>
-                            <input type="text" className=""  placeholder="Search By Name" ref={input => this.search = input}></input>
+                        <div className="mr-auto">
+                        </div>
+                        <input type="text" className="" placeholder="Search By Name" ref={input=> this.search =
+                        input}></input>
                         <button type="submit" class="btn btn-dark ml-1" onClick={this.onSearch}>Seach</button>
-                        <button type="submit" class="btn btn-secondary ml-1" onClick={()=>{this.setState({cari:this.state.history})}}>Show All</button>
-                             </div>
+                        <button type="submit" class="btn btn-secondary ml-1"
+                            onClick={()=>{this.setState({cari:this.state.history})}}>Show All</button>
+                    </div>
                 </form>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
                     <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
@@ -116,6 +202,7 @@ export class History extends Component {
                     <th>NO</th>
                     <th>Username</th>
                     <th>Divisi</th>
+                    <th>Type</th>
                     <th>Description</th>
                     <th>Date</th>
                     </tr>
@@ -127,7 +214,7 @@ export class History extends Component {
                 <Paginator
 						first={this.state.first}
 						rows={this.state.rows}
-						totalRecords={this.state.history.length}
+						totalRecords={this.state.cari.length}
 						rowsPerPageOptions={[10, 20, 30]}
                         onPageChange={(e)=>this.onPageChange(e)}
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'

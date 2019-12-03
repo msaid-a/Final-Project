@@ -56,6 +56,7 @@ export class DataTugas extends Component {
                 description:'menyatakan tugas selesai pada judul ' + title,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
+                type : "Update",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
             },{
                 headers:{
@@ -88,6 +89,7 @@ export class DataTugas extends Component {
                 description:'merevisi pada judul ' + this.state.selectTugas.title,
                 user_id: this.props.iD,
                 divisi : this.props.divisi,
+                type : "Update",
                 tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
 
             },{
@@ -136,6 +138,7 @@ export class DataTugas extends Component {
                             description : "terlambat mengerjakan tugas dengan judul " + data.title,
                             user_id: data.id,
                             divisi : data.divisi,
+                            type : "Update",
                             tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
                         },{
                             headers:{
@@ -156,6 +159,7 @@ export class DataTugas extends Component {
                                 <div className="card-body">
                                     <h5 className="card-title">{data.title}</h5>
                                     <p className="card-text mb-3">{data.description}</p>
+                                    
                                     <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD')}</p>
                                     {
                                         data.status.includes("REVISI") ?
@@ -167,7 +171,14 @@ export class DataTugas extends Component {
                                             :
                                             <h5 className="">{data.status}</h5>
                         
+                                    }{
+                                        data.status != "Selesai" ?
+                                        <div className="mt-2">
+                                            <a href={data.hasil} target="blank" className="btn btn-outline-dark">Download</a>
+                                        </div> : null
                                     }
+
+
                                      {
                     data.status == "Selesai" ?
                     <div>
@@ -226,7 +237,7 @@ export class DataTugas extends Component {
                 <Paginator
 						first={this.state.first}
 						rows={this.state.rows}
-						totalRecords={this.state.karyawan.length}
+						totalRecords={this.state.search.length}
 						rowsPerPageOptions={[10, 20, 30]}
                         onPageChange={(e)=>this.onPageChange(e)}
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'

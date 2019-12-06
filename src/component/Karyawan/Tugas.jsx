@@ -57,7 +57,7 @@ class Tugas extends Component {
                 axios.post('/history',{
                     user_id: this.props.iD,
                     description :'Telah menguload tugas dengan judul ' + title,
-                    divisi:this.props.jabatan,
+                    divisi: this.props.divisi,
                     type : "Input",
                     tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss') 
     
@@ -65,6 +65,7 @@ class Tugas extends Component {
                     headers:{
                     keys : this.props.token
                 }}).then(res=>{
+                    console.log(res.data)
                     Swal.fire(
                         'Added!',
                         '',

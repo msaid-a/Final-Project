@@ -81,10 +81,11 @@ import bcrypt from 'bcryptjs'
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
+        let phone = this.phone.value
         let tanggal_lahir = this.tanggal_lahir.value == '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
             tanggal_lahir = moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss ')
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
-            nik,username,email,password,nama,gender,agama,pendidikan,tanggal_lahir
+            nik,username,email,password,nama,gender,agama,pendidikan,tanggal_lahir,phone
         },{
             headers:{
             keys : this.props.token
@@ -181,7 +182,11 @@ import bcrypt from 'bcryptjs'
             return <Redirect to="/" ></Redirect>
     
           }
-        let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,subDivisi, tanggal_lahir} = this.state.profile 
+        if(bcrypt.compareSync("admin", this.props.jabatan) === false && this.props.iD !== this.props.match.params.idkaryawan){
+            return <Redirect to="/ddd"></Redirect>
+        }
+
+        let {nik,username,email,nama,gender,agama,pendidikan,jabatan,divisi,subDivisi, tanggal_lahir, phone} = this.state.profile 
     if(this.state.profile && this.state.divisi.length !== 0 && this.state.subdivisi.length !== 0 ){
       
         if(bcrypt.compareSync("admin", this.props.jabatan)){
@@ -197,15 +202,15 @@ import bcrypt from 'bcryptjs'
                             <div className="form-group">
                                 <label htmlFor="inputEmail">NIK</label>
                                 <div className="form-label-group">
-                                    <input type="number" defaultValue={nik} className="form-control" placeholder="NIK"
-                                        required="required" ref={input => {this.nik = input}} />
+                                    <input type="text" defaultValue={nik} className="form-control" placeholder="NIK"
+                                        maxLength="16" ref={input => {this.nik = input}} />
                                 </div>
                             </div>
                             <div className="form">
                                 <label htmlFor="inputEmail">Email address</label>
                                 <div className="form-label-group">
                                     <input type="email"  defaultValue={email} className="form-control"
-                                        placeholder="Email address" required="required" ref={input => this.email= input}/>
+                                        placeholder="Email address" maxLength="100" required="required" ref={input => this.email= input}/>
                                 </div>
                             </div>
                             <div className="form">
@@ -219,7 +224,7 @@ import bcrypt from 'bcryptjs'
                                 <label htmlFor="inputPassword">Nama</label>
                                 <div className="form-label-group">
                                     <input type="text" defaultValue={nama} className="form-control" placeholder="Nama"
-                                        required="required" ref={input => this.nama = input}/>
+                                        required="required" maxLength="50" ref={input => this.nama = input}/>
                                 </div>
                             </div>
                             <div className="form mt-3">
@@ -303,6 +308,10 @@ import bcrypt from 'bcryptjs'
                             :null
                         }    
                              
+                             <div className="form mt-3">
+                               <label htmlFor="inputPassword">No HP</label>
+                               <input type="text" className="form-control"  ref={input => this.phone = input} defaultValue={phone} maxlength="13"/>
+                           </div>
                          
                             <button className="btn btn-primary btn-block mt-3" onClick={this.onUpdateAdmin}>Update</button>
                         </form>
@@ -390,7 +399,11 @@ import bcrypt from 'bcryptjs'
                                      </select>
                             </div>
                         </div>                           
-                     
+                        <div className="form mt-3">
+                               <label htmlFor="inputPassword">No HP</label>
+                               <input type="text" className="form-control"  ref={input => this.phone = input} defaultValue={phone} maxlength="13"/>
+                           </div>
+                         
                         <button className="btn btn-primary btn-block mt-3" onClick={this.onUpdate}>Update</button>
                     </form>
                 </div>

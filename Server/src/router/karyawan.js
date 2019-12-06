@@ -83,7 +83,7 @@ router.get('/karyawan',(req,res)=>{
     on k.id_user = s.id
     join subDivisi sd
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0
-    ORDER BY k.jabatan desc
+    ORDER BY k.jabatan
 `
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error:err.sqlmessage})

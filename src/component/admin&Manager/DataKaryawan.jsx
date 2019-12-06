@@ -19,7 +19,8 @@ class DataKaryawan extends Component {
         selectKaryawan : {id :'',id_karyawan:'', nama: '', nik:''},
         first: 0,
         rows: 10,
-        lastIndex : 10
+        lastIndex : 10,
+        divisi : null
     }
 
 
@@ -135,11 +136,30 @@ getData =  () =>{
 
 }
 
+getDivisi = () =>{
+    axios.get('/divisi',{
+        headers :{
+            keys : this.props.token
+        }
+    })
+        .then(res=>{
+            this.setState({divisi : res.data})
+        })
+}
+
+
 postTugas = (id,nama,nik) =>{
     let title = this.title.value
     let description = this.description.value
     let deadline = new Date(this.deadline.value)
         deadline = moment(deadline).format('YYYY-MM-DD HH-mm-ss')
+        if(deadline === 'Invalid date'){
+           return Swal.fire(
+            'Masukan Jam nya!',
+            '',
+            'error'
+          )   
+        }
     let pengirim = this.props.userName
     let user_id = id
     let hasil = ''
@@ -174,6 +194,7 @@ postTugas = (id,nama,nik) =>{
 
 componentDidMount= () =>{
     this.getData()
+    this.getDivisi()
 }
 
 deleteKaryawan = (id,username) =>{
@@ -267,7 +288,14 @@ renderKaryawan = (first,last) =>{
 
 onSearch = () =>{
      let result = this.state.karyawan.filter(data => {
-                return data.nama.toLowerCase().includes(this.search.value)
+         if(!this.divisi.value){
+             return data.nama.toLowerCase().includes(this.search.value)
+         }
+         if(!this.search.value){
+            return data.divisi.includes(this.divisi.value)
+         }else{
+            return data.nama.toLowerCase().includes(this.search.value) &&  data.divisi.includes(this.divisi.value)
+         }
     })
     this.setState({search:result})
 }
@@ -301,11 +329,27 @@ onPageChange(event) {
                                     <div className="mr-auto">
                                         <h4>Data Karyawan</h4>
                                     </div>
+                                    {
+                            bcrypt.compareSync("admin", this.props.jabatan) ?
+                            <select className="mr-1 custom-select col-2" ref={input => this.divisi = input} onChange={this.onSearch}>
+                            <option value="" hidden>divisi</option>
+                                {
+                                        this.state.divisi !== null ?
+                                        this.state.divisi.map(data => {
+                                        return <option>{data.divisi}</option>
+                                        }) : <option value="" hidden>divisi</option>
+
+                                }
+                            </select>
+                            : null
+
+                        }
                                             <input type="text"  placeholder="Search By Name" ref={input => this.search = input}></input>
                                         <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Search</button>
                                         <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
                                              </div>
                                 </form>
+                            <div className="bg-white border">
                                 <table className=" table table-hover table-striped table-responsive-md rounded-bottom mb-5 text-center">
                                     <thead   className='thead-dark' style={{height:50}}>
                                     <tr >
@@ -331,6 +375,7 @@ onPageChange(event) {
                                        template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
                
                                    />
+                                </div>
                                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                                <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
                        <ModalBody>
@@ -369,7 +414,7 @@ onPageChange(event) {
                            <textarea className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
                            
                            <label>Deadline :</label>
-                           <input type="date" name="" id="" placeholder="title" className="form-control" ref={input => {this.deadline = input}}/>
+                           <input type="datetime-local" name="" id="" placeholder="deadline" className="form-control" ref={input => {this.deadline = input}}/>
                            </form>
                        </ModalBody> 
                        <ModalFooter>

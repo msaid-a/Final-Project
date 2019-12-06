@@ -9,7 +9,8 @@ import {connect} from 'react-redux'
 export class Detail extends Component {
 
     state={
-        profile : null
+        profile : null,
+        link : ''
     }
 
     getKaryawan = () =>{
@@ -19,8 +20,7 @@ export class Detail extends Component {
             keys : this.props.token
         }})
                 .then(res => {
-                     this.setState({profile : res.data})
-                     console.log(res.data)
+                     this.setState({profile : res.data,link : this.props.match.params.idkaryawan})
                      }).catch(err => {
                          console.log(err)
                      })
@@ -43,6 +43,14 @@ export class Detail extends Component {
     componentDidMount = () =>{
         this.getKaryawan()
     }
+
+    componentDidUpdate = () =>{
+        if(this.props.match.params.idkaryawan !== this.state.link){
+            console.log(this.state.link)
+            this.getKaryawan()
+        }
+    }
+
 
     tampilProfile = () =>{
     let {id,nik,username,email,divisi,nama,gender,agama,pendidikan,jabatan,subDivisi,tanggal_lahir,phone,id_user, avatar} = this.state.profile 

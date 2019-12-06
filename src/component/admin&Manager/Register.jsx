@@ -267,7 +267,7 @@ class Register extends Component {
                                     <div className="form">
                                         <label htmlFor="inputPassword">Divisi</label>
                                         <div className="form-label-group">
-                                                <select className="mb-3" ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
+                                                <select className="mb-3 custom-select" ref={input => this.divisi = input} onChange={()=>this.setState({selectDivisi : this.divisi.value})}>
                                                 <option value='' hidden>Divisi</option>
                                                     {this.renderDivisi()}
                                                 </select>
@@ -283,7 +283,7 @@ class Register extends Component {
                                     <div className="form">
                                     <label htmlFor="inputPassword">Pekerjaan</label>
                                     <div className="form-label-group">
-                                            <select className="mb-3" ref={input => this.subDivisi = input} >
+                                            <select className="mb-3 custom-select" ref={input => this.subDivisi = input} >
                                                 <option value='' hidden>Pekerjaan</option>
                                                 {this.renderSubDivisi()}
                                             </select>

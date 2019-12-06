@@ -22,6 +22,7 @@ import Divisi from './admin&Manager/Divisi'
 import Dasboard from './admin&Manager/Dasboard'
 import DetailGaji from './DetailGaji'
 import NotFound from './NotFound'
+
 class App extends Component {
 
   state = {

@@ -126,10 +126,11 @@ export class DataTugas extends Component {
         return  this.state.search.slice(first,last).map ( data => {
             no++
             let deadline = new Date (data.deadline)
-            if(now > deadline && (data.status.toLowerCase().includes('belum') || data.status =='REVISI')){
+            if(now >= deadline && (data.status.toLowerCase().includes('belum') || data.status =='REVISI')){
                 data.status = 'Terlambat'
                 axios.patch('/tugas/'+data.id,{
-                        status : 'Terlambat'
+                        status : 'Terlambat',
+                        terlambat : 1
                     },{
                         headers:{
                         keys : this.props.token

@@ -12,7 +12,7 @@ body {
 #page-wrap {
   text-align: center;
   overflow: auto;
-
+  background-color: white;
  
 background: rgba(226,226,226,1);
 background: -moz-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%);
@@ -95,4 +95,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', end
 
 .login{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.50);
+}
+
+
+.border-my{
+  border-radius: 30% !important;
 }

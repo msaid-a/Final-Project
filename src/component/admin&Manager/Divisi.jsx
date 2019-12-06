@@ -214,6 +214,8 @@ export class Divisi extends Component {
                         <button type="submit" class="btn btn-dark ml-1" onClick={this.addDivisi}>Add Divisi</button>
                              </div>
                 </form>
+                <div >
+
                 <table className="table table-striped table-responsive-md btn-table mt-1" >
                     <thead>
                     <th>NO</th>
@@ -234,6 +236,7 @@ export class Divisi extends Component {
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
 
 					/>
+                </div>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                 <ModalHeader toggle={this.toggleCancel}>{divisi}</ModalHeader>
         <ModalBody>

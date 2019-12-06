@@ -96,7 +96,7 @@ export class History extends Component {
         let username = this.search.value
         let type = this.type.value
         let bagian = this.bagian.value
-        let divisi = this.divisi.value
+        let divisi = this.divisi === undefined ? '' : this.divisi.value
         let result = this.state.history.filter(data => {
             if(!type && !bagian && !divisi){
                 return data.username.includes(username)
@@ -163,29 +163,45 @@ export class History extends Component {
                     <h3>History</h3>
                     <div className="form-group d-flex justify-content-end">
                     <div>
-                        <select className="custom-select col-3" ref={input => this.type = input}>
+                        <select onChange={this.onSearch} className={
+                            bcrypt.compareSync("admin", this.props.jabatan) ?
+                            "custom-select col-3":
+                            "custom-select col-5"
+                            
+                            } ref={input => this.type = input}>
                             <option value="" hidden>Type</option>
                             <option value="Input">Input</option>
                             <option value="Update">Update</option>
                             <option value="Delete">Delete</option>
                         </select>
-                        <select className="ml-1 custom-select col-4" ref={input => this.bagian = input}>
+                        <select onChange={this.onSearch}  className={
+                            bcrypt.compareSync("admin", this.props.jabatan) ?
+                            "ml-1 custom-select col-3":
+                            "ml-1 custom-select col-5"
+                            
+                            } ref={input => this.bagian = input}>
                             <option value="" hidden>bagian</option>
                             <option value="tugas">Tugas</option>
                             <option value="karyawan">Karyawan</option>
                             <option value="divisi">Divisi</option>
                             <option value="gaji">Gaji</option>
                         </select>
-                        <select className="ml-1 custom-select col-3" ref={input => this.divisi = input}>
-                        <option value="" hidden>divisi</option>
-                            {
-                                    this.state.divisi !== null ?
-                                    this.state.divisi.map(data => {
-                                       return <option>{data.divisi}</option>
-                                    }) : <option value="" hidden>divisi</option>
+                        {
+                            bcrypt.compareSync("admin", this.props.jabatan) ?
+                            <select onChange={this.onSearch} className="ml-1 custom-select col-4" ref={input => this.divisi = input}>
+                            <option value="" hidden>divisi</option>
+                                {
+                                        this.state.divisi !== null ?
+                                        this.state.divisi.map(data => {
+                                        return <option>{data.divisi}</option>
+                                        }) : <option value="" hidden>divisi</option>
 
                                 }
-                        </select>
+                            </select>
+                            : null
+
+                        }
+                        
                     </div>
                         <div className="mr-auto">
                         </div>
@@ -196,7 +212,7 @@ export class History extends Component {
                             onClick={()=>{this.setState({cari:this.state.history})}}>Show All</button>
                     </div>
                 </form>
-                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
+                <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5 bg-white">
                     <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
                     <tr>
                     <th>NO</th>

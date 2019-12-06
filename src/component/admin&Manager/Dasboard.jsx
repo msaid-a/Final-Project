@@ -23,17 +23,29 @@ export class Dasboard extends Component {
 
         dataGajiPekerjaan : null,
         pekerjaanGaji : [],
-        rataGajiPekerjaan : []
+        rataGajiPekerjaan : [],
+
+        dataTerlamabatBulan : null,
+        namaTerlambatBulan : [],
+        jumlahTugasTerlambat : []
 
     }
 
     componentDidMount = () =>{
+        axios.get('/tugas',{
+            headers :{
+                keys : this.props.token
+            }
+        })
+        .then(res=>{
+        })
         this.getData()
         if(bcrypt.compareSync("admin", this.props.jabatan)){
-            this.getRateTugas()
             this.getRataGaji()
             this.getGajiPekerjaan()
         }
+        this.getTerlambatBulan()
+        this.getRateTugas()
     }
 
     getData = () =>{
@@ -64,14 +76,29 @@ export class Dasboard extends Component {
     }
 
     getRateTugas = () =>{
-        axios.get('/ratetugas',{
-            headers : {
-                keys : this.props.token
-            }
-        }).then(res=>{
-            this.setState({rateTugas : res.data})
-            this.filterTugas()
-        })
+        if(bcrypt.compareSync("admin", this.props.jabatan)){
+          return  axios.get('/ratetugas',{
+                headers : {
+                    keys : this.props.token
+                }
+            }).then(res=>{
+                this.setState({rateTugas : res.data})
+                this.filterTugas()
+            })
+
+        }
+           return axios.get('/ratetugas/'+ this.props.divisi,{
+                headers : {
+                    keys : this.props.token
+                }
+            }).then(res=>{
+                this.setState({rateTugas : res.data})
+                console.log(res.data)
+                this.filterTugas()
+            }).catch(err=>{
+                console.log(err)
+            })
+    
     }
 
 
@@ -100,6 +127,34 @@ export class Dasboard extends Component {
         })
     }
 
+
+    getTerlambatBulan = ()=>{
+        if(bcrypt.compareSync("admin", this.props.jabatan)){
+            return axios.get('/terlambatbulan',{
+                headers:{
+                        keys : this.props.token               
+                }
+            }).then(res=>{
+                this.setState({dataTerlamabatBulan : res.data})
+                this.filterTerlambatBulan()
+            }).catch(err=>{
+                console.log(err)
+            })
+
+        }
+        return axios.get('/terlambatbulan/'+this.props.divisi,{
+            headers:{
+                    keys : this.props.token               
+            }
+        }).then(res=>{
+            this.setState({dataTerlamabatBulan : res.data})
+            this.filterTerlambatBulan()
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+
+
     filter = () =>{
         const jumlah = this.state.data.map(data =>{
             return data.jumlah_karyawan
@@ -119,8 +174,12 @@ export class Dasboard extends Component {
         })
         jumlah.push(0)
         this.setState({jumlahTugas : jumlah})
+        
         const divisi = this.state.rateTugas.map(data =>{
-            return data.divisi
+            if(bcrypt.compareSync("admin", this.props.jabatan)){
+                return data.divisi
+            }
+            return data.nama
         })
         this.setState({divisiTugas: divisi})
     } 
@@ -143,34 +202,53 @@ export class Dasboard extends Component {
         })
         jumlah.push(0)
         this.setState({rataGajiPekerjaan : jumlah})
-        console.log(jumlah)
         const divisi = this.state.dataGajiPekerjaan.map(data =>{
             return data.subDivisi
         })
         this.setState({pekerjaanGaji: divisi})
     }
 
+    filterTerlambatBulan = () =>{
+        const jumlah = this.state.dataTerlamabatBulan.map(data =>{
+            return data.terlambat
+        })
+        jumlah.push(0)
+        this.setState({jumlahTugasTerlambat : jumlah})
+        const divisi = this.state.dataTerlamabatBulan.map(data =>{
+            return data.nama
+        })
+        this.setState({namaTerlambatBulan: divisi})
+    }
+
 
     render() {
+    
       if(this.state.data === null){
         return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
                      <span class="sr-only">Loading...</span>
                 </div>)
       }
-      if(this.state.rateTugas === null){
+      if(this.state.rateTugas === null && bcrypt.compareSync("admin", this.props.jabatan)){
         return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
         <span class="sr-only">Loading...</span>
         </div>)
       }
-      if(this.state.dataGaji === null){
+      if(this.state.dataGaji === null && bcrypt.compareSync("admin", this.props.jabatan)){
         return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
         <span class="sr-only">Loading...</span>
         </div>)
       }
-      if(this.state.dataGajiPekerjaan === null){
+      if(this.state.dataGajiPekerjaan === null && bcrypt.compareSync("admin", this.props.jabatan)){
         return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
         <span class="sr-only">Loading...</span>
         </div>)
+
+      }
+      if(this.state.dataTerlamabatBulan === null){
+        return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
+        <span class="sr-only">Loading...</span>
+        </div>)
+
       }
         const data = {
             labels: this.state.pekerjaan,
@@ -186,7 +264,7 @@ export class Dasboard extends Component {
             labels: this.state.divisiTugas,
             datasets: [
               {
-                label: 'Jumlah Tugas Setiap Divisi',
+                label: 'Jumlah Tugas',
                 backgroundColor: 'gray',
                 data: this.state.jumlahTugas
               }
@@ -215,6 +293,16 @@ export class Dasboard extends Component {
             ] 
           };
 
+        const TerlambatBulanan = {
+            labels: this.state.namaTerlambatBulan,
+            datasets: [
+              {
+                label: '5 Orang Terlambat Bulan ini',
+                backgroundColor: 'gray',
+                data: this.state.jumlahTugasTerlambat
+              }
+            ] 
+          };
         
         
 
@@ -226,19 +314,32 @@ export class Dasboard extends Component {
         return <Redirect to="/" ></Redirect>
 
       }
-    
+    if(bcrypt.compareSync("admin", this.props.jabatan)){
         return (
             <div style={{marginTop:90}} className="container">
                 <div className="row ">
 
-                        <Chart className="mx-auto col-10" type='bar' data={data} />
+                         <Chart className="mx-auto col-10" type='bar' data={data} />
                          <Chart className="mx-auto col-10 mt-5" type='bar' data={dataTugas} />
                          <Chart className="mx-auto col-10 mt-5" type='bar' data={GajiRata} />
                          <Chart className="mx-auto col-10 mt-5" type='bar' data={GajiRataPekerjaan} />
+                         <Chart className="mx-auto col-10 mt-5" type='bar' data={TerlambatBulanan} />
                 </div>
 
             </div>
         )
+    }
+    return (
+        <div style={{marginTop:90}} className="container">
+            <div className="row ">
+
+                     <Chart className="mx-auto col-10" type='bar' data={data} />
+                     <Chart className="mx-auto col-10 mt-5" type='bar' data={dataTugas} />
+                     <Chart className="mx-auto col-10 mt-5" type='bar' data={TerlambatBulanan} />
+            </div>
+
+        </div>
+    )
     }
 }
 const mapStateToProps = (state) =>{

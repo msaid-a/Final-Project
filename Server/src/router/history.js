@@ -8,7 +8,7 @@ router.post('/history',(req,res)=>{
     data.id = token.generate(20)
     conn.query(sql,data, (err, result)=>{
         try {
-            if(err) throw err
+            if(err) throw (err)
             res.send('berhasil di input')
         } catch (error) {
             res.send({error:error.sqlmessage})

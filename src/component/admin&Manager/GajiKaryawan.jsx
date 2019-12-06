@@ -77,7 +77,7 @@ onSearch = () =>{
                     </div>)
           }
         return (
-            <div className="container">
+            <div className="container ">
                   <form  className="ml-auto mt-1" onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
                     <div className="mr-auto">
@@ -88,7 +88,7 @@ onSearch = () =>{
                         <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.gaji})}}>Show All</button>
                              </div>
                 </form>
-               
+               <div className="bg-white border " >
                 <table className="table  table-striped table-responsive-md btn-table mb-5">
                     <thead style={{fontSize: 15, height:40}}  className='thead-dark' >
                     <tr>
@@ -112,6 +112,7 @@ onSearch = () =>{
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
 
 					/>
+                    </div>
             </div>
         )
     }

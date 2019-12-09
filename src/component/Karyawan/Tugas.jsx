@@ -87,8 +87,7 @@ class Tugas extends Component {
             headers:{
             keys : this.props.token
         }}).then(res => {
-            console.log(this.props.iD)
-            this.setState({tugas: res.data.reverse(), search: res.data.reverse()})
+            this.setState({tugas: res.data, search: res.data})
         })
     }
  
@@ -119,7 +118,7 @@ class Tugas extends Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{data.title}</h5>
                                         <p className="card-text mb-3">{data.description}</p>
-                                        <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD')}</p>
+                                        <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD HH:mm:ss')}</p>
                                         {
                                             data.status.includes("REVISI") ?
                                               <h5 className="text-warning font-weight-bold">{data.status}</h5>

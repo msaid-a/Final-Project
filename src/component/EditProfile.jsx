@@ -332,7 +332,7 @@ import bcrypt from 'bcryptjs'
                         <div className="form-group">
                             <label htmlFor="inputEmail">NIK</label>
                             <div className="form-label-group">
-                                <input type="number" defaultValue={nik} className="form-control" placeholder="NIK"
+                                <input type="text" defaultValue={nik}  maxLength="16" className="form-control" placeholder="NIK"
                                     required="required" ref={input => {this.nik = input}} />
                             </div>
                         </div>
@@ -340,14 +340,14 @@ import bcrypt from 'bcryptjs'
                             <label htmlFor="inputEmail">Username</label>
                             <div className="form-label-group">
                                 <input type="text" defaultValue={username}  className="form-control" placeholder="Username"
-                                    required="required" ref={input => this.username = input}/>
+                                    required="required"  maxLength="50" ref={input => this.username = input}/>
                             </div>
                         </div>
                         <div className="form">
                             <label htmlFor="inputEmail">Email address</label>
                             <div className="form-label-group">
                                 <input type="email"  defaultValue={email} className="form-control"
-                                    placeholder="Email address" required="required" ref={input => this.email= input}/>
+                                    placeholder="Email address"  maxLength="50" required="required" ref={input => this.email= input}/>
                             </div>
                         </div>
                         <div className="form">
@@ -361,7 +361,7 @@ import bcrypt from 'bcryptjs'
                             <label htmlFor="inputPassword">Nama</label>
                             <div className="form-label-group">
                                 <input type="text" defaultValue={nama} className="form-control" placeholder="Nama"
-                                    required="required" ref={input => this.nama = input}/>
+                                    required="required"  maxLength="50" ref={input => this.nama = input}/>
                             </div>
                         </div>
                         <div className="form mt-3">

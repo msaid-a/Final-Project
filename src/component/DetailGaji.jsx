@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import bcrypt from 'bcryptjs'
 export class DetailGaji extends Component {
 
     state={
@@ -90,7 +91,7 @@ export class DetailGaji extends Component {
         )
         }
     render() {
-        const { pageNumber, numPages } = this.state;
+        
         if(!this.props.token){
            return <Redirect to='/'></Redirect>
         }
@@ -98,6 +99,11 @@ export class DetailGaji extends Component {
             return (<div class="spinner-border mx-auto" style={{marginTop:'50vh'}} role="status">
                 <span class="sr-only">Loading...</span>
              </div>)
+        }
+        let {user_id} = this.state.gaji
+
+        if(bcrypt.compareSync("admin", this.props.jabatan) === false && this.props.iD !== user_id){
+            return <Redirect to="/ddd"></Redirect>
         }
         return (
             <div> 
@@ -109,7 +115,9 @@ export class DetailGaji extends Component {
 const mapStateToProps = (state) =>{
     return {
       
-      token : state.auth.token
+      token : state.auth.token,
+      iD : state.auth.id,
+      jabatan : state.auth.jabatan
     }
   }
 export default connect(mapStateToProps)(DetailGaji)

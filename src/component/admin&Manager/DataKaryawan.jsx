@@ -98,6 +98,7 @@ saveGaji = (id, nama) =>{
                 headers:{
                 keys : this.props.token
             }}).then(res=>{
+                console.log(res.data)
                 Swal.fire(
                     'Added!',
                     '',
@@ -171,6 +172,7 @@ postTugas = (id,nama,nik) =>{
         headers:{
         keys : this.props.token
     }}).then(res=>{
+        console.log(res.data)
         axios.post('/history',{
                 description:'Telah memberi Tugas kepada ' + nama,
                 user_id: this.props.iD,
@@ -251,18 +253,18 @@ renderKaryawan = (first,last) =>{
             <td className="align-middle">{data.subDivisi}</td>
            <td className="align-middle"><Link to={'/detailkaryawan/'+data.id_user}>
         <span className="d-inline-block mr-1" tabIndex={0} data-toggle="tooltip" title="Detail">
-               <button className="btn btn-dark">
+               <button className="btn btn-outline-dark">
                    <i className="fas fa-info-circle" style={{fontSize:20}}></i>
                 </button> 
             </span>
             </Link>
         <span className="d-inline-block mr-1" tabIndex={0} data-toggle="tooltip" title="Add Gaji">
-           <button className="btn btn-dark " onClick={()=>this.toggle(data.id,data.id_user, data.nama, data.nik)}>
-               <i className="fas fa-money-bill-wave-alt text-white" style={{fontSize:20}}  data-target='#gaji'></i> 
+           <button className="btn btn-outline-dark " onClick={()=>this.toggle(data.id,data.id_user, data.nama, data.nik)}>
+               <i className="fas fa-money-bill-wave-alt " style={{fontSize:20}}  data-target='#gaji'></i> 
             </button>
         </span>
         <span className="d-inline-block" tabIndex={0} data-toggle="tooltip" title="Delete">
-          <button className="btn btn-dark" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}> 
+          <button className="btn btn-outline-dark" onClick={()=> this.deleteKaryawan(data.id_user, data.username)}> 
               <i className="fas fa-trash" style={{fontSize:20}} ></i>
           </button> 
         </span>
@@ -324,35 +326,39 @@ onPageChange(event) {
         let {id, id_karyawan, nama, nik} = this.state.selectKaryawan
         return (
             <div>
-                <form className="ml-auto " onClick={e => e.preventDefault()}>                              
-                                    <div className="form-group d-flex justify-content-end">
-                                    <div className="mr-auto">
-                                        <h4>Data Karyawan</h4>
-                                    </div>
-                                    {
-                            bcrypt.compareSync("admin", this.props.jabatan) ?
-                            <select className="mr-1 custom-select col-2" ref={input => this.divisi = input} onChange={this.onSearch}>
+                <form className="ml-auto " onClick={e=> e.preventDefault()}>
+                    <div className="form-group d-flex justify-content-end">
+                        {
+                        bcrypt.compareSync("admin", this.props.jabatan) ?
+                        <select className="mr-1 custom-select col-2" ref={input=> this.divisi = input}
+                            onChange={this.onSearch}>
                             <option value="" hidden>divisi</option>
-                                {
-                                        this.state.divisi !== null ?
-                                        this.state.divisi.map(data => {
-                                        return <option>{data.divisi}</option>
-                                        }) : <option value="" hidden>divisi</option>
+                            {
+                            this.state.divisi !== null ?
+                            this.state.divisi.map(data => {
+                            return <option>{data.divisi}</option>
+                            }) : <option value="" hidden>divisi</option>
 
-                                }
-                            </select>
-                            : null
+                            }
+                        </select>
+                        : null
 
                         }
-                                            <input type="text"  placeholder="Search By Name" ref={input => this.search = input}></input>
-                                        <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Search</button>
-                                        <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
-                                             </div>
-                                </form>
-                            <div className="bg-white border">
-                                <table className=" table table-hover table-striped table-responsive-md rounded-bottom mb-5 text-center">
-                                    <thead   className='thead-dark' style={{height:50}}>
-                                    <tr >
+                        <input type="text" placeholder="Search By Name" ref={input=> this.search = input}></input>
+                        <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Search</button>
+                        <button type="submit" class="btn btn-dark ml-1"
+                            onClick={()=>{this.setState({search:this.state.karyawan})}}>Show All</button>
+                    </div>
+                </form>
+                <div className="card mx-auto col-12 bg-white p-0 mt-3">
+                    <div className="card-header">
+                        Data Tugas Setiap Karyawan
+                    </div>
+                    <div className="card-body">
+                        <table
+                            className=" table table-hover table-striped table-responsive-md rounded-bottom mb-5 text-center">
+                            <thead className='' style={{height:50}}>
+                                <tr>
                                     <th>NO</th>
                                     <th>NIK</th>
                                     <th>Email</th>
@@ -360,22 +366,22 @@ onPageChange(event) {
                                     <th>Jenis Kelamin</th>
                                     <th>Pekerjaan</th>
                                     <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody className='text-center 'style={{fontSize: 13}}>
-                                        {this.renderKaryawan(this.state.first, this.state.lastIndex)}
-                                    </tbody>
-                                </table>
-                                <Paginator
-                                       first={this.state.first}
-                                       rows={this.state.rows}
-                                       totalRecords={this.state.search.length}
-                                       rowsPerPageOptions={[10, 20, 30]}
-                                       onPageChange={(e)=>this.onPageChange(e)}
-                                       template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
-               
-                                   />
-                                </div>
+                                </tr>
+                            </thead>
+                            <tbody className='text-center ' style={{fontSize: 13}}>
+                                {this.renderKaryawan(this.state.first, this.state.lastIndex)}
+                            </tbody>
+                        </table>
+                        <Paginator first={this.state.first} rows={this.state.rows}
+                            totalRecords={this.state.search.length} rowsPerPageOptions={[10, 20, 30]}
+                            onPageChange={(e)=>this.onPageChange(e)}
+                            template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
+
+                            />
+
+                    </div>
+
+                </div>
                                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                                <ModalHeader toggle={this.toggleCancel}>{nama}</ModalHeader>
                        <ModalBody>
@@ -411,7 +417,7 @@ onPageChange(event) {
                        <ModalBody>
                            <form onSubmit={e=> e.preventDefault()}>
                            <input type="text" name="" id="" placeholder="title" className="form-control" ref={input => {this.title = input}}/>
-                           <textarea className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
+                           <textarea maxlength="250" className="form-control mt-3"  rows="3" placeholder="description"ref={input => {this.description = input}} ></textarea>
                            
                            <label>Deadline :</label>
                            <input type="datetime-local" name="" id="" placeholder="deadline" className="form-control" ref={input => {this.deadline = input}}/>

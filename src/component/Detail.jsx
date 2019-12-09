@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import axios from '../config/index'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
-
+import moment from 'moment'
 
 
 export class Detail extends Component {
@@ -96,7 +96,7 @@ export class Detail extends Component {
                  </tr>
                  <tr>
                      <td>Tanggal Lahir :</td>
-                     <td>{tanggal_lahir}</td>
+                     <td>{moment(tanggal_lahir).format('YYYY-MM-DD')}</td>
                  </tr>
                  <tr>
                      <td>Agama :</td>

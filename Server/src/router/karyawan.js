@@ -154,24 +154,24 @@ router.post ('/karyawan',(req,res)=>{
         return res.send({error:'is not email'})
     }
     conn.beginTransaction((err)=>{
-        if(err) return res.send({error : err.sqlMessage})
+        if(err) return res.send({error : err.message})
         conn.query(sql2,  (err,result) =>{
             if(err){
                 return conn.rollback(()=>{
-                    res.send({error:err.sqlMessage})
+                    res.send({error:err.message})
                 })  
             } 
             conn.query(sql,  (err,result) =>{
                 if(err){
                     return conn.rollback(()=>{
-                        res.send ({error:err.sqlmessage})
+                        res.send ({error:err.message})
                     })
 
                 } 
                 conn.commit(err => {
                     if(err){
                         return conn.rollback(()=>{
-                            res.send ({error:err.sqlmessage})
+                            res.send ({error:err.message})
                         })
     
                     } 
@@ -197,7 +197,7 @@ router.get('/karyawan/profile/:userid',(req,res)=>{
     join subDivisi sd
     on k.subdivisi_id = sd.id WHERE k.is_deleted = 0 and k.id_user='${req.params.userid}'`
     conn.query(sql, (err,result)=>{
-        if(err) return res.send({error:err.sqlmessage})
+        if(err) return res.send({error:err.message})
         if(result.length === 0){
             return res.send({error:'User Not Found'})
         }

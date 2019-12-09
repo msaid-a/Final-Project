@@ -92,12 +92,6 @@ class Register extends Component {
                 this.email.value = ''
                 this.password.value = ''
                 this.nama.value = ''
-                this.gender.value = ''
-                this.agama.value = ''
-                this.pendidikan.value = ''
-                this.divisi.value = ''
-                this.jabatan.value = ''
-                this.subDivisi.value = ''
                 this.phone.value = ''
                 this.tanggal_lahir.value = ''
             })

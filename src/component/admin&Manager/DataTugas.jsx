@@ -40,7 +40,7 @@ export class DataTugas extends Component {
             headers:{
             keys : this.props.token
         }}).then(res => {
-            this.setState({karyawan: res.data.reverse(), search: res.data.reverse()})
+            this.setState({karyawan: res.data, search: res.data})
             console.log(this.state.karyawan)
         })
     }
@@ -119,6 +119,43 @@ export class DataTugas extends Component {
         });
     }
     
+    deleteTugas = (id, title) =>{
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
+                axios.delete('/tugas/delete/'+ id,{
+                    headers:{
+                        keys : this.props.token
+                }}).then(res=>{
+                    axios.post('/history',{
+                            description:'Telah Menghapus Tugas dengan judul ' + title,
+                            user_id:this.props.iD,
+                            divisi : this.props.divisi,
+                            type : "Delete",
+                            tanggal: moment(new Date()).format('YYYY-MM-DD HH-mm-ss')
+                        },{
+                            headers:{
+                            keys : this.props.token
+                        }}).then(res=>{
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                              )
+                         this.getTugas()
+                        })
+                })
+              
+            }
+          })
+    }
 
     renderTugas =  (first,last) =>{
         let no = 0
@@ -161,7 +198,7 @@ export class DataTugas extends Component {
                                     <h5 className="card-title">{data.title}</h5>
                                     <p className="card-text mb-3">{data.description}</p>
                                     
-                                    <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD')}</p>
+                                    <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD HH:mm:ss')}</p>
                                     {
                                         data.status.includes("REVISI") ?
                                           <h5 className="text-warning font-weight-bold">{data.status}</h5>
@@ -173,9 +210,14 @@ export class DataTugas extends Component {
                                             <h5 className="">{data.status}</h5>
                         
                                     }{
-                                        data.status != "Selesai" ?
+                                        data.status !== "Selesai" ?
                                         <div className="mt-2">
-                                            <a href={data.hasil} target="blank" className="btn btn-outline-dark">Download</a>
+                                            {
+                                                data.status.includes('Terupload')?
+                                                <a href={data.hasil} target="blank" className="btn btn-outline-dark">Download</a>
+                                                :                                                 
+                                                null
+                                            }
                                         </div> : null
                                     }
 
@@ -188,8 +230,10 @@ export class DataTugas extends Component {
                     </div>
                     : 
                     <div className="mt-4">
-                        <button className="btn btn-dark mr-1" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
-                        <button className="btn btn-secondary" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
+                        <button className="btn btn-dark mr-1 w-25" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
+                        <button className="btn btn-secondary w-25" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
+                        <br/>
+                        <button className="btn btn-outline-dark mt-1 w-50" onClick={()=>this.deleteTugas(data.id, data.title)}>Delete</button>
                     </div>
                 }
                                 </div>
@@ -251,9 +295,9 @@ export class DataTugas extends Component {
                             <label htmlFor="">title :</label>
                             <input type="text" className="form-control" value={'Revisi '+title} />
                             <label htmlFor="">Description:</label>
-                            <textarea className="form-control mt-3" rows="3" ref={input => this.revisi = input} ></textarea>
+                            <textarea maxlength="250" className="form-control mt-3" rows="3" ref={input => this.revisi = input} ></textarea>
                             <label htmlFor="">Tambah Deadline</label>
-                            <input type="date" className="form-control" ref={input => this.deadline = input} />
+                            <input type="datetime-local" className="form-control" ref={input => this.deadline = input} />
 
                         </form>
                     </ModalBody>

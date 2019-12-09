@@ -254,7 +254,7 @@ export class Dasboard extends Component {
             labels: this.state.pekerjaan,
             datasets: [
               {
-                label: 'Data Karyawan',
+                label: 'Jumlah Karyawan',
                 backgroundColor: 'gray',
                 data: this.state.jumlah
               }
@@ -297,7 +297,7 @@ export class Dasboard extends Component {
             labels: this.state.namaTerlambatBulan,
             datasets: [
               {
-                label: '5 Orang Terlambat Bulan ini',
+                label: 'Jumlah Tugas Terlambat',
                 backgroundColor: 'gray',
                 data: this.state.jumlahTugasTerlambat
               }
@@ -318,12 +318,53 @@ export class Dasboard extends Component {
         return (
             <div style={{marginTop:90}} className="container">
                 <div className="row ">
+                    <div className="card mx-auto col-10 bg-white p-0">
+                        <div className="card-header">
+                            Data Karyawan
+                        </div>
+                        <div className="card-body">
+                            <Chart className="mx-auto col-10" type='bar' data={data} />
 
-                         <Chart className="mx-auto col-10" type='bar' data={data} />
-                         <Chart className="mx-auto col-10 mt-5" type='bar' data={dataTugas} />
-                         <Chart className="mx-auto col-10 mt-5" type='bar' data={GajiRata} />
-                         <Chart className="mx-auto col-10 mt-5" type='bar' data={GajiRataPekerjaan} />
-                         <Chart className="mx-auto col-10 mt-5" type='bar' data={TerlambatBulanan} />
+                        </div>
+                    </div>
+
+                    <div className="card mx-auto col-10 bg-white p-0 mt-5">
+                        <div className="card-header">
+                            Data Tugas Setiap Divisi
+                        </div>
+                        <div className="card-body">
+                            <Chart className="mx-auto col-10" type='bar' data={dataTugas} />
+
+                        </div>
+                    </div>
+
+                    <div className="card mx-auto col-10 bg-white p-0 mt-5">
+                        <div className="card-header">
+                            Rata-Rata Gaji Setiap Divisi
+                        </div>
+                        <div className="card-body">
+                            <Chart className="mx-auto col-10" type='bar' data={GajiRata} />
+
+                        </div>
+                    </div>
+
+                    <div className="card mx-auto col-10 bg-white p-0 mt-5">
+                        <div className="card-header">
+                            Rata-Rata Gaji Setiap Subdivisi
+                        </div>
+                        <div className="card-body">
+                            <Chart className="mx-auto col-10" type='bar' data={GajiRataPekerjaan} />
+                        </div>
+                    </div>
+
+                    <div className="card mx-auto col-10 bg-white p-0 mt-5">
+                        <div className="card-header">
+                            5 Orang yg sering terlambat Bulan Ini
+                        </div>
+                        <div className="card-body">
+                            <Chart className="mx-auto col-10" type='bar' data={TerlambatBulanan} />
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -332,10 +373,33 @@ export class Dasboard extends Component {
     return (
         <div style={{marginTop:90}} className="container">
             <div className="row ">
+      <div className="card mx-auto col-10 bg-white p-0">
+          <div className="card-header">
+              Data Karyawan
+          </div>
+          <div className="card-body">
+              <Chart className="mx-auto col-10" type='bar' data={data} />
 
-                     <Chart className="mx-auto col-10" type='bar' data={data} />
-                     <Chart className="mx-auto col-10 mt-5" type='bar' data={dataTugas} />
-                     <Chart className="mx-auto col-10 mt-5" type='bar' data={TerlambatBulanan} />
+          </div>
+      </div>
+      <div className="card mx-auto col-10 bg-white p-0 mt-5">
+          <div className="card-header">
+              Data Tugas Setiap Karyawan
+          </div>
+          <div className="card-body">
+              <Chart className="mx-auto col-10" type='bar' data={dataTugas} />
+
+          </div>
+      </div>
+      <div className="card mx-auto col-10 bg-white p-0 mt-5">
+          <div className="card-header">
+              5 Orang Terlambat Bulan ini
+          </div>
+          <div className="card-body">
+              <Chart className="mx-auto col-10" type='bar' data={TerlambatBulanan} />
+
+          </div>
+      </div>
             </div>
 
         </div>

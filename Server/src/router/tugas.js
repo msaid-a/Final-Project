@@ -54,7 +54,7 @@ router.post('/tugas/:userid',(req,res)=>{
     }
 
     conn.query(sql,data,(err, result)=>{
-        if(err) return res.send({error:err.sqlmessage})
+        if(err) return res.send({error:err.message})
         res.send('success')
     })
 
@@ -64,7 +64,7 @@ router.post('/tugas/:userid',(req,res)=>{
 router.get('/tugas/divisi/:divisi',(req,res)=>{
     let sql = `SELECT t.id, k.nama, t.title, t.description, t.deadline, t.pengirim, t.hasil, t.status FROM tugas t
 	join karyawan k
-    on k.id = t.user_id JOIN divisi d on k.divisi_id = d.id WHERE d.divisi = '${req.params.divisi}'
+    on k.id = t.user_id JOIN divisi d on k.divisi_id = d.id WHERE d.divisi = '${req.params.divisi}' and t.is_deleted = 0
     order by t.created_at desc`
 
     conn.query(sql, (err,result)=>{
@@ -82,6 +82,7 @@ router.get('/tugas',(req,res)=>{
     let sql = `SELECT t.id, k.nama, t.title, t.description, t.deadline, t.pengirim, t.hasil, t.status, t.terlambat FROM tugas t
 	join karyawan k
     on k.id = t.user_id JOIN divisi d on k.divisi_id = d.id
+    Where t.is_deleted = 0
     order by t.created_at desc`
 
     let sql2 = `UPDATE tugas SET ? WHERE status = 'Belum di kumpulkan' or status = 'REVISI' or terlambat = 0`
@@ -115,8 +116,8 @@ router.get('/tugas/:userid',(req,res)=>{
     let sql = `SELECT t.id, k.nama, k.id as user_id, k.id_user, t.user_id, t.title, t.description, t.deadline, t.pengirim, t.hasil, t.status FROM tugas t
 	join karyawan k
     on k.id = t.user_id
-    WHERE k.id_user = '${req.params.userid}'
-    ORDER BY t.deadline DESC`
+    WHERE k.id_user = '${req.params.userid}' and t.is_deleted = 0
+    ORDER BY created_at DESC`
 
     conn.query(sql, (err,result)=>{
         if(err) return res.send({error : err.sqlmessage})
@@ -149,6 +150,13 @@ router.patch('/tugas/:tugasid', (req,res)=>{
 
 module.exports = router
 
-
+// Delete Tugas
+router.delete('/tugas/delete/:tugasid', (req,res)=>{
+    const sql = `UPDATE tugas SET is_deleted = 1 where id = '${req.params.tugasid}'`
+    conn.query(sql, (err, result)=>{
+        if(err) return res.send({error:err.message})
+        res.send({message: 'Berhasil di hapus'})
+    })
+})
 
 

@@ -80,17 +80,19 @@ onSearch = () =>{
             <div className="container ">
                   <form  className="ml-auto mt-1" onClick={e => e.preventDefault()}>
                     <div className="form-group d-flex justify-content-end">
-                    <div className="mr-auto">
-                        <h4>Gaji Karyawan</h4>
-                    </div>
+                    
                             <input type="text" className=""  placeholder="Search By Name" ref={input => this.search = input}></input>
                         <button type="submit" class="btn btn-secondary ml-1" onClick={this.onSearch}>Seach</button>
                         <button type="submit" class="btn btn-dark ml-1" onClick={()=>{this.setState({search:this.state.gaji})}}>Show All</button>
                              </div>
                 </form>
-               <div className="bg-white border " >
+              <div className="card col-12 p-0">
+                  <div className="card-header text-left">
+                      Gaji Karyawan
+                  </div>
+                  <div className="card-body">
                 <table className="table  table-striped table-responsive-md btn-table mb-5">
-                    <thead style={{fontSize: 15, height:40}}  className='thead-dark' >
+                    <thead style={{fontSize: 15, height:40}}  className='' >
                     <tr>
                     <th>NO</th>
                     <th>Nama</th>
@@ -112,7 +114,10 @@ onSearch = () =>{
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
 
 					/>
-                    </div>
+                      
+                  </div>
+              </div>
+
             </div>
         )
     }

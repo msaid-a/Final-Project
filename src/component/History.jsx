@@ -160,7 +160,6 @@ export class History extends Component {
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e=> e.preventDefault()}>
-                    <h3>History</h3>
                     <div className="form-group d-flex justify-content-end">
                     <div>
                         <select onChange={this.onSearch} className={
@@ -212,8 +211,13 @@ export class History extends Component {
                             onClick={()=>{this.setState({cari:this.state.history})}}>Show All</button>
                     </div>
                 </form>
+      <div className="card">
+          <div className="card-header text-left">
+              History
+          </div>
+          <div className="card-body">
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5 bg-white">
-                    <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
+                    <thead style={{fontSize: 15}}  className='' style={{height:40}}>
                     <tr>
                     <th>NO</th>
                     <th>Username</th>
@@ -235,6 +239,9 @@ export class History extends Component {
                         onPageChange={(e)=>this.onPageChange(e)}
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
 					/>
+          </div>
+      </div>
+
             </div>
         )
     }

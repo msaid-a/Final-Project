@@ -215,7 +215,11 @@ export class Divisi extends Component {
                              </div>
                 </form>
                 <div >
-
+      <div className="card">
+          <div className="card-header text-left">
+              Data Divisi
+          </div>
+          <div className="card-body">
                 <table className="table table-striped table-responsive-md btn-table mt-1" >
                     <thead>
                     <th>NO</th>
@@ -236,6 +240,9 @@ export class Divisi extends Component {
                         template='FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink'
 
 					/>
+          </div>
+      </div>
+
                 </div>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">
                 <ModalHeader toggle={this.toggleCancel}>{divisi}</ModalHeader>

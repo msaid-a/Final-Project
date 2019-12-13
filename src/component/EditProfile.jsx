@@ -235,7 +235,7 @@ import bcrypt from 'bcryptjs'
                                 </select>
                                 <div className="form mt-3">
                                    <label htmlFor="inputPassword">Tanggal Lahir</label>
-                                   <input type="date" ref={input => this.tanggal_lahir = input}/>
+                                   <input type="date" ref={input => this.tanggal_lahir = input} max="2004-12-31"/ >
                                    <label className="ml-2">  *Jika Tidak di ubah biarkan</label>
                                </div>
                             </div>
@@ -372,7 +372,7 @@ import bcrypt from 'bcryptjs'
                             </select>
                             <div className="form mt-3">
                                <label htmlFor="inputPassword">Tanggal Lahir</label> 
-                               <input type="date" defaultValue={moment(tanggal_lahir).format('MM-DD-YYYY')} ref={input => this.tanggal_lahir = input}/>
+                               <input type="date" defaultValue={moment(tanggal_lahir).format('MM-DD-YYYY')} ref={input => this.tanggal_lahir = input} max="2004-12-31"/>
                            </div>
                         </div>
                         <div className="form">

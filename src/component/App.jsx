@@ -43,12 +43,7 @@ class App extends Component {
     this.setState({check : true})
 }
   render() {
-	// Clear on startup if expired
-	let hours = 24
-	let saved = localStorage.getItem('userData')
-	if (saved && (new Date().getTime() - saved > hours * 60 * 60 * 1000)) {
-	  localStorage.clear()
-	}
+
 
     if (this.state.check === true){
 

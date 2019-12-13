@@ -45,6 +45,11 @@ class Register extends Component {
             })       
         }
         let tanggal_lahir = new Date(this.tanggal_lahir.value)
+            let limit = new Date('2004-12-31')
+            if(tanggal_lahir >= limit){
+                return alert('Gk bisa')
+            }
+            console.log(limit)
             tanggal_lahir =moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss')
 
       
@@ -218,7 +223,7 @@ class Register extends Component {
                            </div>
                            <div className="form mt-3">
                                <label htmlFor="inputPassword">Tanggal Lahir</label>
-                               <input type="date" ref={input => this.tanggal_lahir = input} max="2010-12-31"/>
+                               <input type="date" ref={input => this.tanggal_lahir = input} max="2004-12-31"/>
                            </div>
                            <div className="form">
                                <label htmlFor="inputPassword">Agama</label>

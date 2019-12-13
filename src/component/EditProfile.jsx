@@ -83,6 +83,10 @@ import bcrypt from 'bcryptjs'
         let pendidikan = this.pendidikan.value
         let phone = this.phone.value
         let tanggal_lahir = this.tanggal_lahir.value == '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
+        let limit = new Date('2004-12-31')
+        if(tanggal_lahir >= limit){
+            return alert('Gk bisa')
+        }
             tanggal_lahir = moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss ')
         axios.patch('/karyawan/'+this.props.match.params.idkaryawan,{
             nik,username,email,password,nama,gender,agama,pendidikan,tanggal_lahir,phone

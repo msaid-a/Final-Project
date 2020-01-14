@@ -8,6 +8,8 @@ import { Paginator } from 'primereact/paginator';
 import Swal from 'sweetalert2'
 import bcrypt from 'bcryptjs'
 
+import ItemTugas from './ItemTugas'
+
 export class DataTugas extends Component {
 
     state={
@@ -200,7 +202,7 @@ export class DataTugas extends Component {
                                     
                                     <p className="card-text">Deadline : {moment(data.deadline).format('YYYY-MM-DD HH:mm:ss')}</p>
                                     {
-                                        data.status.includes("REVISI") ?
+                                        data.status.includes("REVISI")?
                                           <h5 className="text-warning font-weight-bold">{data.status}</h5>
                                             : data.status.includes("Terlambat") ?
                                             <h5 className="align-middle text-danger font-weight-bold">{data.status}</h5>
@@ -223,18 +225,19 @@ export class DataTugas extends Component {
 
 
                                      {
-                    data.status == "Selesai" ?
+                    data.status === "Selesai" ?
                     <div>
                         <h4 className="mt-4"><i className="fas fa-check-square">Done</i></h4>
                         
                     </div>
-                    : 
+                    : data.pengirim === this.props.userName ?
                     <div className="mt-4">
                         <button className="btn btn-dark mr-1 w-25" onClick={()=>this.doneTugas(data.id,data.title)}>Done</button>
                         <button className="btn btn-secondary w-25" onClick={()=>this.toggle(data.id,data.title)}>Revisi</button>
                         <br/>
                         <button className="btn btn-outline-dark mt-1 w-50" onClick={()=>this.deleteTugas(data.id, data.title)}>Delete</button>
                     </div>
+                    : null
                 }
                                 </div>
                             </div>

@@ -19,7 +19,7 @@ export class DetailGaji extends Component {
         }})
                 .then(res => {
                      this.setState({gaji : res.data})
-                    //  console.log(this.state.gaji[0])
+                     console.log(this.state.gaji)
                      }).catch(err => {
                          console.log(err)
                      })
@@ -100,9 +100,9 @@ export class DetailGaji extends Component {
                 <span class="sr-only">Loading...</span>
              </div>)
         }
-        let {user_id} = this.state.gaji
+        let {id_user} = this.state.gaji[0]
 
-        if(bcrypt.compareSync("admin", this.props.jabatan) === false && this.props.iD !== user_id){
+        if(bcrypt.compareSync("admin", this.props.jabatan) === false && this.props.iD !== id_user){
             return <Redirect to="/ddd"></Redirect>
         }
         return (

@@ -27,7 +27,7 @@ router.get('/gaji/profile/:userid',(req,res)=>{
 
 // get one gaji
 router.get('/gaji/:userid',(req,res)=>{
-    let sql =`SELECT g.id, k.nama, k.nik,g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
+    let sql =`SELECT g.id,k.id_user, k.nama, k.nik,g.bulan, g.tahun, g.gaji, g.tunjanganKeluarga, g.tunjanganTransportasi, g.bonus FROM gaji g
                 join karyawan k
                 on k.id = g.user_id
                 WHERE g.id ='${req.params.userid}'`

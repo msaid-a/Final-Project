@@ -132,36 +132,44 @@ router.post ('/karyawan',(req,res)=>{
     let id_karyawan = token.generate(20)
     let defaultAvatar = 'default_avatar.png'
     req.body.password = bcrypt.hashSync(req.body.password, 8)
-    let sql = `INSERT INTO karyawan
-    (id, id_user, nik,nama, gender, tanggal_lahir, agama, pendidikan, divisi_id,subdivisi_id ,jabatan,  phone, avatar) VALUES 
-    ('${id_karyawan}',
-        '${id_users}',
-        '${req.body.nik}',
-        '${req.body.nama}',
-        '${req.body.gender}',
-        '${req.body.tanggal_lahir}', 
-        '${req.body.agama}', 
-        '${req.body.pendidikan}', 
-        '${req.body.divisi_id}',
-        '${req.body.subdivisi_id}', 
-        '${req.body.jabatan}', 
-        '${req.body.phone}', 
-        '${defaultAvatar}')`
+    let data = {
+        id : id_karyawan,
+        id_user : id_users,
+        nik: req.body.nik,
+        nama : req.body.nama,
+        gender : req.body.gender,
+        tanggal_lahir : req.body.tanggal_lahir,
+        agama : req.body.agama,
+        pendidikan : req.body.pendidikan,
+        divisi_id : req.body.divisi_id,
+        subdivisi_id : req.body.subdivisi_id,
+        jabatan : req.body.jabatan,
+        phone : req.body.phone,
+        avatar : defaultAvatar
+    }
+
+    let data2 = {
+        id : id_users,
+        username : req.body.username,
+        email : req.body.email,
+        password : req.body.password
+    }
+    let sql = `INSERT INTO karyawan set ?`
     
-    let sql2 = `INSERT INTO users (id, username, email, password) VALUES ('${id_users}', '${req.body.username}', '${req.body.email}', '${req.body.password}')`
+    let sql2 = `INSERT INTO users set ?`
     
     if(!validator.isEmail(req.body.email)){
         return res.send({error:'is not email'})
     }
     conn.beginTransaction((err)=>{
         if(err) return res.send({error : err.message})
-        conn.query(sql2,  (err,result) =>{
+        conn.query(sql2, data2, (err,result) =>{
             if(err){
                 return conn.rollback(()=>{
                     res.send({error:err.message})
                 })  
             } 
-            conn.query(sql,  (err,result) =>{
+            conn.query(sql, data,  (err,result) =>{
                 if(err){
                     return conn.rollback(()=>{
                         res.send ({error:err.message})

@@ -120,7 +120,7 @@ export class ItemTugas extends Component {
 
     renderData = () =>{
         let now = new Date()
-        if(now >= this.props.deadline && (this.props.status.toLowerCase().includes('belum') || this.props.status =='REVISI')){
+        if(now >= this.props.deadline && (this.props.status.toLowerCase().includes('belum') || this.props.status ==='REVISI')){
             this.props.status = 'Terlambat'
             axios.patch('/tugas/'+this.props.id,{
                     status : 'Terlambat',
@@ -153,7 +153,7 @@ export class ItemTugas extends Component {
                                     this.props.description.length > 65 ?
                                     this.props.description.slice(0,65)
                                     : this.props.description
-                                    }<Link onClick={this.toggle} className="text-secondary">{this.props.description.length > 65 ? '...Read more' : null}</Link></p>
+                                    }<span style={{cursor: "pointer"}} onClick={this.toggle} className="text-secondary">{this.props.description.length > 65 ? '...Read more' : null}</span></p>
                                 
                                 <p className="card-text">Deadline : {moment(this.props.deadline).format('YYYY-MM-DD HH:mm:ss')}</p>
                                 {
@@ -243,9 +243,9 @@ export class ItemTugas extends Component {
                     <ModalBody>
                         <form>
                             <label htmlFor="">title :</label>
-                            <input type="text" className="form-control" value={this.props.title} />
+                            <input disabled type="text" className="form-control" value={this.props.title} />
                             <label htmlFor="">Description:</label>
-                            <textarea maxlength="250" className="form-control mt-3" rows="3" value={this.props.description} ></textarea>
+                            <textarea disabled maxlength="250" className="form-control mt-3" rows="3" value={this.props.description} ></textarea>
                         </form>
                     </ModalBody>
                     <ModalFooter>
@@ -261,7 +261,7 @@ export class ItemTugas extends Component {
                             <label htmlFor="">title :</label>
                             <input type="text" className="form-control" value={'Revisi '+this.props.title} />
                             <label htmlFor="">Description:</label>
-                            <textarea maxlength="250" className="form-control mt-3" rows="3" ref={input => this.revisi = input} ></textarea>
+                            <textarea  maxlength="250" className="form-control mt-3" rows="3" ref={input => this.revisi = input} ></textarea>
                             <label htmlFor="">Tambah Deadline</label>
                             <input type="datetime-local" className="form-control" ref={input => this.deadline = input} />
 

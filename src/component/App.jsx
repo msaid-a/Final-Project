@@ -4,12 +4,9 @@ import { connect } from 'react-redux'
 
 
 import Login from './Login'
-import Register from './admin&Manager/Register'
 import Navbar from './Navbar'
 import './App.css'
 import Footer from './Footer'
-import GajiKaryawan from './admin&Manager/GajiKaryawan'
-import DataTugas from './admin&Manager/DataTugas'
 import History from './History'
 import Karyawan from './admin&Manager/Karyawan'
 

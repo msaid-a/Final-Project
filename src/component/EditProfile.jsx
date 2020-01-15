@@ -38,10 +38,10 @@ import bcrypt from 'bcryptjs'
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
-        let divisi_id = this.divisi == undefined ? this.state.profile.divisi_id : this.divisi.value
-        let jabatan = this.jabatan.value =='' ? this.state.profile.jabatan : this.jabatan.value 
-        let subdivisi_id = this.subDivisi == undefined ? this.state.profile.subdivisi_id : this.subDivisi.value
-        let tanggal_lahir = this.tanggal_lahir.value == '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
+        let divisi_id = this.divisi === undefined ? this.state.profile.divisi_id : this.divisi.value
+        let jabatan = this.jabatan.value ==='' ? this.state.profile.jabatan : this.jabatan.value 
+        let subdivisi_id = this.subDivisi === undefined ? this.state.profile.subdivisi_id : this.subDivisi.value
+        let tanggal_lahir = this.tanggal_lahir.value === '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
         tanggal_lahir = moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss ')
 
 
@@ -82,7 +82,7 @@ import bcrypt from 'bcryptjs'
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
         let phone = this.phone.value
-        let tanggal_lahir = this.tanggal_lahir.value == '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
+        let tanggal_lahir = this.tanggal_lahir.value === '' ? this.state.profile.tanggal_lahir : this.tanggal_lahir.value
         let limit = new Date('2004-12-31')
         if(tanggal_lahir >= limit){
             return alert('Gk bisa')
@@ -156,7 +156,7 @@ import bcrypt from 'bcryptjs'
 
     renderSubDivisi = () =>{
     if(this.state.selectDivisi){
-        if(this.state.jabatan =="Manager"){
+        if(this.state.jabatan ==="Manager"){
              let subdivisi = this.state.subdivisi.filter(data=>{
                  return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
              })
@@ -165,7 +165,7 @@ import bcrypt from 'bcryptjs'
              })
          }else{
              let subdivisi = this.state.subdivisi.filter(data=>{
-                 return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') == false
+                 return data.divisi_id.includes(this.state.selectDivisi) && data.subDivisi.includes('Manager') === false
              })
              return subdivisi.map (data => {
                 return <option value={data.id}>{data.subDivisi}</option>

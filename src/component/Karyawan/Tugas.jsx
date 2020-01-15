@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import axios from '../../config/index'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Paginator } from 'primereact/paginator';
-import moment from 'moment'
-import Swal from 'sweetalert2'
 import bcrypt from 'bcryptjs'
 import ItemTugas from './ItemTugas'
 
@@ -79,6 +76,12 @@ class Tugas extends Component {
                          <span class="sr-only">Loading...</span>
                     </div>)
           }
+        if(this.state.tugas.length === 0 ){
+            return (<div style={{marginTop:80}}>
+                        <h1 >Upps Belum ada tugas</h1>
+                        <h1 >Terimakasih!!!</h1>
+                    </div>)
+        }
         return (
             <div className="container">
                 <form style={{marginTop:80}} className="ml-auto " onClick={e => e.preventDefault()}>

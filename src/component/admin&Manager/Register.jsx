@@ -141,7 +141,7 @@ class Register extends Component {
 
     renderSubDivisi = () =>{
     if(this.state.selectDivisi){
-        if(this.state.jabatan =="Manager"){
+        if(this.state.jabatan ==="Manager"){
              let subdivisi = this.state.subdivisi.filter(data=>{
                  return data.subDivisi.includes('Manager') && data.divisi_id.includes(this.state.selectDivisi)
              })

@@ -76,6 +76,12 @@ onSearch = () =>{
                          <span class="sr-only">Loading...</span>
                     </div>)
           }
+          if(this.state.gaji.length === 0 ){
+            return (<div style={{marginTop:80}}>
+                        <h1 >Anda Belum mengirim Gaji</h1>
+                        <h1 >Terimakasih!!!</h1>
+                    </div>)
+        }
         return (
             <div className="container ">
                   <form  className="ml-auto mt-1" onClick={e => e.preventDefault()}>

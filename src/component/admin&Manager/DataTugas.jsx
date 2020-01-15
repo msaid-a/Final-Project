@@ -3,9 +3,7 @@ import axios from '../../config/index'
 import {connect} from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
-import moment from 'moment'
 import { Paginator } from 'primereact/paginator';
-import Swal from 'sweetalert2'
 import bcrypt from 'bcryptjs'
 
 import ItemTugas from './ItemTugas'
@@ -62,12 +60,9 @@ export class DataTugas extends Component {
    
 
     renderTugas =  (first,last) =>{
-        let no = 0
-        let now = new Date()
         return  this.state.search.slice(first,last).map ( data => {
             data.deadline = new Date (data.deadline)
-            no++
-            return <ItemTugas length={this.state.karyawan.length} divisi={data.divisi} id={data.id} nomor={no} status={data.status} deadline={data.deadline} tujuan={data.nama} pengirim={data.pengirim} title={data.title} description={data.description} hasil={data.hasil} getTugas={this.getTugas} />
+            return <ItemTugas length={this.state.karyawan.length} divisi={data.divisi} id={data.id}  status={data.status} deadline={data.deadline} tujuan={data.nama} pengirim={data.pengirim} title={data.title} description={data.description} hasil={data.hasil} getTugas={this.getTugas} />
             
         })
     }
@@ -92,6 +87,12 @@ export class DataTugas extends Component {
                          <span class="sr-only">Loading...</span>
                     </div>)
           }
+          if(this.state.karyawan.length === 0 ){
+            return (<div style={{marginTop:80}}>
+                        <h1 >Belum ada tugas yang di kirim</h1>
+                        <h1 >Terimakasih!!!</h1>
+                    </div>)
+        }
         let {id,title} = this.state.selectTugas
         return (
             <div className="container">

@@ -217,7 +217,7 @@ export class History extends Component {
           </div>
           <div className="card-body">
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5 bg-white">
-                    <thead style={{fontSize: 15}}  className='' style={{height:40}}>
+                    <thead style={{fontSize: 15, height:40}}>
                     <tr>
                     <th>NO</th>
                     <th>Username</th>

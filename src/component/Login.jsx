@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {
-    Container, Col, Form,
-    FormGroup, Label, Input,
-    Button,
+    Container, Col, 
+    FormGroup, Label, 
+    
   } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 

@@ -58,7 +58,7 @@ export class Detail extends Component {
        return( <div className="row mt-5 ">
             <div className="col-4 mt-5">
             <div className="card mt-4" style={{width: '18rem'}}>
-                <img className="card-img-top" src={avatar} alt="Card image cap" />
+                <img className="card-img-top" src={avatar} alt={username} />
                 <div className="card-body">
                     <div className="custom-file">
                         <input type="file" className="custom-file-input" id="validatedCustomFile" ref={input=> this.avatar =input} />

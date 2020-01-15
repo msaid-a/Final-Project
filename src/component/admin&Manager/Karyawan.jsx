@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {Redirect, Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import bcrypt from 'bcryptjs'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';

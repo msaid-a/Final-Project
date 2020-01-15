@@ -64,13 +64,19 @@ onPageChange(event) {
                          <span class="sr-only">Loading...</span>
                     </div>)
         }
+        if(this.state.gaji.length === 0 ){
+            return (<div style={{marginTop:80}}>
+                        <h1 >Mohon maaf gaji belum di input</h1>
+                        <h1 >Terimakasih!!!</h1>
+                    </div>)
+        }
         return (
             <div className="container">
                 <div style={{marginTop:80}} className="ml-auto mb-5">
                     <h1>Data Gaji Bulanan</h1>
                 </div>
                 <table className="table table-sm table table-bordered table-striped table-responsive-md btn-table mb-5">
-                    <thead style={{fontSize: 15}}  className='thead-dark' style={{height:40}}>
+                    <thead style={{fontSize: 15, height:40}}  className='thead-dark'>
                     <tr>
                     <th>NO</th>
                     <th>Bulan/Tahun</th>

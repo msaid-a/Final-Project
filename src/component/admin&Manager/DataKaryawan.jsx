@@ -243,7 +243,6 @@ renderKaryawan = (first,last) =>{
     return this.state.search.slice(first,last).map(data => {
         no++
         if(bcrypt.compareSync("admin", this.props.jabatan)){
-
             return (<tr>
             <td className="align-middle">{no}</td>
             <td className="align-middle">{data.nik}</td>
@@ -323,7 +322,7 @@ onPageChange(event) {
           if(bcrypt.compareSync("Karyawan", this.props.jabatan)){
             return <Redirect to="/"></Redirect>
         }
-        let {id, id_karyawan, nama, nik} = this.state.selectKaryawan
+        let {id, id_karyawan, nama} = this.state.selectKaryawan
         return (
             <div>
                 <form className="ml-auto " onClick={e=> e.preventDefault()}>

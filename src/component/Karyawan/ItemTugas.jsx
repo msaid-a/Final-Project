@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import moment from 'moment'
 import Swal from 'sweetalert2'
-import {Link} from 'react-router-dom'
 
 
 export class ItemTugas extends Component {
@@ -38,9 +37,9 @@ postTugas = (id,_status,title) =>{
     let hasil = this.hasil.files[0]
         formData.append("hasil",hasil)
     let status = 'Terupload'
-    if(_status == 'REVISI'){
+    if(_status === 'REVISI'){
         status = 'REVISI Terupload'
-    }else if(_status =="Terlambat"){
+    }else if(_status ==="Terlambat"){
         status = 'Terupload(Terlambat)'
     }
     formData.append("status",status)
@@ -78,7 +77,7 @@ postTugas = (id,_status,title) =>{
 
     renderData = () =>{
         let now = new Date()
-        if(now >= this.props.deadline && (this.props.status.toLowerCase().includes('belum') || this.props.status =='REVISI')){
+        if(now >= this.props.deadline && (this.props.status.toLowerCase().includes('belum') || this.props.status ==='REVISI')){
             this.props.status = 'Terlambat'
             axios.patch('/tugas/'+this.props.id,{
                     status : 'Terlambat',
@@ -111,7 +110,7 @@ postTugas = (id,_status,title) =>{
                                     this.props.description.length > 65 ?
                                     this.props.description.slice(0,65)
                                     : this.props.description
-                                    }<Link onClick={this.toggle} className="text-secondary">{this.props.description.length > 65 ? '...Read more' : null}</Link></p>
+                                    }<span style={{cursor : "pointer"}} onClick={this.toggle} className="text-secondary">{this.props.description.length > 65 ? '...Read more' : null}</span></p>
                                 
                                 <p className="card-text">Deadline : {moment(this.props.deadline).format('YYYY-MM-DD HH:mm:ss')}</p>
                                 {
@@ -125,7 +124,7 @@ postTugas = (id,_status,title) =>{
                                         <h5 className="">{this.props.status}</h5>
                     
                                 } {
-                                    this.props.status == "Selesai" ?
+                                    this.props.status === "Selesai" ?
                                              <div>
                                                  <h4><i className="fas fa-check-square">Done</i></h4>
                                              </div>
@@ -165,9 +164,9 @@ postTugas = (id,_status,title) =>{
                     <ModalBody>
                         <form>
                             <label htmlFor="">title :</label>
-                            <input type="text" className="form-control" value={this.props.title} />
+                            <input disabled type="text" className="form-control" value={this.props.title} />
                             <label htmlFor="">Description:</label>
-                            <textarea maxlength="250" className="form-control mt-3" rows="3" value={this.props.description} ></textarea>
+                            <textarea disabled maxlength="250" className="form-control mt-3" rows="3" value={this.props.description} ></textarea>
                         </form>
                     </ModalBody>
                     <ModalFooter>

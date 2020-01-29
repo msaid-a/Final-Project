@@ -235,7 +235,7 @@ export class ItemTugas extends Component {
             <div className={
                 this.props.length  === 2 ?
                 "col-sm-12 col-md-5 mb-5 mx-auto" :
-                    "col-md-4 mb-5 mx-auto"  
+                    "col-lg-5 mb-5 mx-auto"  
             } >
                 {this.renderData()}
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal1">

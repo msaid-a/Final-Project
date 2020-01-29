@@ -12,7 +12,8 @@ class Register extends Component {
         selectDivisi : '',
         jabatan: '',
         divisi : [],
-        subdivisi:[]
+        subdivisi:[],
+        error : false
     }
 
     onRegiter = () =>{
@@ -32,22 +33,15 @@ class Register extends Component {
         let gender = this.gender.value
         let agama = this.agama.value
         let pendidikan = this.pendidikan.value
-        let divisi_id = this.divisi.value
-        let jabatan = this.jabatan.value
-        let subdivisi_id = this.subDivisi.value
-        let phone = parseInt(this.phone.value)
-        if(isNaN(parseInt(this.phone.value))){
-            return  Swal.fire({
-                type: 'error',
-                title: 'Phone Harus berupa Angka',
-                showConfirmButton:false,
-                timer:900
-            })       
-        }
+        let divisi_id = !this.divisi ? this.divisi = '' : this.divisi.value  
+        let jabatan = this.jabatan.value ? this.jabatan.value : this.jabatan.value = ''
+        let subdivisi_id = !this.subDivisi ? this.subDivisi = '' : this.subDivisi.value
+        let phone = this.phone.value ? parseInt(this.phone.value) : this.phone.value = 1
+        
         let tanggal_lahir = new Date(this.tanggal_lahir.value)
             let limit = new Date('2004-12-31')
             if(tanggal_lahir >= limit){
-                return alert('Gk bisa')
+                return alert('Invalid Date')
             }
             console.log(limit)
             tanggal_lahir =moment(tanggal_lahir).format('YYYY-MM-DD HH-mm-ss')
@@ -73,8 +67,10 @@ class Register extends Component {
                         title: 'Isi Semua From',
                         showConfirmButton:false,
                         timer:900
-                    })   
+                    })
+                
             }
+            
 
             axios.post('/history',{
                 description: "telah menambahkan karyawan baru dengan username " + username,
@@ -91,7 +87,7 @@ class Register extends Component {
                     title: 'Success',
                     showConfirmButton:false,
                     timer:900
-                }) 
+                })
                 this.nik.value = ''
                 this.username.value= ''
                 this.email.value = ''
@@ -99,6 +95,7 @@ class Register extends Component {
                 this.nama.value = ''
                 this.phone.value = ''
                 this.tanggal_lahir.value = ''
+                // return <Redirect to ="/datakaryawan" ></Redirect>
             })
         })
         
